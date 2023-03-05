@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Spotify AutoQueue</string>
+    <!-- Strings related to login -->
+    <string name="short_name">AutoQueue</string>
+
+    <string name="main_activity_title">Your Groups</string>
+</resources>
