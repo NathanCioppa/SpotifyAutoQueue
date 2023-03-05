@@ -17,7 +17,9 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     final String CLIENT_ID = "1435a3ff53c84332b17feb17f4cb0cb8";
+    final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
     final String REDIRECT_URI = "https://nathancioppa.github.io/spotify-app.html";
+
     SpotifyAppRemote spotifyAppRemote;
 
     @Override
