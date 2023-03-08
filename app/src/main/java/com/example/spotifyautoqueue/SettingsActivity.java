@@ -9,12 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
-    final String CLIENT_ID = "1435a3ff53c84332b17feb17f4cb0cb8";
-    final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
-    final String REDIRECT_URI = "https://nathancioppa.github.io/spotify-app.html";
+    final String CLIENT_ID = ApiTokens.CLIENT_ID;
+    final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
     final String SCOPE = "user-read-currently-playing user-read-playback-state";
 
     final String AUTH_URL = "https://accounts.spotify.com/authorize?client_id="
@@ -41,8 +42,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void submitAuthCode(View button) {
-        String authCode = ((TextView) findViewById(R.id.inputAuthCode)).getText().toString();
-        Log.d("submitAuthCode", authCode);
+        ApiTokens.authCode = ((TextView) findViewById(R.id.inputAuthCode)).getText().toString();
+
+        ApiCallsAsync apiCalls = new ApiCallsAsync();
+        apiCalls.execute();
     }
 
     public void backToHome(View button) {

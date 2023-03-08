@@ -16,8 +16,8 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String CLIENT_ID = "1435a3ff53c84332b17feb17f4cb0cb8";
-    final String REDIRECT_URI = "https://nathancioppa.github.io/spotify-app.html";
+    final String CLIENT_ID = ApiTokens.CLIENT_ID;
+    final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
 
     SpotifyAppRemote spotifyAppRemote;
 
