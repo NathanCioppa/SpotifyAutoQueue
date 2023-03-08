@@ -14,6 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="background">
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="button_background">
+        <item name="android:backgroundTint">@color/black</item>
+    </style>
+
     <style name="banner_color">
         <item name="android:background">@color/off_black</item>
     </style>
