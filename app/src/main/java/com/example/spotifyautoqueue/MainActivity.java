@@ -68,12 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "No track is playing");
             }
 
-            getQueue();
-        });
-    }
+            GetQueue getQueue = new GetQueue();
+            getQueue.execute();
 
-    public void getQueue() {
-        Log.d("getQueue", "CALLED");
+        });
     }
 
     public void openSettingsActivity(View button) {
