@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
                         .showAuthView(true)
                         .build();
 
+        SpotifyAppRemote.disconnect(spotifyAppRemote);
+        Log.d("onStart", "Disconnected");
+
         SpotifyAppRemote.connect(this, connectionParams,
                 new Connector.ConnectionListener() {
             @Override
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //ok so apparently this function is already called in the background basically whenever a new song plays anyway
+    //which is fucking amazing for me.
     private void connected() {
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
             final Track track = playerState.track;
@@ -62,11 +67,13 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "No track is playing");
             }
+
+            getQueue();
         });
     }
 
     public void getQueue() {
-
+        Log.d("getQueue", "CALLED");
     }
 
     public void openSettingsActivity(View button) {
@@ -77,12 +84,5 @@ public class MainActivity extends AppCompatActivity {
     public void openCreateGroupActivity(View button) {
         Intent openCreateGroup = new Intent(this, CreateGroupActivity.class);
         startActivity(openCreateGroup);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        SpotifyAppRemote.disconnect(spotifyAppRemote);
-        Log.d("onStop", "Disconnected");
     }
 }
