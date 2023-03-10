@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -44,8 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
     public void submitAuthCode(View button) {
         ApiTokens.authCode = ((TextView) findViewById(R.id.inputAuthCode)).getText().toString();
 
-        ApiCallsAsync apiCalls = new ApiCallsAsync();
-        apiCalls.execute();
+        GetApiAccessTokens getApiAccessTokens = new GetApiAccessTokens();
+        getApiAccessTokens.execute();
     }
 
     public void backToHome(View button) {
