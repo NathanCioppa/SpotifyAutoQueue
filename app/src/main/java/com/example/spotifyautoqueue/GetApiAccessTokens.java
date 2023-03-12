@@ -1,14 +1,10 @@
 package com.example.spotifyautoqueue;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -17,15 +13,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Base64;
 
-public class GetApiAccessTokens extends AsyncTask<String, Void, String> {
+public class GetApiAccessTokens extends AsyncTask<Void, Void, Boolean> {
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
     String authCode = ApiTokens.authCode;
 
-    @Override
-    protected String doInBackground(String... strings) {
+    protected Boolean doInBackground(Void... params) {
 
         try {
             String authString = CLIENT_ID + ":" + CLIENT_SECRET;
@@ -71,6 +66,6 @@ public class GetApiAccessTokens extends AsyncTask<String, Void, String> {
         } catch (IOException e) {
             Log.d("ERROR: CLASS ApiTokens, getRefreshAccessToken","Auth code invalid");
         }
-        return null;
+        return true;
     }
 }

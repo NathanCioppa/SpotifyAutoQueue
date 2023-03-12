@@ -12,4 +12,6 @@
     <string name="get_auth_code_label">Get authorization code</string>
     <string name="input_auth_hint">Paste auth code here</string>
     <string name="save_access_tokens">Save tokens</string>
+
+    <string name="create_group_activity_title">Create Group</string>
 </resources>

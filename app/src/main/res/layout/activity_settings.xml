@@ -18,14 +18,8 @@
 
         <TextView
             android:id="@+id/settingsActivityTitle"
-            style="@style/textColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            style="@style/activity_title"
             android:text="@string/settings_activity_title"
-            android:textSize="26sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/settingsBackButton"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,14 +27,9 @@
 
         <ImageButton
             android:id="@+id/settingsBackButton"
-            style="@style/textColor"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="#00FFFFFF"
+            style="@style/back_arrow_button"
             android:contentDescription="@string/back_to_home_button_description"
             android:onClick="backToHome"
-            android:scaleX="1.1"
-            android:scaleY="1.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/actionModeCloseDrawable" />
@@ -58,19 +47,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/saveTokens"
-                style="@style/textColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/spotify_logo_green"
-                android:text="@string/save_access_tokens"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/authSubmitLayout"
-                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/authorizationTitle"

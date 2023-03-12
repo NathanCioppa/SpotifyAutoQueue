@@ -37,18 +37,28 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         }
         catch (Error error) {
-            System.out.println(error);
+            error.printStackTrace();
         }
     }
 
     public void submitAuthCode(View button) {
         ApiTokens.authCode = ((TextView) findViewById(R.id.inputAuthCode)).getText().toString();
         GetApiAccessTokens getApiAccessTokens = new GetApiAccessTokens();
-        getApiAccessTokens.execute();
+        try{
+            boolean result = getApiAccessTokens.execute().get();
 
+            if (result) {
+                saveTokens();
+                Log.d("submitAuthCode", "Saved Tokens");
+            } else
+                Log.d("submitAuthCode", "ERROR OCCURRED, did not save tokens");
+
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
     }
 
-    public void saveTokens(View button) {
+    public void saveTokens() {
         File externalDir = getExternalFilesDir(null);
         if (externalDir != null) {
             File file = new File(externalDir, "tokens.txt");

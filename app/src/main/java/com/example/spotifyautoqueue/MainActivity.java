@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
                 connected();
             }
-
             @Override
             public void onFailure(Throwable error) {
                 Log.e("MainActivity", error.getMessage(), error );
