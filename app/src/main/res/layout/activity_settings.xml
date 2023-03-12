@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
-    style="@style/background">
+    tools:context=".SettingsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -59,6 +59,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/saveTokens"
+                style="@style/textColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/spotify_logo_green"
+                android:text="@string/save_access_tokens"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/authSubmitLayout"
+                app:layout_constraintVertical_bias="0.0" />
+
             <TextView
                 android:id="@+id/authorizationTitle"
                 style="@style/textColor"
@@ -107,6 +120,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icons8_enter_96___"
                     app:tint="@color/spotify_logo_green" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -134,16 +148,17 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
+                    style="@style/textColor"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    style="@style/textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icons8_external_link_96___" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

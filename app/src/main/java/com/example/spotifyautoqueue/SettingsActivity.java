@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import java.io.File;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -40,12 +43,21 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void submitAuthCode(View button) {
         ApiTokens.authCode = ((TextView) findViewById(R.id.inputAuthCode)).getText().toString();
-
         GetApiAccessTokens getApiAccessTokens = new GetApiAccessTokens();
         getApiAccessTokens.execute();
+
+    }
+
+    public void saveTokens(View button) {
+        File externalDir = getExternalFilesDir(null);
+        if (externalDir != null) {
+            File file = new File(externalDir, "tokens.txt");
+            ApiTokens.saveTokens(file);
+        }
     }
 
     public void backToHome(View button) {
+        System.out.println("BACK TO HOME");
         Intent home = new Intent(this, MainActivity.class);
         startActivity(home);
     }

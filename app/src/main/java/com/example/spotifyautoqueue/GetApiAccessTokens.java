@@ -1,10 +1,14 @@
 package com.example.spotifyautoqueue;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -59,6 +63,8 @@ public class GetApiAccessTokens extends AsyncTask<String, Void, String> {
             String responseString = response.toString();
             ApiTokens.refreshToken = responseString.substring(responseString.indexOf("refresh_token\":\"") + 16, responseString.indexOf("\",\"scope\""));
             ApiTokens.accessToken = responseString.substring(responseString.indexOf("access_token\":\"") + 15, responseString.indexOf("\",\"token_type\""));
+
+            Log.d("GetApiAccessTokens", "finished");
 
         } catch (Error | UnsupportedEncodingException error) {
             Log.d("ERROR: CLASS ApiTokens, getRefreshAccessToken",error+"");

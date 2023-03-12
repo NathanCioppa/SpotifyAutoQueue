@@ -11,8 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -50,20 +48,15 @@ public class GetQueue extends AsyncTask<String, Void, ArrayList<String>> {
                 String responseBody = response.toString();
                 JSONObject jsonObject = new JSONObject(responseBody);
 
-                // Extract the track URIs from the JSON object
-                //ArrayList<String> trackURIs = new ArrayList<>();
+                // Get the uri of the next track
                 JSONArray itemsArray = jsonObject.getJSONArray("queue");
-                //for (int i = 0; i < itemsArray.length(); i++) {
                     JSONObject itemObject = itemsArray.getJSONObject(0);
                     String trackUri = (String) itemObject.getString("uri");
 
-                    //String trackURI = trackObject.getString("uri");
-                    //trackURIs.add(trackURI);
-                //}
 
                 System.out.println(trackUri);
                 System.out.println(itemsArray.getJSONObject(0).getString("name"));
-                //return trackURIs;
+
             } else {
                 String errorMessage = "Error fetching playback queue: " + connection.getResponseMessage();
                 Log.d("GetQueue | responseCode == HttpURLConnection.HTTP_OK", errorMessage+"");
