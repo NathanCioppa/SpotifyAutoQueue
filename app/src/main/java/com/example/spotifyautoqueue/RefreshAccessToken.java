@@ -18,7 +18,7 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
     String refreshToken = ApiTokens.refreshToken;
-    String accessToken = ApiTokens.accessToken;
+
     @Override
     protected Boolean doInBackground(Void... params) {
 
@@ -46,9 +46,9 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 JSONObject jsonObject = new JSONObject(response.toString());
-                accessToken = jsonObject.getString("access_token");
+                ApiTokens.accessToken = jsonObject.getString("access_token");
 
-                Log.d("RefreshAccessToken", "Success "+ accessToken);
+                Log.d("RefreshAccessToken", "Success "+ ApiTokens.accessToken);
             } else {
                 throw new IOException("Unexpected response code " + connection.getResponseCode());
             }

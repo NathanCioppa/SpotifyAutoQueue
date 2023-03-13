@@ -51,15 +51,14 @@ public class GetQueue extends AsyncTask<String, Void, ArrayList<String>> {
                 // Get the uri of the next track
                 JSONArray itemsArray = jsonObject.getJSONArray("queue");
                     JSONObject itemObject = itemsArray.getJSONObject(0);
-                    String trackUri = (String) itemObject.getString("uri");
+                    String trackUri = itemObject.getString("uri");
 
-
-                System.out.println(trackUri);
-                System.out.println(itemsArray.getJSONObject(0).getString("name"));
+                Log.d("GetQueue", "trackUri: "+trackUri);
+                Log.d("GetQueue", "trackName: "+itemsArray.getJSONObject(0).getString("name"));
 
             } else {
                 String errorMessage = "Error fetching playback queue: " + connection.getResponseMessage();
-                Log.d("GetQueue | responseCode == HttpURLConnection.HTTP_OK", errorMessage+"");
+                Log.d("GetQueue", errorMessage+" | "+"AccessToken: "+accessToken);
             }
             connection.disconnect();
         } catch (JSONException | IOException e) {
