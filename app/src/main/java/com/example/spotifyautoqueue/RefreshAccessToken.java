@@ -48,13 +48,15 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
                 JSONObject jsonObject = new JSONObject(response.toString());
                 ApiTokens.accessToken = jsonObject.getString("access_token");
 
-                Log.d("RefreshAccessToken", "Success "+ ApiTokens.accessToken);
+                Log.d("RefreshAccessToken", "Success");
             } else {
-                throw new IOException("Unexpected response code " + connection.getResponseCode());
+                System.out.println("Unexpected response code " + connection.getResponseCode());
+                return false;
             }
             connection.disconnect();
         }  catch (JSONException | IOException error) {
             error.printStackTrace();
+            return false;
         }
 
         return true;

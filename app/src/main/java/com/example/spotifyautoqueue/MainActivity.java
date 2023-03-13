@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -69,10 +70,33 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "No track is playing");
             }
 
-            GetQueue getQueue = new GetQueue();
-            getQueue.execute();
+            getNextInQueue();
 
         });
+    }
+
+    public void getNextInQueue() {
+
+        try {
+            GetQueue getQueue = new GetQueue();
+            boolean getQueueResponse = getQueue.execute().get();
+
+            if (!getQueueResponse) {
+                RefreshAccessToken refreshAccessToken = new RefreshAccessToken();
+                boolean refreshAccessResponse = refreshAccessToken.execute().get();
+
+                if(refreshAccessResponse) {
+                    GetQueue secondGetQueue = new GetQueue();
+                    boolean secondGetQueueResponse = secondGetQueue.execute().get();
+
+                    if(!secondGetQueueResponse) {
+                        Log.d("MainActivity | getNextInQueue", "error getting next in queue");
+                    }
+                }
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void openSettingsActivity(View button) {

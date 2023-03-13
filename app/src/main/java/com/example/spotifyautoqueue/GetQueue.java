@@ -15,14 +15,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class GetQueue extends AsyncTask<String, Void, ArrayList<String>> {
+public class GetQueue extends AsyncTask<Void, Void, Boolean> {
 
     String accessToken = ApiTokens.accessToken;
 
     @Override
-    protected ArrayList<String> doInBackground(String... strings) {
-
-        Log.d("GetQueue", "Called");
+    protected Boolean doInBackground(Void... params) {
 
         try {
             // Create a URL object for the playback queue endpoint
@@ -58,13 +56,14 @@ public class GetQueue extends AsyncTask<String, Void, ArrayList<String>> {
 
             } else {
                 String errorMessage = "Error fetching playback queue: " + connection.getResponseMessage();
-                Log.d("GetQueue", errorMessage+" | "+"AccessToken: "+accessToken);
+                Log.d("GetQueue", errorMessage+"");
+                return false;
             }
             connection.disconnect();
         } catch (JSONException | IOException e) {
             Log.d("GetQueue","ERROR");
+            return false;
         }
-
-        return null;
+        return true;
     }
 }

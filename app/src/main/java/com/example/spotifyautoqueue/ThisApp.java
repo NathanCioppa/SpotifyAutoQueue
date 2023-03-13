@@ -14,6 +14,5 @@ public class ThisApp extends Application {
         File file = new File(externalDir, "tokens.txt");
         ApiTokens.getTokens(file);
 
-        new RefreshAccessToken().execute();
     }
 }
