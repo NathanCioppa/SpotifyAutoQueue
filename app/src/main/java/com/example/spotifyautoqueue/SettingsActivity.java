@@ -35,8 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         try {
             startActivity(intent);
-        }
-        catch (Error error) {
+        } catch (Error error) {
             error.printStackTrace();
         }
     }

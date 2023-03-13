@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             getNextInQueue();
-
         });
     }
 
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean refreshAccessResponse = refreshAccessToken.execute().get();
 
                 if(refreshAccessResponse) {
+                    saveTokens();
                     GetQueue secondGetQueue = new GetQueue();
                     boolean secondGetQueueResponse = secondGetQueue.execute().get();
 
@@ -94,8 +94,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void saveTokens() {
+        File externalDir = getExternalFilesDir(null);
+        if (externalDir != null) {
+            File file = new File(externalDir, "tokens.txt");
+            ApiTokens.saveTokens(file);
         }
     }
 

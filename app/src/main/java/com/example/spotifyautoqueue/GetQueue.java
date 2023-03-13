@@ -60,6 +60,7 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 return false;
             }
             connection.disconnect();
+
         } catch (JSONException | IOException e) {
             Log.d("GetQueue","ERROR");
             return false;

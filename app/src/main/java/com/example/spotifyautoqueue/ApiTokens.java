@@ -42,7 +42,7 @@ public class ApiTokens {
             accessToken = reader.readLine();
             refreshToken = reader.readLine();
             reader.close();
-            // do something with the tokens, e.g. store them in a data structure or print them to the console
+
             System.out.println("Access token: " + accessToken);
             System.out.println("Refresh token: " + refreshToken);
         } catch (IOException e) {

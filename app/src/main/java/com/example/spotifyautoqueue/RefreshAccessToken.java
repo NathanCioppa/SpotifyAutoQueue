@@ -41,7 +41,6 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
-
             reader.close();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -54,11 +53,11 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
                 return false;
             }
             connection.disconnect();
-        }  catch (JSONException | IOException error) {
+
+        } catch (JSONException | IOException error) {
             error.printStackTrace();
             return false;
         }
-
         return true;
     }
 }
