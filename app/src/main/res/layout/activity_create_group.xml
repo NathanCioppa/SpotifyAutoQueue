@@ -8,9 +8,10 @@
     style="@style/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        style="@style/banner_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/banner_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,6 +19,7 @@
         <ImageButton
             android:id="@+id/imageButton"
             style="@style/back_arrow_button"
+            android:contentDescription="@string/back_to_home_button_description"
             android:onClick="backToHome"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,4 +33,34 @@
             app:layout_constraintStart_toEndOf="@+id/imageButton"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/searchParentTrack"
+        style="@style/textColor"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:layout_marginEnd="174dp"
+        android:ems="10"
+        android:hint="@string/search_parent_hint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        style="@style/button_background"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/search_button_description"
+        android:onClick="searchForParent"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        app:tint="@color/spotify_logo_green" />
 </androidx.constraintlayout.widget.ConstraintLayout>
