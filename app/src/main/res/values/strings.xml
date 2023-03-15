@@ -16,4 +16,6 @@
     <string name="create_group_activity_title">Create Group</string>
     <string name="search_parent_hint">Search for parent track</string>
     <string name="search_button_description">Submit search</string>
+    <string name="name_placeholder">Name</string>
+    <string name="artist_placeholder">Artist</string>
 </resources>
