@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/searchedTrackTitle"
         style="@style/textColor"
         android:layout_width="0dp"
         android:ellipsize="end"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/searchedTrackImage" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/searchedTrackArtist"
         style="@style/textColor"
         android:layout_width="0dp"
         android:ellipsize="end"

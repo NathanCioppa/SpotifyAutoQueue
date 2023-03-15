@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class CreateGroupActivity extends AppCompatActivity {
 
     @Override
@@ -15,6 +17,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
     }
+
+    static ArrayList<SearchItem> parentSearches;
 
     public void searchForParent(View button) {
         EditText inputParentSearch = findViewById(R.id.searchParentTrack);
