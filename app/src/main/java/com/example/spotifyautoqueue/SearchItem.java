@@ -1,15 +1,17 @@
 package com.example.spotifyautoqueue;
 
+import android.net.Uri;
+
 public class SearchItem {
     String name;
     String artist;
-    String imageUri;
+    String imageUrl;
     String uri;
 
-    public SearchItem(String name, String artist, String imageUri, String uri){
+    public SearchItem(String name, String artist, String imageUrl, String uri){
         this.name = name;
         this.artist = artist;
-        this.imageUri = imageUri;
+        this.imageUrl = imageUrl;
         this.uri = uri;
     }
 
@@ -21,11 +23,5 @@ public class SearchItem {
         return artist;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public String getUri() {
-        return uri;
-    }
+    public String getImageUrl() { return imageUrl; }
 }

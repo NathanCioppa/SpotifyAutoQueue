@@ -36,7 +36,7 @@ public class ParentTrackSearchesAdapter extends RecyclerView.Adapter<ParentTrack
         ArrayList<SearchItem> parentSearches = CreateGroupActivity.parentSearches;
         holder.nameView.setText(parentSearches.get(position).getName());
         holder.artistView.setText(parentSearches.get(position).getArtist());
-        //holder.imageView.src = (parentSearches.get(position).getImageUri());
+        //holder.imageView.setImageUrl((parentSearches.get(position).getImageUri()));
     }
 
     @Override

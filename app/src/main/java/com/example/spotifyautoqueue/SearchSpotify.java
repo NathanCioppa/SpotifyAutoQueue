@@ -3,6 +3,7 @@ package com.example.spotifyautoqueue;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Map;
 
 public class SearchSpotify extends AsyncTask<Void, Void, Boolean> {
 
@@ -39,7 +41,15 @@ public class SearchSpotify extends AsyncTask<Void, Void, Boolean> {
             in.close();
 
             JSONObject jsonResponse = new JSONObject(response.toString());
-            Log.d("SearchSpotify", "Results: "+jsonResponse);
+            JSONObject tracks = new JSONObject(jsonResponse.getJSONObject("tracks").toString());
+            JSONArray items = new JSONArray(tracks.getJSONArray("items").toString());
+
+            for(int i = 0; i < items.length(); i++) {
+                JSONObject track = new JSONObject(items.get(i).toString());
+                String artist = new JSONObject(track.getJSONArray("artists").get(0).toString()).getString("name");
+                System.out.println(artist);
+            }
+            Log.d("SearchSpotify", "Results: "+items);
         } catch (JSONException | IOException e) {
             Log.d("SearchSpotify", "ERROR: "+e);
             return false;
