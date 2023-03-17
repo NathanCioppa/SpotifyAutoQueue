@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class ParentTrackSearchesAdapter extends RecyclerView.Adapter<ParentTrackSearchesAdapter.ThisViewHolder> {
@@ -30,18 +32,18 @@ public class ParentTrackSearchesAdapter extends RecyclerView.Adapter<ParentTrack
 
         return new ParentTrackSearchesAdapter.ThisViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ThisViewHolder holder, int position) {
         ArrayList<SearchItem> parentSearches = CreateGroupActivity.parentSearches;
         holder.nameView.setText(parentSearches.get(position).getName());
         holder.artistView.setText(parentSearches.get(position).getArtist());
-        //holder.imageView.setImageUrl((parentSearches.get(position).getImageUri()));
+        Glide.with(context).load(parentSearches.get(position).getImageUrl()).into(holder.imageView);
+        holder.itemView.setTag(parentSearches.get(position).uri);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return CreateGroupActivity.parentSearches.size();
     }
 
     public static class ThisViewHolder extends RecyclerView.ViewHolder{

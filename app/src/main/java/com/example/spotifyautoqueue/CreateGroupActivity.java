@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class CreateGroupActivity extends AppCompatActivity {
@@ -26,10 +28,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         searchSpotify.searchQuery = inputParentSearch.getText().toString();
 
         try{
-            boolean response = searchSpotify.execute().get();
-
+            parentSearches = searchSpotify.execute().get();
         } catch (Exception error) {
-            System.out.println(error);
+            error.printStackTrace();
         }
 
     }
