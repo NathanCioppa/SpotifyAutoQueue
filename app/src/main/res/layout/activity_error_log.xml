@@ -8,9 +8,10 @@
     tools:context=".ErrorLogActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        style="@style/banner_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/banner_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,12 +27,21 @@
 
         <TextView
             android:id="@+id/textView6"
+            style="@style/activity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/activity_title"
             android:text="@string/error_log_activity_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/errorLogBackButton"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 </androidx.constraintlayout.widget.ConstraintLayout>

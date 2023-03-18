@@ -1,7 +1,5 @@
 package com.example.spotifyautoqueue;
 
-import android.net.Uri;
-
 public class SearchItem {
     String name;
     String artist;
