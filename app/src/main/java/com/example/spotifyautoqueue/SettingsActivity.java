@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
 import java.io.File;
 
 
@@ -27,6 +29,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        currentTrackDisplay = findViewById(R.id.sdkConnectionCurrentTrack);
+        testSkdConnection();
+
     }
 
     public void openAuthLink(View button){
@@ -63,6 +68,19 @@ public class SettingsActivity extends AppCompatActivity {
             File file = new File(externalDir, "tokens.txt");
             ApiTokens.saveTokens(file);
         }
+    }
+
+
+    String currentTrack = MainActivity.current;
+    TextView currentTrackDisplay;
+    public void testSkdConnection() {
+        currentTrackDisplay.setText(currentTrack);
+        //Log.d("testSkdConnection", currentTrack);
+    }
+
+    public void openErrorLog(View button) {
+        Intent errorLog = new Intent(this, ErrorLogActivity.class);
+        startActivity(errorLog);
     }
 
     public void backToHome(View button) {

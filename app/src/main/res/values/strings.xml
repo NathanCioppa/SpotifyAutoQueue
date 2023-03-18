@@ -7,11 +7,19 @@
 
     <string name="settings_activity_title">Settings</string>
     <string name="back_to_home_button_description">Go back to main page</string>
+    <string name="open_error_log_button_description">Open error log</string>
+
 
     <string name="authorization_title">Authorization</string>
     <string name="get_auth_code_label">Get authorization code</string>
     <string name="input_auth_hint">Paste auth code here</string>
     <string name="save_access_tokens">Save tokens</string>
+
+    <string name="sdk_connection_title">SDK Connection</string>
+    <string name="sdk_connection_current_title">Current track from SDK:</string>
+
+    <string name="error_log_activity_title">Error Log</string>
+    <string name="error_log_back_button_description">Back to settings</string>
 
     <string name="create_group_activity_title">Create Group</string>
     <string name="search_parent_hint">Search for parent track</string>
