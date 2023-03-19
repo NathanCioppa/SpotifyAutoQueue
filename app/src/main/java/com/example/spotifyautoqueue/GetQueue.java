@@ -62,7 +62,8 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
             connection.disconnect();
 
         } catch (JSONException | IOException e) {
-            Log.d("GetQueue","ERROR");
+            ErrorLogActivity.logError("Error getting queue","Execution failed");
+            e.printStackTrace();
             return false;
         }
         return true;

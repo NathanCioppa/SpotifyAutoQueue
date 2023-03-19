@@ -43,7 +43,6 @@ public class CreateGroupActivity extends AppCompatActivity {
         } catch (Exception error) {
             error.printStackTrace();
         }
-
     }
 
     public void backToHome(View button) {

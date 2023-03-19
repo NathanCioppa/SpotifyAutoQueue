@@ -57,9 +57,9 @@ public class SearchSpotify extends AsyncTask<Void, Void, ArrayList<SearchItem>> 
                 SearchItem track = new SearchItem(name,artist,imageUrl,uri);
                 searches.add(track);
             }
-            //Log.d("SearchSpotify","Searches: "+ searches);
             return searches;
         } catch (JSONException | IOException e) {
+            ErrorLogActivity.logError("Error searching Spotify","Execution failed");
             Log.d("SearchSpotify", "ERROR: "+e);
             return null;
         }

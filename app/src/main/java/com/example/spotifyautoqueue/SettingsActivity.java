@@ -31,7 +31,6 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         currentTrackDisplay = findViewById(R.id.sdkConnectionCurrentTrack);
         testSkdConnection();
-
     }
 
     public void openAuthLink(View button){
@@ -55,10 +54,11 @@ public class SettingsActivity extends AppCompatActivity {
                 saveTokens();
                 Log.d("submitAuthCode", "Saved Tokens");
             } else
-                Log.d("submitAuthCode", "ERROR OCCURRED, did not save tokens");
+                ErrorLogActivity.logError("Failed to save tokens","Access tokens received from the Spotify API failed to save locally to the device. You may need to submit a new auth code.");
 
         } catch (Exception error) {
             error.printStackTrace();
+            ErrorLogActivity.logError("Failed to submit auth code",error.getMessage()+"");
         }
     }
 
@@ -75,7 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
     TextView currentTrackDisplay;
     public void testSkdConnection() {
         currentTrackDisplay.setText(currentTrack);
-        //Log.d("testSkdConnection", currentTrack);
     }
 
     public void openErrorLog(View button) {

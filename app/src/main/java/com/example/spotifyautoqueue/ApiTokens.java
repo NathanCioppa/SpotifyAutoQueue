@@ -31,6 +31,7 @@ public class ApiTokens {
             Log.d("saveTokens", "access "+accessToken);
             Log.d("saveTokens", "refresh "+refreshToken);
         } catch (IOException error){
+            ErrorLogActivity.logError("Error saving tokens","Access tokens failed to save.");
             error.printStackTrace();
         }
     }
@@ -46,6 +47,7 @@ public class ApiTokens {
             System.out.println("Access token: " + accessToken);
             System.out.println("Refresh token: " + refreshToken);
         } catch (IOException e) {
+            ErrorLogActivity.logError("Error retrieving tokens","Access tokens could not be found. You may need to submit a new auth code.");
             e.printStackTrace();
         }
     }

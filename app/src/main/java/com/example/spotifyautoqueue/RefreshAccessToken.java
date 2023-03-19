@@ -55,6 +55,7 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
             connection.disconnect();
 
         } catch (JSONException | IOException error) {
+            ErrorLogActivity.logError("Error refreshing access token","Execution failed");
             error.printStackTrace();
             return false;
         }
