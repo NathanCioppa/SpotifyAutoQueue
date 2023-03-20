@@ -22,7 +22,13 @@
     <string name="error_log_back_button_description">Back to settings</string>
 
     <string name="create_group_activity_title">Create Group</string>
+
+    <string name="parent_category_title">Parent track:</string>
     <string name="search_parent_hint">Search for parent track</string>
+
+    <string name="child_category_title">Child track:</string>
+    <string name="search_child_hint">Search for child track</string>
+
     <string name="search_button_description">Submit search</string>
     <string name="name_placeholder">Name</string>
     <string name="artist_placeholder">Artist</string>

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
@@ -51,6 +52,25 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     }
 
+    static ArrayList<SearchItem> childSearches;
+
+    public void searchForChild(View button) {
+        EditText inputChildSearch = findViewById(R.id.searchChildTrack);
+        SearchSpotify searchSpotify = new SearchSpotify();
+        searchSpotify.searchQuery = inputChildSearch.getText().toString();
+
+        try {
+            childSearches = searchSpotify.execute().get();
+
+            if(childSearches != null) {
+                System.out.println(childSearches);
+            }
+
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void selectTrack(View track) {
 
         String name = ((TextView)track.findViewById(R.id.searchedTrackTitle)).getText().toString();
@@ -58,10 +78,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         String imageUrl = ((ImageView)track.findViewById(R.id.searchedTrackImage)).getTag().toString();
         String uri = track.getTag().toString();
 
+        //tag of parent track will be "p"+ the track uri, child track will just be the uri
         if (uri.charAt(0) == 'p') {
             uri = uri.substring(1);
-
-            System.out.println(name+" "+artist+" "+imageUrl+" "+uri);
 
             ((TextView)findViewById(R.id.selectedParentTrackName)).setText(name);
             ((TextView)findViewById(R.id.selectedParentTrackArtist)).setText(artist);
