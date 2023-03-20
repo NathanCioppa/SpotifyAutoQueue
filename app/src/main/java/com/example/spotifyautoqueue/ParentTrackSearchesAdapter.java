@@ -35,10 +35,12 @@ public class ParentTrackSearchesAdapter extends RecyclerView.Adapter<ParentTrack
     @Override
     public void onBindViewHolder(@NonNull ThisViewHolder holder, int position) {
         ArrayList<SearchItem> parentSearches = CreateGroupActivity.parentSearches;
+
         holder.nameView.setText(parentSearches.get(position).getName());
         holder.artistView.setText(parentSearches.get(position).getArtist());
         Glide.with(context).load(parentSearches.get(position).getImageUrl()).into(holder.imageView);
-        holder.itemView.setTag(parentSearches.get(position).uri);
+        holder.imageView.setTag(parentSearches.get(position).getImageUrl());
+        holder.itemView.setTag("p"+parentSearches.get(position).uri);
     }
 
     @Override

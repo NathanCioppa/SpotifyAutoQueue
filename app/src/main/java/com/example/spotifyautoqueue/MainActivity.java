@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static String current = "unchanged";
-    SettingsActivity settingsActivity = new SettingsActivity();
 
     //ok so apparently this function is already called in the background basically whenever a new song plays anyway
     //which is fucking amazing for me.
