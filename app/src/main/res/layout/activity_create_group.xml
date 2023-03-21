@@ -43,9 +43,13 @@
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/search_parent_hint"
-        android:inputType="textPersonName"
+        android:imeOptions="actionDone"
+        android:inputType="textShortMessage|text"
+        android:singleLine="true"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/submitParentSearch"
         app:layout_constraintEnd_toStartOf="@+id/submitParentSearch"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -167,28 +171,20 @@
 
     <TextView
         android:id="@+id/textView9"
-        style="@style/textColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/category_title"
         android:layout_margin="8dp"
         android:text="@string/parent_category_title"
-        android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
     <TextView
         android:id="@+id/textView10"
-        style="@style/textColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/category_title"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/child_category_title"
-        android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchedParentTrackRecycler" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
 
     <EditText
         android:id="@+id/searchChildTrack"
@@ -199,7 +195,10 @@
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/search_child_hint"
-        android:inputType="textPersonName"
+        android:imeOptions="actionDone"
+        android:inputType="textShortMessage|text"
+        android:singleLine="true"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/submitChildSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -209,17 +208,18 @@
         style="@style/button_background"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:onClick="searchForChild"
         android:scaleX="1.2"
         android:scaleY="1.2"
+        android:contentDescription="@string/search_button_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/searchChildTrack"
         app:srcCompat="?android:attr/actionModeWebSearchDrawable"
         app:tint="@color/spotify_logo_green" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchedChildTtackRecycler"
+        android:id="@+id/searchedChildTrackRecycler"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
@@ -227,4 +227,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectedChildTrackLayout" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:buttonTint="@color/spotify_logo_green"
+            android:checked="true"
+            android:text="@string/currently_playing" />
+
+        <RadioButton
+            android:id="@+id/radioButton7"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:buttonTint="@color/spotify_logo_green"
+            android:text="@string/next_in_queue" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/category_title"
+        android:layout_margin="8dp"
+        android:text="@string/select_condition_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchedParentTrackRecycler" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

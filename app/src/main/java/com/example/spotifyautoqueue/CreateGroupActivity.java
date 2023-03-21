@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
@@ -31,7 +30,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         parentSearchRecycler = findViewById(R.id.searchedParentTrackRecycler);
         selectedParent = findViewById(R.id.selectedParentTrackLayout);
 
-        childSearchRecycler = findViewById(R.id.searchedChildTtackRecycler);
+        childSearchRecycler = findViewById(R.id.searchedChildTrackRecycler);
         selectedChild = findViewById(R.id.selectedChildTrackLayout);
     }
 

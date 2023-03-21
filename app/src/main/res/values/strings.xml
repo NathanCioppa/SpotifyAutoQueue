@@ -32,4 +32,8 @@
     <string name="search_button_description">Submit search</string>
     <string name="name_placeholder">Name</string>
     <string name="artist_placeholder">Artist</string>
+
+    <string name="select_condition_title">Check if parent is:</string>
+    <string name="currently_playing">currently playing</string>
+    <string name="next_in_queue">next in queue</string>
 </resources>
