@@ -19,13 +19,20 @@ import java.util.concurrent.ExecutionException;
 public class CreateGroupActivity extends AppCompatActivity {
 
     RecyclerView parentSearchRecycler;
+    RecyclerView childSearchRecycler;
     View selectedParent;
+    View selectedChild;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+
         parentSearchRecycler = findViewById(R.id.searchedParentTrackRecycler);
         selectedParent = findViewById(R.id.selectedParentTrackLayout);
+
+        childSearchRecycler = findViewById(R.id.searchedChildTtackRecycler);
+        selectedChild = findViewById(R.id.selectedChildTrackLayout);
     }
 
     static ArrayList<SearchItem> parentSearches;
@@ -63,7 +70,12 @@ public class CreateGroupActivity extends AppCompatActivity {
             childSearches = searchSpotify.execute().get();
 
             if(childSearches != null) {
-                System.out.println(childSearches);
+                ChildTrackSearchesAdapter childAdapter = new ChildTrackSearchesAdapter(this, childSearches);
+                childSearchRecycler.setAdapter(childAdapter);
+                childSearchRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+                childSearchRecycler.setVisibility(View.VISIBLE);
+                selectedChild.setVisibility(View.GONE);
             }
 
         } catch (Exception error) {
@@ -89,7 +101,13 @@ public class CreateGroupActivity extends AppCompatActivity {
             selectedParent.setVisibility(View.VISIBLE);
             parentSearchRecycler.setVisibility(View.GONE);
         } else {
-            System.out.println(name+" "+artist+" "+imageUrl+" "+uri);
+
+            ((TextView)findViewById(R.id.selectedChildTrackName)).setText(name);
+            ((TextView)findViewById(R.id.selectedChildTrackArtist)).setText(artist);
+            Glide.with(this).load(imageUrl).into((ImageView)findViewById(R.id.selectedChildTrackImage));
+
+            selectedChild.setVisibility(View.VISIBLE);
+            childSearchRecycler.setVisibility(View.GONE);
         }
     }
 
