@@ -8,10 +8,14 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import com.spotify.protocol.types.Track;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static String current = "unchanged";
+    static String currentImageUrl = "";
 
     //ok so apparently this function is already called in the background basically whenever a new song plays anyway
     //which is fucking amazing for me.
@@ -70,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
             if (track != null) {
                 Log.d("MainActivity", track.name + " by " + track.artist.name);
                 current = track.name+"";
+                assert track.imageUri.raw != null;
+                currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
+                System.out.println(currentImageUrl);
+
+                updateWidget();
 
             } else {
                 Log.d("MainActivity", "No track is playing");
@@ -105,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    public void updateWidget() {
+        Context appContext = this.getApplicationContext();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int widgetId = R.layout.playback_widget;
+
+        PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId);
+    }
+
+
+
 
     public void saveTokens() {
         File externalDir = getExternalFilesDir(null);

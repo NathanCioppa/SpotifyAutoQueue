@@ -6,6 +6,8 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".ThisApp"
         android:allowBackup="true"
@@ -16,6 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpotifyAutoQueue"
         tools:targetApi="31">
+        <receiver
+            android:name=".PlaybackWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/playback_widget_info" />
+        </receiver>
+
         <activity
             android:name=".ErrorLogActivity"
             android:exported="false" />
