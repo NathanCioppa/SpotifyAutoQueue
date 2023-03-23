@@ -1,10 +1,21 @@
 package com.example.spotifyautoqueue;
 
 import android.app.Application;
+import android.util.Log;
+
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.Track;
 
 import java.io.File;
 
 public class ThisApp extends Application {
+
+    final String CLIENT_ID = ApiTokens.CLIENT_ID;
+    final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
+
+    SpotifyAppRemote spotifyAppRemote;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -15,4 +26,6 @@ public class ThisApp extends Application {
         ApiTokens.getTokens(file);
 
     }
+
+
 }

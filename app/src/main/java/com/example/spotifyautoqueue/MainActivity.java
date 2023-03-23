@@ -31,19 +31,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("MainCreate","done");
+        Intent intent = new Intent(this, SpotifyService.class);
+        startService(intent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        /*
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
                         .showAuthView(true)
                         .build();
 
-        SpotifyAppRemote.disconnect(spotifyAppRemote);
+        //SpotifyAppRemote.disconnect(spotifyAppRemote);
         Log.d("onStart", "Disconnected");
 
         SpotifyAppRemote.connect(this, connectionParams,
@@ -53,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
                 spotifyAppRemote = sam;
                 Log.d("MainActivity", "Connected");
 
-                connected();
+                //connected();
             }
             @Override
             public void onFailure(Throwable error) {
                 Log.e("MainActivity", error.getMessage(), error);
                 ErrorLogActivity.logError("Failed Spotify app remote connection",error.toString());
             }
-        });
+        });*/
     }
 
     static String currentName = "unchanged";

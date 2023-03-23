@@ -27,12 +27,13 @@ public class PlaybackWidget extends AppWidgetProvider {
         ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
         int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
 
-        String trackImageUrl = MainActivity.currentImageUrl;
+        String trackImageUrl = SpotifyService.currentImageUrl;
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
 
         Uri imageUri = Uri.parse(trackImageUrl);
 
-        //for(int widgetId : appWidgetIds) {
+        views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
+        views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
             try{
                 Glide.with(context)
                         .asBitmap().
@@ -42,8 +43,7 @@ public class PlaybackWidget extends AppWidgetProvider {
                 e.printStackTrace();
             };
 
-            views.setTextViewText(R.id.playbackWidgetTrackName, MainActivity.currentName);
-            views.setTextViewText(R.id.playbackWidgetTrackArtist, MainActivity.currentArtist);
+
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
