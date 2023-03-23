@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    String currentTrack = MainActivity.current;
+    String currentTrack = MainActivity.currentName;
     TextView currentTrackDisplay;
     public void testSkdConnection() {
         currentTrackDisplay.setText(currentTrack);

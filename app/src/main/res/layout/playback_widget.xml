@@ -1,20 +1,82 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.SpotifyAutoQueue.AppWidget.Container"
+    style="@style/widgetBackground"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:theme="@style/Theme.SpotifyAutoQueue.AppWidgetContainer">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.SpotifyAutoQueue.AppWidgetContainer"
+    >
 
     <ImageView
         android:id="@+id/widgetImage"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
         />
+
+    <LinearLayout
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/widgetImage"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/playbackWidgetTrackName"
+            style="@style/textColor"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/playbackWidgetTrackArtist"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            style="@style/textColor"
+            android:text="TextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                style="@style/widgetPlaybackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/icons8_skip_to_start_96___" />
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                style="@style/widgetPlaybackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/icons8_pause_96___" />
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                style="@style/widgetPlaybackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/icons8_end_96___" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

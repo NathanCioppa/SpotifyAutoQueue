@@ -63,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    static String current = "unchanged";
+    static String currentName = "unchanged";
     static String currentImageUrl = "";
+    static String currentArtist = "";
 
     //ok so apparently this function is already called in the background basically whenever a new song plays anyway
     //which is fucking amazing for me.
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
             final Track track = playerState.track;
             if (track != null) {
                 Log.d("MainActivity", track.name + " by " + track.artist.name);
-                current = track.name+"";
+                currentName = track.name+"";
+                currentArtist = track.artist.name;
                 assert track.imageUri.raw != null;
                 currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
                 System.out.println(currentImageUrl);
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 Log.d("MainActivity", "No track is playing");
-                current = "No track is playing";
+                currentName = "No track is playing";
             }
             getNextInQueue();
         });

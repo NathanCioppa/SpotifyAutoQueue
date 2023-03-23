@@ -79,4 +79,18 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
+    <style name="widgetBackground">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:padding">?attr/appWidgetPadding</item>
+        <item name="android:background">@drawable/app_widget_background</item>
+        <item name="android:backgroundTint">@color/card_white</item>
+    </style>
+
+    <style name="widgetPlaybackButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
 </resources>
