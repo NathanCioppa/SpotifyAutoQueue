@@ -4,7 +4,9 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -29,33 +31,8 @@ public class PlaybackWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
 
         Uri imageUri = Uri.parse(trackImageUrl);
-        try{
-            Glide.with(context)
-                    .asBitmap().
-                    load(imageUri).
-                    into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
-        }catch (Exception e){
-            e.printStackTrace();
-        };
 
-        views.setTextViewText(R.id.playbackWidgetTrackName, MainActivity.currentName);
-        views.setTextViewText(R.id.playbackWidgetTrackArtist, MainActivity.currentArtist);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-
-    }
-
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-
-        // There may be multiple widgets active, so update all of them
-        /*for (int appWidgetId : appWidgetIds) {
-
-            String trackImageUrl = MainActivity.currentImageUrl;
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
-
-            Uri imageUri = Uri.parse(trackImageUrl);
+        //for(int widgetId : appWidgetIds) {
             try{
                 Glide.with(context)
                         .asBitmap().
@@ -65,14 +42,38 @@ public class PlaybackWidget extends AppWidgetProvider {
                 e.printStackTrace();
             };
 
+            views.setTextViewText(R.id.playbackWidgetTrackName, MainActivity.currentName);
+            views.setTextViewText(R.id.playbackWidgetTrackArtist, MainActivity.currentArtist);
 
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }*/
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        //}
+
+
+
+    }
+
+    public void skipToNext(View button) {
+        System.out.println("called");
+        MainActivity main = new MainActivity();
+        //main.skipToNext(button);
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        System.out.println("onupdate CALLED");
+
+        for(int appWidgetId : appWidgetIds) {
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
+            Intent next = new Intent(context, PlaybackWidget.class);
+            next.setAction("skipToNext");
+        }
+
     }
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        System.out.println("onenabled CALLED");
     }
 
     @Override

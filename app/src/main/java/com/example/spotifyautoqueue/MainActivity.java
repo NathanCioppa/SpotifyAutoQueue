@@ -91,6 +91,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*public void skipToNext(View button) {
+        try {
+            System.out.println("called");
+            spotifyAppRemote.getPlayerApi().skipNext();
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }*/
+
     public void getNextInQueue() {
         try {
             GetQueue getQueue = new GetQueue();
