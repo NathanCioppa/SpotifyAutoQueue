@@ -4,7 +4,6 @@
         <item name="android:id">@android:id/background</item>
         <item name="android:padding">?attr/appWidgetPadding</item>
         <item name="android:background">@drawable/app_widget_background</item>
-        <item name="android:backgroundTint">@color/spotify_logo_green</item>
     </style>
 
     <style name="Widget.SpotifyAutoQueue.AppWidget.InnerView" parent="android:Widget">

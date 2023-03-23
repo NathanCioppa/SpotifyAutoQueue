@@ -4,8 +4,7 @@
     style="@style/widgetBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.SpotifyAutoQueue.AppWidgetContainer"
-    >
+    android:theme="@style/Theme.SpotifyAutoQueue.AppWidgetContainer">
 
     <ImageView
         android:id="@+id/widgetImage"
@@ -13,8 +12,7 @@
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentBottom="true" />
 
     <LinearLayout
         android:layout_width="184dp"
@@ -28,20 +26,20 @@
         <TextView
             android:id="@+id/playbackWidgetTrackName"
             style="@style/textColor"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="TextView"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/playbackWidgetTrackArtist"
+            style="@style/textColor"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:layout_height="wrap_content"
-            style="@style/textColor"
             android:text="TextView" />
 
         <LinearLayout
@@ -75,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="#00FFFFFF"
-                android:onClick="skipToNext"
                 android:src="@drawable/icons8_end_96___" />
         </LinearLayout>
     </LinearLayout>
