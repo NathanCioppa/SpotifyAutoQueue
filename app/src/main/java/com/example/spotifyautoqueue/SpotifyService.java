@@ -5,7 +5,9 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import com.spotify.android.appremote.api.ConnectionParams;
@@ -20,13 +22,17 @@ public class SpotifyService extends Service {
     final String TAG = "SpotifyService";
 
     private class BackgroundRemoteConnection extends AsyncTask<Void, Void, Void> {
+
+        private final Handler handler = new Handler(Looper.getMainLooper());
         @Override
         protected Void doInBackground(Void... voids) {
 
             spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
+                ErrorLogActivity.logError("appRemote callback", "callback event triggered");
                 final Track track = playerState.track;
+
                 if (track != null) {
-                    Log.d(TAG,"Retrieved current track");
+                    ErrorLogActivity.logError("appRemote callback","playing: "+track.name);
                     currentName = track.name+"";
                     currentArtist = track.artist.name;
 
@@ -34,9 +40,9 @@ public class SpotifyService extends Service {
                     currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
 
                     updateWidget();
+                    handler.postDelayed(SpotifyService.this::updateWidget, 1000);
 
                 } else {
-                    Log.d(TAG, "No track is playing");
                     currentName = "No track is playing";
                 }
                 getNextInQueue();

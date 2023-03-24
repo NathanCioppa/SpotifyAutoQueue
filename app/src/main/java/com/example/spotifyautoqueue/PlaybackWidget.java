@@ -30,18 +30,17 @@ public class PlaybackWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
         views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
 
-            try{
-                Glide.with(context)
-                        .asBitmap().
-                        load(imageUri).
-                        into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        try{
+            Glide.with(context)
+                    .asBitmap().
+                    load(imageUri).
+                    into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-            appWidgetManager.updateAppWidget(appWidgetId, views);
-            ErrorLogActivity.logError("Widget updateAppWidget","finished execution of updateAppWidget in PlaybackWidget");
-
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+        ErrorLogActivity.logError("Widget updateAppWidget","finished execution of updateAppWidget in PlaybackWidget");
     }
 
     public void skipToNext(View button) {
