@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widgetContainer"
     style="@style/widgetBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -48,7 +49,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/playPrevious"
                 style="@style/widgetPlaybackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
                 android:src="@drawable/icons8_skip_to_start_96___" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/togglePause"
                 style="@style/widgetPlaybackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
                 android:src="@drawable/icons8_pause_96___" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/playNext"
                 style="@style/widgetPlaybackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

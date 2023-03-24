@@ -22,11 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
-    final String CLIENT_ID = ApiTokens.CLIENT_ID;
-    final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
-
-    SpotifyAppRemote spotifyAppRemote;
-
+    final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        ErrorLogActivity.logError("Started MainActivity","onStart called in MainActivity");
     }
 
     public void saveTokens() {

@@ -4,15 +4,10 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.loader.content.AsyncTaskLoader;
-
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -22,9 +17,9 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 public class SpotifyService extends Service {
+    final String TAG = "SpotifyService";
 
     private class BackgroundRemoteConnection extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -50,11 +45,9 @@ public class SpotifyService extends Service {
             return null;
         }
     }
-    final String TAG = "SpotifyService";
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
-
     SpotifyAppRemote spotifyAppRemote;
 
     public int onStartCommand(Intent intent, int flags, int startId) {

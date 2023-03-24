@@ -21,11 +21,8 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
         try {
             URL url = new URL("https://api.spotify.com/v1/me/player/queue");
-
-            // Create a HttpURLConnection object and set the request method and headers
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
@@ -51,15 +48,11 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 Log.d("GetQueue", "trackName: "+itemsArray.getJSONObject(0).getString("name"));
 
             } else {
-                String errorMessage = "Error fetching playback queue: " + connection.getResponseMessage();
-                Log.d("GetQueue", errorMessage+"");
                 return false;
             }
             connection.disconnect();
 
         } catch (JSONException | IOException e) {
-            ErrorLogActivity.logError("Error getting queue","Execution failed");
-            e.printStackTrace();
             return false;
         }
         return true;
