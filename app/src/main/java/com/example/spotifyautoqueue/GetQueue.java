@@ -23,7 +23,6 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
 
         try {
-            // Create a URL object for the playback queue endpoint
             URL url = new URL("https://api.spotify.com/v1/me/player/queue");
 
             // Create a HttpURLConnection object and set the request method and headers
@@ -31,7 +30,6 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
 
-            // Send the request and read the response
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -42,11 +40,9 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 }
                 in.close();
 
-                // Parse the response body into a JSON object
                 String responseBody = response.toString();
                 JSONObject jsonObject = new JSONObject(responseBody);
 
-                // Get the uri of the next track
                 JSONArray itemsArray = jsonObject.getJSONArray("queue");
                     JSONObject itemObject = itemsArray.getJSONObject(0);
                     String trackUri = itemObject.getString("uri");

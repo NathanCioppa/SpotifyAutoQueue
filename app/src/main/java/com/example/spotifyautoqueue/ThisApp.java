@@ -13,10 +13,6 @@ import java.io.File;
 
 public class ThisApp extends Application {
 
-    final String CLIENT_ID = ApiTokens.CLIENT_ID;
-    final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
-
-    SpotifyAppRemote spotifyAppRemote;
     @Override
     public void onCreate() {
         super.onCreate();

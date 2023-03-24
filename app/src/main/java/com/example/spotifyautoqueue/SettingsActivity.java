@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    String currentTrack = MainActivity.currentName;
+    String currentTrack = SpotifyService.currentName;
     TextView currentTrackDisplay;
     public void testSkdConnection() {
         currentTrackDisplay.setText(currentTrack);

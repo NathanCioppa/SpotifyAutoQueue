@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class SpotifyService extends Service {
 
-    /*private class BackgroundRemoteConnection extends AsyncTask<Void, Void, Void> {
+    private class BackgroundRemoteConnection extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -49,7 +49,7 @@ public class SpotifyService extends Service {
 
             return null;
         }
-    }*/
+    }
     final String TAG = "SpotifyService";
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
@@ -66,21 +66,20 @@ public class SpotifyService extends Service {
                         .build();
 
         SpotifyAppRemote.disconnect(spotifyAppRemote);
-        Log.d("onStart", "Disconnected");
+        Log.d(TAG, "Disconnected");
 
         SpotifyAppRemote.connect(this, connectionParams, new Connector.ConnectionListener() {
             @Override
             public void onConnected(SpotifyAppRemote sam) {
                 spotifyAppRemote = sam;
-                Log.d("MainActivity", "Connected");
+                Log.d(TAG, "Connected");
 
-                //BackgroundRemoteConnection remoteConnection = new BackgroundRemoteConnection();
-                //.execute();
-                connected();
+                BackgroundRemoteConnection remoteConnection = new BackgroundRemoteConnection();
+                remoteConnection.execute();
             }
             @Override
             public void onFailure(Throwable error) {
-                Log.e("MainActivity", error.getMessage(), error);
+                Log.e(TAG, error.getMessage(), error);
                 ErrorLogActivity.logError("Failed Spotify app remote connection",error.toString());
             }
         });
@@ -91,27 +90,6 @@ public class SpotifyService extends Service {
     static String currentName = "";
     static String currentArtist ="";
     static String currentImageUrl="";
-
-    public void connected() {
-        spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
-            final Track track = playerState.track;
-            if (track != null) {
-                Log.d(TAG,"Retrieved current track");
-                currentName = track.name+"";
-                currentArtist = track.artist.name;
-
-                assert track.imageUri.raw != null;
-                currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
-
-                updateWidget();
-
-            } else {
-                Log.d(TAG, "No track is playing");
-                currentName = "No track is playing";
-            }
-            getNextInQueue();
-        });
-    }
 
     public void updateWidget() {
         Context appContext = this.getApplicationContext();
@@ -137,7 +115,7 @@ public class SpotifyService extends Service {
                     boolean secondGetQueueResponse = secondGetQueue.execute().get();
 
                     if(!secondGetQueueResponse) {
-                        Log.d("MainActivity | getNextInQueue", "error getting next in queue");
+                        Log.d(TAG, "error getting next in queue");
                         ErrorLogActivity.logError("Error getting queue", "Unable to retrieve playback queue from Spotify API after requesting new access token");
                     }
                 }
@@ -169,6 +147,5 @@ public class SpotifyService extends Service {
 
         ErrorLogActivity.logError("SpotifyService destroyed","Service class for handling app remote has stopped");
         Log.d(TAG,"destroyed");
-        //SpotifyAppRemote.disconnect(spotifyAppRemote);
     }
 }
