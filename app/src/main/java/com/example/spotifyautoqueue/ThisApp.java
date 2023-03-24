@@ -1,6 +1,7 @@
 package com.example.spotifyautoqueue;
 
 import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
 
 import com.spotify.android.appremote.api.ConnectionParams;
@@ -24,6 +25,9 @@ public class ThisApp extends Application {
         File externalDir = getExternalFilesDir(null);
         File file = new File(externalDir, "tokens.txt");
         ApiTokens.getTokens(file);
+
+        Intent intent = new Intent(this, SpotifyService.class);
+        startService(intent);
 
     }
 
