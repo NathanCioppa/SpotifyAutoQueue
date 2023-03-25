@@ -4,6 +4,7 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
@@ -56,8 +57,13 @@ public class SpotifyService extends Service {
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
     SpotifyAppRemote spotifyAppRemote;
 
+    private MusicPlayReceiver receiver;
+
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG,"Started");
+
+
+
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
                         .setRedirectUri(REDIRECT_URI)
@@ -82,6 +88,11 @@ public class SpotifyService extends Service {
                 ErrorLogActivity.logError("Failed Spotify app remote connection",error.toString());
             }
         });
+
+        receiver = new MusicPlayReceiver();
+        IntentFilter filter = new IntentFilter("com.spotify.music.playbackstatechanged");
+        Log.d(TAG, "onStartCommand: "+intent);
+        registerReceiver(receiver, filter);
 
         return START_STICKY;
     }
@@ -144,6 +155,7 @@ public class SpotifyService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
+        unregisterReceiver(receiver);
         ErrorLogActivity.logError("SpotifyService destroyed","Service class for handling app remote has stopped");
         Log.d(TAG,"destroyed");
     }
