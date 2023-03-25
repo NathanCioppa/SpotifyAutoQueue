@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpotifyAutoQueue"
         tools:targetApi="31">
-        <service android:name=".SpotifyService" />
+        <service android:name=".SpotifyService"
+            android:stopWithTask="false"/>
         <receiver
             android:name=".PlaybackWidget"
             android:exported="false">

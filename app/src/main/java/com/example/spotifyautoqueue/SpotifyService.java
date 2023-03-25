@@ -1,68 +1,70 @@
 package com.example.spotifyautoqueue;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.AsyncTask;
-import android.os.Handler;
+import android.os.Build;
 import android.os.IBinder;
-import android.os.Looper;
 import android.util.Log;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
-
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 public class SpotifyService extends Service {
     final String TAG = "SpotifyService";
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "SpotifyService",
+                    "AutoQueue",
+                    NotificationManager.IMPORTANCE_LOW
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        } else {
+            ErrorLogActivity.logError("Unable to create notification channel","failed to pass `if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)`");
+        }
+    }
 
-    private class BackgroundRemoteConnection extends AsyncTask<Void, Void, Void> {
+    private Notification buildNotification() {
+         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "SpotifyService")
+                .setContentTitle("AutoQueue is running in the background")
+                .setContentText("Tap to open the app")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_IMMUTABLE))
+                .setOngoing(true);
 
-        private final Handler handler = new Handler(Looper.getMainLooper());
-        @Override
-        protected Void doInBackground(Void... voids) {
+        return builder.build();
+    }
 
-            spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
-                ErrorLogActivity.logError("appRemote callback", "callback event triggered");
-                final Track track = playerState.track;
-
-                if (track != null) {
-                    ErrorLogActivity.logError("appRemote callback","playing: "+track.name);
-                    currentName = track.name+"";
-                    currentArtist = track.artist.name;
-
-                    assert track.imageUri.raw != null;
-                    currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
-
-                    updateWidget();
-                    handler.postDelayed(SpotifyService.this::updateWidget, 1000);
-
-                } else {
-                    currentName = "No track is playing";
-                }
-                getNextInQueue();
-            });
-
-            return null;
+    private void startForegroundService() {
+        try{
+            createNotificationChannel();
+            Notification notification = buildNotification();
+            startForeground(1, notification);
+        } catch (Exception e){
+            ErrorLogActivity.logError("Error starting foreground service", e.toString());
         }
     }
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
-    SpotifyAppRemote spotifyAppRemote;
-
-    private MusicPlayReceiver receiver;
+    static SpotifyAppRemote spotifyAppRemote;
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG,"Started");
-
-
+        startForegroundService();
 
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
@@ -70,17 +72,13 @@ public class SpotifyService extends Service {
                         .showAuthView(true)
                         .build();
 
-        SpotifyAppRemote.disconnect(spotifyAppRemote);
-        Log.d(TAG, "Disconnected");
-
         SpotifyAppRemote.connect(this, connectionParams, new Connector.ConnectionListener() {
             @Override
             public void onConnected(SpotifyAppRemote sam) {
                 spotifyAppRemote = sam;
                 Log.d(TAG, "Connected");
 
-                BackgroundRemoteConnection remoteConnection = new BackgroundRemoteConnection();
-                remoteConnection.execute();
+                startRemote();
             }
             @Override
             public void onFailure(Throwable error) {
@@ -89,17 +87,35 @@ public class SpotifyService extends Service {
             }
         });
 
-        receiver = new MusicPlayReceiver();
-        IntentFilter filter = new IntentFilter("com.spotify.music.playbackstatechanged");
-        Log.d(TAG, "onStartCommand: "+intent);
-        registerReceiver(receiver, filter);
-
         return START_STICKY;
     }
 
     static String currentName = "";
     static String currentArtist ="";
     static String currentImageUrl="";
+
+    public void startRemote() {
+        spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
+            ErrorLogActivity.logError("appRemote callback", "callback event triggered");
+            final Track track = playerState.track;
+
+            if (track != null) {
+                ErrorLogActivity.logError("appRemote callback","playing: "+track.name);
+                currentName = track.name+"";
+                currentArtist = track.artist.name;
+
+                assert track.imageUri.raw != null;
+                Log.d(TAG,track.imageUri.raw+"");
+                currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
+
+                updateWidget();
+
+            } else {
+                currentName = "No track is playing";
+            }
+            getNextInQueue();
+        });
+    }
 
     public void updateWidget() {
         Context appContext = this.getApplicationContext();
@@ -154,9 +170,6 @@ public class SpotifyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        unregisterReceiver(receiver);
-        ErrorLogActivity.logError("SpotifyService destroyed","Service class for handling app remote has stopped");
         Log.d(TAG,"destroyed");
     }
 }

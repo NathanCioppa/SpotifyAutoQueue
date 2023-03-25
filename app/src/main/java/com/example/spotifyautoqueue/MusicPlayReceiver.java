@@ -9,10 +9,9 @@ public class MusicPlayReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("RECIEVER","called");
+        Log.d("RECEIVER","called");
         if (intent.getAction().equals("com.spotify.music.playbackstatechanged")) {
-            Log.d("RECIEVER","playback state changed");
-            Log.d("EXTRAS",intent.getExtras().toString());
+            Log.d("RECEIVER","playback state changed");
         }
     }
 }
