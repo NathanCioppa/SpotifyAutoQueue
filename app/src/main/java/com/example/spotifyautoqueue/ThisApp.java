@@ -24,7 +24,6 @@ public class ThisApp extends Application {
 
         Intent intent = new Intent(this, SpotifyService.class);
         startService(intent);
-
     }
 
 

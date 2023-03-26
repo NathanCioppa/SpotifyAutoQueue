@@ -46,12 +46,9 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 JSONObject jsonObject = new JSONObject(response.toString());
                 ApiTokens.accessToken = jsonObject.getString("access_token");
-
-                Log.d("RefreshAccessToken", "Success");
-            } else {
-                System.out.println("Unexpected response code " + connection.getResponseCode());
+            } else
                 return false;
-            }
+
             connection.disconnect();
 
         } catch (JSONException | IOException error) {
