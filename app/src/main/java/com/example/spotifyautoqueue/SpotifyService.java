@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.service.notification.NotificationListenerService;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -20,7 +21,9 @@ import androidx.core.content.ContextCompat;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 import java.io.File;
 import java.util.List;
@@ -97,34 +100,34 @@ public class SpotifyService extends Service {
             @Override
             public void onConnected(SpotifyAppRemote sam) {
                 spotifyAppRemote = sam; //we love sam here :)
-                startRemote();
 
                 if (timer != null) {
-                    timer.cancel();
-                    timer = null;
+                timer.cancel();
+                timer = null;
                 }
+
+                startRemote();
             }
 
             @Override
             public void onFailure(Throwable error) {
-                Log.e(TAG, error.getMessage(), error);
+                Log.d(TAG, "disconnected");
                 ErrorLogActivity.logError("Failed Spotify app remote connection","disconnecting, checking for spotify to reactivate in order to reconnect");
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
 
                 handler = new Handler();
                 timer = new Timer();
 
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        handler.post(task);
-                    }
-                }, 5000, 5000);
+                startReconnectTimer();
             }
         });
     }
+
     public void startRemote() {
+
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
+            System.out.println(playerState.toString());
+
             final Track track = playerState.track;
 
             if (track != null) {
@@ -134,8 +137,9 @@ public class SpotifyService extends Service {
                     currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
 
                 updateWidget();
-            } else
+            } else {
                 currentName = "No track is playing";
+            }
 
             getNextInQueue();
         });
@@ -189,21 +193,34 @@ public class SpotifyService extends Service {
     private static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
 
     private void checkRunningProcesses() {
+        System.out.println("checking");
 
         long endTime = System.currentTimeMillis();
-        long startTime = endTime - 2000; //check last 2 seconds
+        long startTime = endTime - 2000;
 
         UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
         List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, startTime, endTime);
 
         for (UsageStats usageStats : usageStatsList) {
             if (usageStats.getPackageName().equals(SPOTIFY_PACKAGE_NAME)) {
-
+                System.out.println("spotify is running");
 
                 connectRemote();
                 break;
             }
         }
+    }
+
+    public void startReconnectTimer() {
+        handler = new Handler();
+        timer = new Timer();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(task);
+            }
+        }, 5000, 5000);
     }
 
     @Nullable
