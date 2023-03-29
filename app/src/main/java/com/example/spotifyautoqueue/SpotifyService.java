@@ -63,7 +63,7 @@ public class SpotifyService extends Service {
 
         } catch (Exception e) {
             ErrorLogActivity.logError("Error starting foreground service", e.toString());
-            if(spotifyAppRemote != null && !spotifyAppRemote.isConnected()) {
+            if(spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
             }
             unregisterReceiver(spotifyReceiver);
@@ -82,7 +82,7 @@ public class SpotifyService extends Service {
     }
 
     public void connectRemote() {
-        if (spotifyAppRemote != null && !spotifyAppRemote.isConnected()) {
+        if (spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
             SpotifyAppRemote.disconnect(spotifyAppRemote);
         } // make sure that mf is disconnected
 
@@ -114,6 +114,7 @@ public class SpotifyService extends Service {
     static String currentImageUrl="";
 
     public void startRemote() {
+        assert spotifyAppRemote != null;
 
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
 
