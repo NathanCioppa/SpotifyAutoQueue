@@ -15,27 +15,31 @@ public class PlaybackWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
-        ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
-        int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
+        try{
+            ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
+            int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
 
-        String trackImageUrl = SpotifyService.currentImageUrl;
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
+            String trackImageUrl = SpotifyService.currentImageUrl;
+            Uri imageUri = Uri.parse(trackImageUrl);
 
-        Uri imageUri = Uri.parse(trackImageUrl);
+            views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
+            views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
 
-        views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
-        views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
+            try {
+                Glide.with(context)
+                        .asBitmap().
+                        load(imageUri).
+                        into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
+            } catch (Exception e) {
+                ErrorLogActivity.logError("update widget image", "failed to load image to widget");
+            }
 
-        try {
-            Glide.with(context)
-                    .asBitmap().
-                    load(imageUri).
-                    into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+
         } catch (Exception e) {
-            ErrorLogActivity.logError("update widget image", "failed to load image to widget");
+            ErrorLogActivity.logError("updateAppWidget","straight up failed execution");
         }
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override
