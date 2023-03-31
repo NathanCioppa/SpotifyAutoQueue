@@ -52,6 +52,11 @@ public class PlaybackWidget extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
             views.setOnClickPendingIntent(R.id.widgetContainer, pendingOpen);
 
+            Intent togglePause = new Intent(context, PlaybackWidgetReceiver.class);
+            togglePause.setAction("TOGGLE_PAUSE");
+            PendingIntent pendingTogglePause = PendingIntent.getBroadcast(context, 0, togglePause, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.togglePause, pendingTogglePause);
+
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
