@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 import java.io.File;
@@ -67,7 +69,6 @@ public class SpotifyService extends Service {
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
             }
             unregisterReceiver(spotifyReceiver);
-            unregisterReceiver(playbackWidgetReceiver);
         }
     }
 
@@ -77,10 +78,19 @@ public class SpotifyService extends Service {
     Context context = SpotifyService.this;
     IntentFilter filter;
 
-    PlaybackWidgetReceiver playbackWidgetReceiver;
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForegroundService();
+        String action = intent.getAction();
+
+        if ("PLAY_NEXT".equals(action))
+            playNext();
+        else if ("TOGGLE_PAUSE".equals(action))
+            togglePause();
+        else if ("PLAY_PREVIOUS".equals(action))
+            playPrevious();
+        else
+            startForegroundService();
+
         return START_STICKY;
     }
 
@@ -88,9 +98,6 @@ public class SpotifyService extends Service {
         if (spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
             SpotifyAppRemote.disconnect(spotifyAppRemote);
         } // make sure that mf is disconnected
-
-        playbackWidgetReceiver = new PlaybackWidgetReceiver(spotifyAppRemote);
-        registerReceiver(playbackWidgetReceiver, playbackWidgetReceiver.getIntentFilter());
 
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
@@ -108,7 +115,6 @@ public class SpotifyService extends Service {
             @Override
             public void onFailure(Throwable error) {
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
-                unregisterReceiver(playbackWidgetReceiver);
                 registerReceiver(spotifyReceiver, filter); //start to check for spotify to activate again
 
                 ErrorLogActivity.logError("Failed Spotify app remote connection","disconnecting, waiting for spotify to be opened");
@@ -124,6 +130,8 @@ public class SpotifyService extends Service {
         assert spotifyAppRemote != null;
 
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
+
+            paused = playerState.isPaused;
 
             final Track track = playerState.track;
 
@@ -149,6 +157,30 @@ public class SpotifyService extends Service {
         int widgetId = R.layout.playback_widget;
 
         PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId);
+    }
+
+    public void playNext() {
+        if (spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
+            spotifyAppRemote.getPlayerApi().skipNext();
+        }
+    }
+
+    public boolean paused = false;
+    public void togglePause() {
+        if(spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
+            PlayerApi player = spotifyAppRemote.getPlayerApi();
+
+             if (paused)
+                 player.resume();
+             else
+                 player.pause();
+        }
+    }
+
+    public void playPrevious() {
+        if(spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
+            spotifyAppRemote.getPlayerApi().skipPrevious();
+        }
     }
 
     public void getNextInQueue() {
@@ -183,8 +215,6 @@ public class SpotifyService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             ErrorLogActivity.logError("spotifyReceiver onReceive","Receiver detected spotify is active, reconnecting remote");
-            if (playbackWidgetReceiver!= null)
-                unregisterReceiver(playbackWidgetReceiver);
             connectRemote();
             unregisterReceiver(spotifyReceiver);
         }
@@ -196,12 +226,12 @@ public class SpotifyService extends Service {
         return null;
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(spotifyReceiver);
         SpotifyAppRemote.disconnect(spotifyAppRemote);
-        unregisterReceiver(playbackWidgetReceiver);
         ErrorLogActivity.logError("SpotifyService destroyed","service for handling background connection has been terminated");
     }
 

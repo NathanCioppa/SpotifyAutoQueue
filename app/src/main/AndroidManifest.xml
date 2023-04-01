@@ -41,14 +41,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/playback_widget_info" />
         </receiver>
-        <receiver
-            android:name=".PlaybackWidgetReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".ErrorLogActivity"
