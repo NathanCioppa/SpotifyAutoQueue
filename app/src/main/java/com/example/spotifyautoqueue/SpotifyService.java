@@ -156,7 +156,7 @@ public class SpotifyService extends Service {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int widgetId = R.layout.playback_widget;
 
-        PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId);
+        PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, null);
     }
 
     public void playNext() {

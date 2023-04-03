@@ -1,5 +1,6 @@
 package com.example.spotifyautoqueue;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -7,7 +8,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 import com.bumptech.glide.Glide;
@@ -16,7 +20,7 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 public class PlaybackWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String[] configData) {
 
         try{
             ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
@@ -35,7 +39,13 @@ public class PlaybackWidget extends AppWidgetProvider {
                         load(imageUri).
                         into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
             } catch (Exception e) {
+                e.printStackTrace();
                 ErrorLogActivity.logError("update widget image", "failed to load image to widget");
+            }
+
+            if (configData != null) {
+                System.out.println("call");
+
             }
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -50,6 +60,7 @@ public class PlaybackWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         for(int appWidgetId : appWidgetIds) {
+
             Intent openApp = new Intent(context, MainActivity.class);
             PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
 

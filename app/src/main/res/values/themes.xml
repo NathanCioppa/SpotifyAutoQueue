@@ -92,7 +92,6 @@
         <item name="android:id">@android:id/background</item>
         <item name="android:padding">?attr/appWidgetPadding</item>
         <item name="android:background">@drawable/app_widget_background</item>
-        <item name="android:backgroundTint">@color/card_black</item>
     </style>
 
     <style name="widgetPlaybackButton">
