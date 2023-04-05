@@ -18,34 +18,46 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
+import java.util.Objects;
+
 public class PlaybackWidget extends AppWidgetProvider {
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String[] configData) {
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int[] configData) {
 
         try{
             ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
             int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
 
-            String trackImageUrl = SpotifyService.currentImageUrl;
-            Uri imageUri = Uri.parse(trackImageUrl);
+            if(configData == null) {
 
-            views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
-            views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
+                views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
+                views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
 
-            try {
-                Glide.with(context)
-                        .asBitmap().
-                        load(imageUri).
-                        into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
-            } catch (Exception e) {
-                e.printStackTrace();
-                ErrorLogActivity.logError("update widget image", "failed to load image to widget");
-            }
+                if(SpotifyService.paused)
+                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_play_96___);
+                else
+                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_pause_96___);
 
-            if (configData != null) {
-                System.out.println("call");
+                String trackImageUrl = SpotifyService.currentImageUrl;
+                if(!Objects.equals(trackImageUrl, "")) {
+                    Uri imageUri = Uri.parse(trackImageUrl);
+                    try {
+                        Glide.with(context).asBitmap().load(imageUri)
+                            .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
 
+                    } catch (Exception e) {
+                        ErrorLogActivity.logError("update widget image", "failed to load image to widget");
+                    }
+                }
+
+            } else {
+                int textColor = configData[0];
+
+                if(textColor != 0){
+                    views.setTextColor(R.id.playbackWidgetTrackName, textColor);
+                    views.setTextColor(R.id.playbackWidgetTrackArtist, textColor);
+                }
             }
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -61,6 +73,7 @@ public class PlaybackWidget extends AppWidgetProvider {
 
         for(int appWidgetId : appWidgetIds) {
 
+//            System.out.println(appWidgetManager.getAppWidgetOptions(appWidgetId).getInt("result"));
             Intent openApp = new Intent(context, MainActivity.class);
             PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
 

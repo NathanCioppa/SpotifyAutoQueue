@@ -122,7 +122,7 @@ public class SpotifyService extends Service {
         });
     }
 
-    static String currentName = "";
+    static String currentName = "Name";
     static String currentArtist ="";
     static String currentImageUrl="";
 
@@ -130,7 +130,7 @@ public class SpotifyService extends Service {
         assert spotifyAppRemote != null;
 
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
-
+            System.out.println("called");
             paused = playerState.isPaused;
 
             final Track track = playerState.track;
@@ -165,7 +165,7 @@ public class SpotifyService extends Service {
         }
     }
 
-    public boolean paused = false;
+    public static boolean paused = false;
     public void togglePause() {
         if(spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
             PlayerApi player = spotifyAppRemote.getPlayerApi();
@@ -234,5 +234,4 @@ public class SpotifyService extends Service {
         SpotifyAppRemote.disconnect(spotifyAppRemote);
         ErrorLogActivity.logError("SpotifyService destroyed","service for handling background connection has been terminated");
     }
-
 }

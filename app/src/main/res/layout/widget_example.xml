@@ -2,73 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/logo_green_transparent"
-    tools:context=".PlaybackWidgetSettingsActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="finishConfig"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button">
-
-            <RadioButton
-                android:id="@+id/buttonTextBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="setTextBlack"
-                android:text="Black text" />
-
-            <RadioButton
-                android:id="@+id/buttonTextWhite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="setTextWhite"
-                android:text="White text" />
-        </RadioGroup>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".PlaybackWidgetSettingsActivity"
+    >
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/card_black"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:padding="8dp">
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/imageView5"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -83,11 +39,11 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/exampleName"
                     style="@style/textColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,14 +53,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/textView14"
                     style="@style/textColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@string/widget_example_artist"
-                    />
+                    android:text="@string/widget_example_artist" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -112,7 +67,7 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/imageButton7"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,7 +76,7 @@
                         app:srcCompat="@drawable/icons8_skip_to_start_96___" />
 
                     <ImageButton
-                        android:id="@+id/imageButton3"
+                        android:id="@+id/imageButton8"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,7 +85,7 @@
                         app:srcCompat="@drawable/icons8_pause_96___" />
 
                     <ImageButton
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/imageButton9"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -138,6 +93,8 @@
                         android:backgroundTint="#00FFFFFF"
                         app:srcCompat="@drawable/icons8_end_96___" />
                 </LinearLayout>
+
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
