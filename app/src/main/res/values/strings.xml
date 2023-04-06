@@ -45,4 +45,7 @@
     <string name="widget_example_track_name">Dead!</string>
     <string name="widget_example_artist">My Chemical Romance</string>
     <string name="widget_config_text_color_title">Text color:</string>
+    <string name="black_config_widget_button">Black</string>
+    <string name="white_config_widget_button">White</string>
+    <string name="widget_config_button_color_title">Button color:</string>
 </resources>

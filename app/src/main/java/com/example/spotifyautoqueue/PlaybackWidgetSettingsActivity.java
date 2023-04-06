@@ -1,19 +1,15 @@
 package com.example.spotifyautoqueue;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.view.WindowCompat;
+import androidx.core.content.ContextCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.RadioButton;
-import android.widget.RemoteViews;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
@@ -21,6 +17,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     int widgetId;
     int[] configData;
     static int textColor = Color.WHITE;
+    static int playbackControlColor = Color.WHITE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +42,41 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     public void setTextBlack(View button) {
         textColor = Color.BLACK;
         updatePreview(TEXT_COLOR_KEY);
+
+        findViewById(R.id.buttonTextWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
     public void setTextWhite(View button) {
         textColor = Color.WHITE;
         updatePreview(TEXT_COLOR_KEY);
+
+        findViewById(R.id.buttonTextBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+    }
+
+
+    public void setPlaybackControlWhite(View button) {
+        playbackControlColor = Color.WHITE;
+        updatePreview(PLAYBACK_CONTROL_KEY);
+
+        findViewById(R.id.buttonPlaybackBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+    }
+
+    public void setPlaybackControlBlack(View button) {
+        playbackControlColor = Color.BLACK;
+        updatePreview(PLAYBACK_CONTROL_KEY);
+
+        findViewById(R.id.buttonPlaybackWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
     public void finishConfig(View button) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         configData[0] = textColor;
+        configData[1] = playbackControlColor;
 
         PlaybackWidget.updateAppWidget(this.getApplicationContext(), appWidgetManager, widgetId, configData);
 
@@ -66,7 +87,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
     final int UPDATE_ALL = 0;
     final int TEXT_COLOR_KEY = 1;
-    final int BUTTON_COLOR_KEY = 2;
+    final int PLAYBACK_CONTROL_KEY = 2;
     final int BACKGROUND_COLOR_KEY = 3;
     public void updatePreview(int key) {
         if(key == TEXT_COLOR_KEY || key == UPDATE_ALL) {
@@ -74,15 +95,42 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.exampleConfigWidgetArtist)).setTextColor(textColor);
 
         }
-        //if (key == BUTTON_COLOR_KEY || key == UPDATE_ALL) {
 
-        //}
+        if (key == PLAYBACK_CONTROL_KEY || key == UPDATE_ALL) {
+            ((ImageButton)findViewById(R.id.exampleConfigWidgetPlaybackNext))
+                    .setImageTintList(ContextCompat.getColorStateList(this,
+                            playbackControlColor == Color.WHITE
+                                    ? R.color.white
+                                    : R.color.black
+                    ));
+
+            ((ImageButton)findViewById(R.id.exampleConfigWidgetPlaybackPause))
+                    .setImageTintList(ContextCompat.getColorStateList(this,
+                            playbackControlColor == Color.WHITE
+                                    ? R.color.white
+                                    : R.color.black
+                    ));
+
+            ((ImageButton)findViewById(R.id.exampleConfigWidgetPlaybackPrevious))
+                    .setImageTintList(ContextCompat.getColorStateList(this,
+                            playbackControlColor == Color.WHITE
+                                    ? R.color.white
+                                    : R.color.black
+                    ));
+        }
+
+
     }
 
     public void selectCurrentChoices() {
         if(textColor == Color.WHITE)
-            ((RadioButton)findViewById(R.id.buttonTextWhite)).performClick();
+            findViewById(R.id.buttonTextWhite).performClick();
         else
-            ((RadioButton)findViewById(R.id.buttonTextBlack)).performClick();
+            findViewById(R.id.buttonTextBlack).performClick();
+
+        if(playbackControlColor == Color.WHITE)
+            findViewById(R.id.buttonPlaybackWhite).performClick();
+        else
+            findViewById(R.id.buttonPlaybackBlack).performClick();
     }
 }

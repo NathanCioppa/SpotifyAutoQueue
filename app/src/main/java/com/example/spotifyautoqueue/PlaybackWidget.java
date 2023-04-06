@@ -14,6 +14,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
+
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -52,11 +55,31 @@ public class PlaybackWidget extends AppWidgetProvider {
                 }
 
             } else {
-                int textColor = configData[0];
+                    final int TEXT_COLOR = configData[0];
+                    final int PLAYBACK_CONTROL_COLOR = configData[1];
 
-                if(textColor != 0){
-                    views.setTextColor(R.id.playbackWidgetTrackName, textColor);
-                    views.setTextColor(R.id.playbackWidgetTrackArtist, textColor);
+                if(TEXT_COLOR != 0){
+                    views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
+                    views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
+                }
+
+                if(PLAYBACK_CONTROL_COLOR != 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+                    views.setColorStateList(R.id.togglePause, "setImageTintList", ContextCompat.getColorStateList(context,
+                            PLAYBACK_CONTROL_COLOR == Color.WHITE
+                                    ? R.color.white
+                                    : R.color.black
+                    ));
+                    views.setColorStateList(R.id.playPrevious, "setImageTintList", ContextCompat.getColorStateList(context,
+                            PLAYBACK_CONTROL_COLOR == Color.WHITE
+                                    ? R.color.white
+                                    : R.color.black
+                    ));
+                    views.setColorStateList(R.id.playNext, "setImageTintList", ContextCompat.getColorStateList(context,
+                            PLAYBACK_CONTROL_COLOR == Color.WHITE
+                                    ? R.color.white
+                                    : R.color.black
+                    ));
                 }
             }
 

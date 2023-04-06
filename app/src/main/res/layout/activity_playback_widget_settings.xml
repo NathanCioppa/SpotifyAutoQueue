@@ -70,7 +70,7 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/exampleConfigWidgetPlaybackPrevious"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                         app:srcCompat="@drawable/icons8_skip_to_start_96___" />
 
                     <ImageButton
-                        android:id="@+id/imageButton3"
+                        android:id="@+id/exampleConfigWidgetPlaybackPause"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                         app:srcCompat="@drawable/icons8_pause_96___" />
 
                     <ImageButton
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/exampleConfigWidgetPlaybackNext"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -131,34 +131,66 @@
 
                 <TextView
                     android:id="@+id/textView13"
-                    style="@style/category_title"
+                    style="@style/widgetConfigCategoryTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/widget_config_text_color_title" />
 
-                <RadioGroup
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <RadioButton
+                    <Button
                         android:id="@+id/buttonTextBlack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        style="@style/configWidgetButton"
+                        android:backgroundTint="#808080"
                         android:onClick="setTextBlack"
-                        android:text="Black text" />
+                        android:text="@string/black_config_widget_button" />
 
-                    <RadioButton
+                    <Button
                         android:id="@+id/buttonTextWhite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        style="@style/configWidgetButton"
                         android:onClick="setTextWhite"
-                        android:text="White text" />
-                </RadioGroup>
+                        android:text="@string/white_config_widget_button" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        style="@style/widgetConfigCategoryTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/widget_config_button_color_title" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/buttonPlaybackBlack"
+                            style="@style/configWidgetButton"
+                            android:onClick="setPlaybackControlBlack"
+                            android:text="@string/black_config_widget_button" />
+
+                        <Button
+                            android:id="@+id/buttonPlaybackWhite"
+                            style="@style/configWidgetButton"
+                            android:onClick="setPlaybackControlWhite"
+                            android:text="@string/white_config_widget_button" />
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
+
 
         <Button
             android:id="@+id/button"
