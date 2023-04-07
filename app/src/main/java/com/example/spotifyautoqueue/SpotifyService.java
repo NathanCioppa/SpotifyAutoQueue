@@ -130,7 +130,6 @@ public class SpotifyService extends Service {
         assert spotifyAppRemote != null;
 
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
-            System.out.println("called");
             paused = playerState.isPaused;
 
             final Track track = playerState.track;

@@ -83,6 +83,10 @@ public class PlaybackWidget extends AppWidgetProvider {
                 }
             }
 
+            setButtonAction(context, views, R.id.playNext, PLAY_NEXT_WIDGET);
+            setButtonAction(context, views, R.id.togglePause, TOGGLE_PAUSE_WIDGET);
+            setButtonAction(context, views, R.id.playPrevious, PLAY_PREVIOUS_WIDGET);
+
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
@@ -96,7 +100,6 @@ public class PlaybackWidget extends AppWidgetProvider {
 
         for(int appWidgetId : appWidgetIds) {
 
-//            System.out.println(appWidgetManager.getAppWidgetOptions(appWidgetId).getInt("result"));
             Intent openApp = new Intent(context, MainActivity.class);
             PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
 
@@ -111,7 +114,12 @@ public class PlaybackWidget extends AppWidgetProvider {
         }
     }
 
-    public void setButtonAction(Context context, RemoteViews views, int buttonId, String action) {
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+    }
+
+    public static void setButtonAction(Context context, RemoteViews views, int buttonId, String action) {
         Intent intent = new Intent(context, PlaybackWidget.class);
         intent.setAction(action);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
