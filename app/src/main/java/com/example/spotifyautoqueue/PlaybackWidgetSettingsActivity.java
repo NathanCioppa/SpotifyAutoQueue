@@ -5,11 +5,11 @@ import androidx.core.content.ContextCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
@@ -18,6 +18,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     int[] configData;
     static int textColor = Color.WHITE;
     static int playbackControlColor = Color.WHITE;
+    static int backgroundOpacity = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         configData = new int[3];
 
         setContentView(R.layout.activity_playback_widget_settings);
+
+        setBackgroundOpacitySliderListener();
+
         updatePreview(UPDATE_ALL);
         selectCurrentChoices();
     }
@@ -70,6 +74,29 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         findViewById(R.id.buttonPlaybackWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
         button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+    }
+
+
+    SeekBar backgroundOpacitySlider;
+    public void setBackgroundOpacitySliderListener() {
+        backgroundOpacitySlider = findViewById(R.id.backgroundOpacitySlider);
+
+        SeekBar.OnSeekBarChangeListener backgroundOpacitySliderListener = new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                float FULL_OPACITY = 255;
+                float progress = (FULL_OPACITY/100)*i;
+
+                backgroundOpacity = (int)progress;
+
+                updatePreview(BACKGROUND_COLOR_KEY);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        };
+        backgroundOpacitySlider.setOnSeekBarChangeListener(backgroundOpacitySliderListener);
     }
 
     public void finishConfig(View button) {
@@ -117,6 +144,10 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                                     ? R.color.white
                                     : R.color.black
                     ));
+        }
+
+        if(key == BACKGROUND_COLOR_KEY || key == UPDATE_ALL) {
+            findViewById(R.id.exampleWidgetContainer).getBackground().setAlpha(backgroundOpacity);
         }
 
 

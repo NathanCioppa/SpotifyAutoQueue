@@ -45,25 +45,20 @@ public class PlaybackWidget extends AppWidgetProvider {
                 String trackImageUrl = SpotifyService.currentImageUrl;
                 if(!Objects.equals(trackImageUrl, "")) {
                     Uri imageUri = Uri.parse(trackImageUrl);
-                    try {
                         Glide.with(context).asBitmap().load(imageUri)
                             .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
-
-                    } catch (Exception e) {
-                        ErrorLogActivity.logError("update widget image", "failed to load image to widget");
-                    }
                 }
 
             } else {
-                    final int TEXT_COLOR = configData[0];
-                    final int PLAYBACK_CONTROL_COLOR = configData[1];
 
-                if(TEXT_COLOR != 0){
-                    views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
-                    views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
-                }
+                final int TEXT_COLOR = configData[0];
+                final int PLAYBACK_CONTROL_COLOR = configData[1];
 
-                if(PLAYBACK_CONTROL_COLOR != 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
+                views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
+
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 
                     views.setColorStateList(R.id.togglePause, "setImageTintList", ContextCompat.getColorStateList(context,
                             PLAYBACK_CONTROL_COLOR == Color.WHITE
@@ -80,8 +75,14 @@ public class PlaybackWidget extends AppWidgetProvider {
                                     ? R.color.white
                                     : R.color.black
                     ));
-                }
+                } else
+                    ErrorLogActivity.logError("Error setting widget config","Can not set playback control button colors, requires Android 12 (API level 31) or higher");
+
             }
+
+            Intent openApp = new Intent(context, MainActivity.class);
+            PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
+            views.setOnClickPendingIntent(R.id.widgetContainer, pendingOpen);
 
             setButtonAction(context, views, R.id.playNext, PLAY_NEXT_WIDGET);
             setButtonAction(context, views, R.id.togglePause, TOGGLE_PAUSE_WIDGET);

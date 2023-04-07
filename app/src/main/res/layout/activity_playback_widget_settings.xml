@@ -20,9 +20,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/exampleWidgetContainer"
             android:layout_width="300dp"
             android:layout_height="94dp"
-            android:background="@color/card_black"
+            android:background="@color/white"
             android:padding="8dp"
             tools:layout_editor_absoluteY="1dp">
 
@@ -185,6 +186,52 @@
                             style="@style/configWidgetButton"
                             android:onClick="setPlaybackControlWhite"
                             android:text="@string/white_config_widget_button" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            style="@style/widgetConfigCategoryTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/widget_config_background_title" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/button2"
+                                style="@style/configWidgetButton"
+                                android:text="@string/dark_widget_config_button" />
+
+                            <Button
+                                android:id="@+id/button3"
+                                style="@style/configWidgetButton"
+                                android:text="@string/light_widget_config_button" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_marginTop="8dp"
+                            style="@style/category_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/widget_background_opacity_title" />
+
+                        <SeekBar
+                            android:id="@+id/backgroundOpacitySlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:progressTint="@color/spotify_logo_green"
+                            android:thumbTint="@color/spotify_logo_green" />
                     </LinearLayout>
                 </LinearLayout>
 
