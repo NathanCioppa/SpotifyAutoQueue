@@ -3,10 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widgetContainer"
     style="@style/widgetBackground"
-    android:backgroundTint="@color/card_black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00FFFFFF"
+    android:backgroundTint="#00FFFFFF"
+    android:foregroundTint="#00FFFFFF"
     android:theme="@style/Theme.SpotifyAutoQueue.AppWidgetContainer">
+
+    <ImageView
+        android:id="@+id/imageView333"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_corners"
+        android:visibility="visible"
+        app:srcCompat="@drawable/rounded_corners" />
 
     <ImageView
         android:id="@+id/widgetImage"
@@ -14,14 +28,15 @@
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_toEndOf="@+id/widgetImage"
         android:orientation="vertical">
 

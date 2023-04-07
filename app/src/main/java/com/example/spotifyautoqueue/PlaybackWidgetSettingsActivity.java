@@ -18,6 +18,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     int[] configData;
     static int textColor = Color.WHITE;
     static int playbackControlColor = Color.WHITE;
+    static int backgroundColor = Color.WHITE;
     static int backgroundOpacity = 50;
 
     @Override
@@ -33,7 +34,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
-        configData = new int[3];
+        configData = new int[4];
 
         setContentView(R.layout.activity_playback_widget_settings);
 
@@ -77,24 +78,43 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     }
 
 
+    public void setBackgroundBlack(View button) {
+        backgroundColor = Color.BLACK;
+        updatePreview(BACKGROUND_KEY);
+
+        findViewById(R.id.buttonBackgroundWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+    }
+
+    public void setBackgroundWhite(View button) {
+        backgroundColor = Color.WHITE;
+        updatePreview(BACKGROUND_KEY);
+
+        findViewById(R.id.buttonBackgroundBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+    }
+
+
     SeekBar backgroundOpacitySlider;
+    final float FULL_OPACITY = 255;
+
     public void setBackgroundOpacitySliderListener() {
         backgroundOpacitySlider = findViewById(R.id.backgroundOpacitySlider);
 
         SeekBar.OnSeekBarChangeListener backgroundOpacitySliderListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                float FULL_OPACITY = 255;
                 float progress = (FULL_OPACITY/100)*i;
 
                 backgroundOpacity = (int)progress;
-
-                updatePreview(BACKGROUND_COLOR_KEY);
+                updatePreview(BACKGROUND_KEY);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
         };
         backgroundOpacitySlider.setOnSeekBarChangeListener(backgroundOpacitySliderListener);
     }
@@ -104,6 +124,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         configData[0] = textColor;
         configData[1] = playbackControlColor;
+        configData[2] = backgroundColor;
+        configData[3] = backgroundOpacity;
 
         PlaybackWidget.updateAppWidget(this.getApplicationContext(), appWidgetManager, widgetId, configData);
 
@@ -115,7 +137,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     final int UPDATE_ALL = 0;
     final int TEXT_COLOR_KEY = 1;
     final int PLAYBACK_CONTROL_KEY = 2;
-    final int BACKGROUND_COLOR_KEY = 3;
+    final int BACKGROUND_KEY = 3;
     public void updatePreview(int key) {
         if(key == TEXT_COLOR_KEY || key == UPDATE_ALL) {
             ((TextView)findViewById(R.id.exampleConfigWidgetName)).setTextColor(textColor);
@@ -146,8 +168,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     ));
         }
 
-        if(key == BACKGROUND_COLOR_KEY || key == UPDATE_ALL) {
+        if(key == BACKGROUND_KEY || key == UPDATE_ALL) {
             findViewById(R.id.exampleWidgetContainer).getBackground().setAlpha(backgroundOpacity);
+            findViewById(R.id.exampleWidgetContainer).getBackground().setTint(backgroundColor);
         }
 
 
@@ -163,5 +186,13 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             findViewById(R.id.buttonPlaybackWhite).performClick();
         else
             findViewById(R.id.buttonPlaybackBlack).performClick();
+
+        if(backgroundColor == Color.WHITE)
+            findViewById(R.id.buttonBackgroundWhite).performClick();
+        else
+            findViewById(R.id.buttonBackgroundBlack).performClick();
+
+        float progressPercent = (100/FULL_OPACITY)*backgroundOpacity;
+        backgroundOpacitySlider.setProgress((int)progressPercent);
     }
 }

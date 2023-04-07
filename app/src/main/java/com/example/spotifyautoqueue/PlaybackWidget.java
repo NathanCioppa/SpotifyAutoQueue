@@ -53,6 +53,8 @@ public class PlaybackWidget extends AppWidgetProvider {
 
                 final int TEXT_COLOR = configData[0];
                 final int PLAYBACK_CONTROL_COLOR = configData[1];
+                final int BACKGROUND_COLOR = configData[2];
+                final int BACKGROUND_OPACITY = configData[3];
 
                 views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
                 views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
@@ -75,9 +77,15 @@ public class PlaybackWidget extends AppWidgetProvider {
                                     ? R.color.white
                                     : R.color.black
                     ));
+
+
+
                 } else
                     ErrorLogActivity.logError("Error setting widget config","Can not set playback control button colors, requires Android 12 (API level 31) or higher");
 
+                views.setImageViewResource(R.id.imageView333, R.drawable.rounded_corners);
+                views.setInt(R.id.imageView333, "setColorFilter", BACKGROUND_COLOR);
+                views.setInt(R.id.imageView333, "setAlpha", BACKGROUND_OPACITY);
             }
 
             Intent openApp = new Intent(context, MainActivity.class);

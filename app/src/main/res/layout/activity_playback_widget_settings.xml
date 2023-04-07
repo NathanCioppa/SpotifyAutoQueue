@@ -207,13 +207,15 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/button2"
+                                android:id="@+id/buttonBackgroundBlack"
                                 style="@style/configWidgetButton"
+                                android:onClick="setBackgroundBlack"
                                 android:text="@string/dark_widget_config_button" />
 
                             <Button
-                                android:id="@+id/button3"
+                                android:id="@+id/buttonBackgroundWhite"
                                 style="@style/configWidgetButton"
+                                android:onClick="setBackgroundWhite"
                                 android:text="@string/light_widget_config_button" />
                         </LinearLayout>
 

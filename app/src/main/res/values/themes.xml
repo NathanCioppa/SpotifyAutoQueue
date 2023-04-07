@@ -89,12 +89,12 @@
 
     <style name="Theme.SpotifyAutoQueue.AppWidgetContainer" parent="Theme.SpotifyAutoQueue.AppWidgetContainerParent">
         <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
-        <item name="appWidgetPadding">8dp</item>
+        <item name="appWidgetPadding">0dp</item>
     </style>
 
     <style name="widgetBackground">
         <item name="android:id">@android:id/background</item>
-        <item name="android:padding">?attr/appWidgetPadding</item>
+        <item name="android:padding">0dp</item>
         <item name="android:background">@drawable/app_widget_background</item>
     </style>
 
