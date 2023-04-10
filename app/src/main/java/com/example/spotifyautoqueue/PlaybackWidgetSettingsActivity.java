@@ -1,17 +1,28 @@
 package com.example.spotifyautoqueue;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
+import android.app.WallpaperInfo;
+import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
@@ -24,6 +35,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     static int backgroundOpacity = 50;
 
     ArrayList<ColorSwitchButton> backgroundColors = new ArrayList<>();
+    Drawable wallpaperImage;
+    WallpaperManager wallpaperManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +51,40 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
+
+        wallpaperManager = WallpaperManager.getInstance(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            wallpaperImage = wallpaperManager.getDrawable();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+
+
+
         configData = new int[4];
 
         setupBackgroundColorList();
 
         setContentView(R.layout.activity_playback_widget_settings);
 
+        if(wallpaperImage != null)
+            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
+
         setBackgroundOpacitySliderListener();
 
         updatePreview(UPDATE_ALL);
         selectCurrentChoices();
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            wallpaperImage = wallpaperManager.getDrawable();
+            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
+
+        }
     }
 
     public void setTextBlack(View button) {
