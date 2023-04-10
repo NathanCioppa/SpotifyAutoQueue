@@ -48,6 +48,7 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 Log.d("GetQueue", "trackName: "+itemsArray.getJSONObject(0).getString("name"));
 
             } else {
+                connection.disconnect();
                 return false;
             }
             connection.disconnect();

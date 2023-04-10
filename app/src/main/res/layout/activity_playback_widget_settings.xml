@@ -109,13 +109,14 @@
         android:paddingRight="16dp"
         android:paddingBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:background="@drawable/rounded_corners_top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
@@ -128,7 +129,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView13"
@@ -202,29 +203,66 @@
                             android:text="@string/widget_config_background_title" />
 
                         <LinearLayout
+                            android:id="@+id/backgrounColorButtonsContainer"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="100dp"
+                            android:orientation="vertical">
 
-                            <Button
-                                android:id="@+id/buttonBackgroundBlack"
-                                style="@style/configWidgetButton"
-                                android:onClick="setBackgroundBlack"
-                                android:text="@string/dark_widget_config_button" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/buttonBackgroundWhite"
-                                style="@style/configWidgetButton"
-                                android:onClick="setBackgroundWhite"
-                                android:text="@string/light_widget_config_button" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundBlack"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:text="@string/dark_widget_config_button" />
+
+                                <Button
+                                    android:id="@+id/buttonBackgroundWhite"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:text="@string/light_widget_config_button" />
+
+                                <Button
+                                    android:id="@+id/buttonBackgroundPink"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:text="@string/pink_widget_config_button" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/buttonBackgroundCyan"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:text="@string/cyan_widget_config_button" />
+
+                                <Button
+                                    android:id="@+id/buttonBackgroundGreen"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:text="@string/green_widget_config_button" />
+
+                                <Button
+                                    android:id="@+id/buttonBackgroundRed"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:text="@string/red_widget_config_button" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/textView11"
-                            android:layout_marginTop="8dp"
                             style="@style/category_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:text="@string/widget_background_opacity_title" />
 
                         <SeekBar
@@ -234,6 +272,7 @@
                             android:layout_marginTop="4dp"
                             android:progressTint="@color/spotify_logo_green"
                             android:thumbTint="@color/spotify_logo_green" />
+
                     </LinearLayout>
                 </LinearLayout>
 

@@ -45,14 +45,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void saveTokens() {
-        File externalDir = getExternalFilesDir(null);
-        if (externalDir != null) {
-            File file = new File(externalDir, "tokens.txt");
-            ApiTokens.saveTokens(file);
-        }
-    }
-
     public void openSettingsActivity(View button) {
         Intent openSettings = new Intent(this,SettingsActivity.class);
         startActivity(openSettings);
