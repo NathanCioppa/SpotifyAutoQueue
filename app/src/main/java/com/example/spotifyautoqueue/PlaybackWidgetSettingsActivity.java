@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -53,13 +54,16 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
 
         wallpaperManager = WallpaperManager.getInstance(this);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            wallpaperImage = wallpaperManager.getDrawable();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                wallpaperImage = wallpaperManager.getDrawable();
+            else
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+
         }
-
-
 
         configData = new int[4];
 
@@ -67,7 +71,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_playback_widget_settings);
 
-        if(wallpaperImage != null)
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && wallpaperImage != null)
             findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
 
         setBackgroundOpacitySliderListener();
@@ -82,8 +86,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             wallpaperImage = wallpaperManager.getDrawable();
-            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
 
+            if(wallpaperImage != null)
+                findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
         }
     }
 
