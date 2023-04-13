@@ -38,6 +38,8 @@
     <string name="currently_playing">currently playing</string>
     <string name="next_in_queue">next in queue</string>
 
+    <string name="save_new_group">Save</string>
+
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Playback widget</string>

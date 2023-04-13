@@ -110,6 +110,18 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     }
 
+    public void saveNewGroup(View button) {
+        System.out.println("save");
+    }
+
+    public void selectCurrentlyPlaying(View button) {
+        System.out.println("current");
+    }
+
+    public void selectNextInQueue(View button) {
+        System.out.println("next");
+    }
+
     public void backToHome(View button) {
         Intent home = new Intent(this, MainActivity.class);
         startActivity(home);

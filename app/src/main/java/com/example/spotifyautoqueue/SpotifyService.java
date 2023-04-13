@@ -23,6 +23,7 @@ import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -60,6 +61,8 @@ public class SpotifyService extends Service {
             Notification notification = buildNotification();
             startForeground(1, notification);
 
+            getGroups();
+
             filter = new IntentFilter("com.spotify.music.active");
             registerReceiver(spotifyReceiver, filter); //start to check for spotify to activate again
 
@@ -71,6 +74,8 @@ public class SpotifyService extends Service {
             unregisterReceiver(spotifyReceiver);
         }
     }
+
+    static ArrayList<AutoqueueGroup> groups;
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
@@ -92,6 +97,10 @@ public class SpotifyService extends Service {
             startForegroundService();
 
         return START_STICKY;
+    }
+
+    public void getGroups() {
+        groups = new ArrayList<>();
     }
 
     public void connectRemote() {
@@ -144,9 +153,6 @@ public class SpotifyService extends Service {
             } else {
                 currentName = "No track is playing";
             }
-
-            //getNextInQueue();
-            // not needed for app functionality yet
         });
     }
 
@@ -213,9 +219,12 @@ public class SpotifyService extends Service {
     private final BroadcastReceiver spotifyReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ErrorLogActivity.logError("spotifyReceiver onReceive","Receiver detected spotify is active, reconnecting remote");
-            connectRemote();
-            unregisterReceiver(spotifyReceiver);
+            if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
+                connectRemote();
+
+            getNextInQueue();
+            System.out.println("next");
+
         }
     };
 

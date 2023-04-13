@@ -9,7 +9,7 @@
     <color name="logo_green_transparent">#D81DB854</color>
     <color name="darker_green">#1AA34B</color>
     <color name="lighter_green">#31B35F</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="off_black">#1E1E1E</color>
     <color name="white">#FFFFFFFF</color>
     <color name="card_black">#1AFFFFFF</color>
