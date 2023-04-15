@@ -1,6 +1,8 @@
 package com.example.spotifyautoqueue;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -26,11 +28,16 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = "MainActivity";
+    RecyclerView groupsRecycler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        GroupsRecyclerAdapter groupsAdapter = new GroupsRecyclerAdapter(this);
+        groupsRecycler = findViewById(R.id.groupsRecycler);
+        groupsRecycler.setAdapter(groupsAdapter);
+        groupsRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

@@ -69,7 +69,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             childSearches = searchSpotify.execute().get();
 
             if(childSearches != null) {
-                ChildTrackSearchesAdapter childAdapter = new ChildTrackSearchesAdapter(this, childSearches);
+                ChildTrackSearchesAdapter childAdapter = new ChildTrackSearchesAdapter(this);
                 childSearchRecycler.setAdapter(childAdapter);
                 childSearchRecycler.setLayoutManager(new LinearLayoutManager(this));
 
@@ -93,13 +93,21 @@ public class CreateGroupActivity extends AppCompatActivity {
         if (uri.charAt(0) == 'p') {
             uri = uri.substring(1);
 
+            newGroup[PARENT_TITLE] = name;
+            newGroup[PARENT_TRACK_URI] = uri;
+            newGroup[PARENT_IMAGE_URL] = imageUrl;
+
             ((TextView)findViewById(R.id.selectedParentTrackName)).setText(name);
             ((TextView)findViewById(R.id.selectedParentTrackArtist)).setText(artist);
             Glide.with(this).load(imageUrl).into((ImageView)findViewById(R.id.selectedParentTrackImage));
 
             selectedParent.setVisibility(View.VISIBLE);
             parentSearchRecycler.setVisibility(View.GONE);
+
         } else {
+            newGroup[CHILD_TITLE] = name;
+            newGroup[CHILD_TRACK_URI] = uri;
+            newGroup[CHILD_IMAGE_URL] = imageUrl;
 
             ((TextView)findViewById(R.id.selectedChildTrackName)).setText(name);
             ((TextView)findViewById(R.id.selectedChildTrackArtist)).setText(artist);
@@ -110,16 +118,44 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     }
 
+    String[] newGroup = new String[7];
+    final int PARENT_TITLE = 0;
+    final int PARENT_TRACK_URI = 1;
+    final int PARENT_IMAGE_URL = 2;
+    final int CHILD_TITLE = 3;
+    final int CHILD_TRACK_URI = 4;
+    final int CHILD_IMAGE_URL = 5;
+    final int CONDITION = 6;
+
     public void saveNewGroup(View button) {
         System.out.println("save");
+
+        boolean allParametersSet = true;
+        for (String s : newGroup) {
+            if (s == null) {
+                allParametersSet = false;
+                break;
+            }
+        }
+
+        if(allParametersSet) {
+            SpotifyService.groups.add(new AutoqueueGroup(
+                    newGroup[0],newGroup[1],newGroup[2],newGroup[3],newGroup[4],newGroup[5], newGroup[6]
+            ));
+            System.out.println("good");
+        } else {
+            System.out.println("canceled");
+        }
     }
 
     public void selectCurrentlyPlaying(View button) {
         System.out.println("current");
+        newGroup[CONDITION] = "now";
     }
 
     public void selectNextInQueue(View button) {
         System.out.println("next");
+        newGroup[CONDITION] = "next";
     }
 
     public void backToHome(View button) {

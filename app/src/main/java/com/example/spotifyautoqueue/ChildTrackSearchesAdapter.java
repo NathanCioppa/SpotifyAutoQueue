@@ -17,11 +17,9 @@ import java.util.ArrayList;
 public class ChildTrackSearchesAdapter extends RecyclerView.Adapter<ChildTrackSearchesAdapter.ThisViewHolder> {
 
     Context context;
-    ArrayList<SearchItem> searchItems;
 
-    public ChildTrackSearchesAdapter(Context context, ArrayList<SearchItem> searchItems) {
+    public ChildTrackSearchesAdapter(Context context) {
         this.context = context;
-        this.searchItems = searchItems;
     }
 
     @NonNull

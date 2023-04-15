@@ -4,16 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.ThisViewHolder>{
 
     Context context;
-    ArrayList<AutoqueueGroup> groups;
+
+    public GroupsRecyclerAdapter(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -26,7 +36,16 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     @Override
     public void onBindViewHolder(@NonNull ThisViewHolder holder, int position) {
+        AutoqueueGroup here = SpotifyService.groups.get(position);
 
+        holder.parentTitle.setText(here.getParentTitle());
+        holder.childTitle.setText(here.getChildTitle());
+
+        Glide.with(context).load(here.getParentImageUrl()).into(holder.parentImage);
+        if(!Objects.equals(here.getChildImageUrl(), here.getParentImageUrl()))
+            Glide.with(context).load(here.getChildImageUrl()).into(holder.childImage);
+
+        holder.condition.setText(here.getCondition().equals("now") ? "Playing now" : "Up next");
     }
 
     @Override
@@ -34,8 +53,22 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     public static class ThisViewHolder extends RecyclerView.ViewHolder{
 
+        TextView parentTitle;
+        TextView childTitle;
+        TextView condition;
+        TextView activeState;
+        ImageView parentImage;
+        ImageView childImage;
+
         public ThisViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            parentTitle = itemView.findViewById(R.id.parentTitle);
+            childTitle = itemView.findViewById(R.id.childTitle);
+            condition = itemView.findViewById(R.id.condition);
+            activeState = itemView.findViewById(R.id.activeState);
+            parentImage = itemView.findViewById(R.id.parentImage);
+            childImage = itemView.findViewById(R.id.childImage);
         }
     }
 }
