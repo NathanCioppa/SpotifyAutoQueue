@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void saveNotes(Context context){
         try {
-            FileOutputStream fos = context.openFileOutput("notes.txt", Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput("groups.txt", Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(SpotifyService.groups);
             oos.close();
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void getNotes(Context context) {
         try {
-            FileInputStream fis = context.openFileInput("notes.txt");
+            FileInputStream fis = context.openFileInput("groups.txt");
             ObjectInputStream ois = new ObjectInputStream(fis);
             SpotifyService.groups = (ArrayList<AutoqueueGroup>) ois.readObject();
             ois.close();

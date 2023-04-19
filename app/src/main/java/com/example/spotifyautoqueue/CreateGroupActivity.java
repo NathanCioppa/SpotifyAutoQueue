@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -45,6 +46,12 @@ public class CreateGroupActivity extends AppCompatActivity {
         try{
             parentSearches = searchSpotify.execute().get();
 
+            if(parentSearches == null && new RefreshAccessToken().execute().get()) {
+                parentSearches = new SearchSpotify().execute().get();
+
+                saveTokens();
+            }
+
             if (parentSearches != null) {
                 ParentTrackSearchesAdapter parentAdapter = new ParentTrackSearchesAdapter(this, parentSearches);
                 parentSearchRecycler.setAdapter(parentAdapter);
@@ -68,6 +75,11 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         try {
             childSearches = searchSpotify.execute().get();
+
+            if(childSearches == null && new RefreshAccessToken().execute().get()) {
+                childSearches = new SearchSpotify().execute().get();
+                saveTokens();
+            }
 
             if(childSearches != null) {
                 ChildTrackSearchesAdapter childAdapter = new ChildTrackSearchesAdapter(this);
@@ -166,5 +178,13 @@ public class CreateGroupActivity extends AppCompatActivity {
     public void backToHome(View button) {
         Intent home = new Intent(this, MainActivity.class);
         startActivity(home);
+    }
+
+    public void saveTokens() {
+        File externalDir = getExternalFilesDir(null);
+        if (externalDir != null) {
+            File file = new File(externalDir, "tokens.txt");
+            ApiTokens.saveTokens(file);
+        }
     }
 }

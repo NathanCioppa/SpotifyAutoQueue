@@ -28,6 +28,7 @@ public class SearchSpotify extends AsyncTask<Void, Void, ArrayList<SearchItem>> 
         String endpoint = "https://api.spotify.com/v1/search?q=" + searchQuery + "&type=track";
 
         try{
+            System.out.println(accessToken);
             URL url = new URL(endpoint);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
