@@ -1,9 +1,12 @@
 package com.example.spotifyautoqueue;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +49,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             Glide.with(context).load(here.getChildImageUrl()).into(holder.childImage);
 
         holder.condition.setText(here.getCondition().equals("now") ? "Playing now" : "Up next");
+        holder.activeState.setText(here.getActiveState() ? "Enabled" : "Disabled");
+        holder.activeState.setTextColor(here.getActiveState() ? Color.GREEN : Color.RED);
+
+        holder.deleteButton.setTag(here.getId());
+
+        holder.itemView.setTag(here.getId());
     }
 
     @Override
@@ -59,6 +68,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         TextView activeState;
         ImageView parentImage;
         ImageView childImage;
+        ImageButton deleteButton;
 
         public ThisViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +79,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             activeState = itemView.findViewById(R.id.activeState);
             parentImage = itemView.findViewById(R.id.parentImage);
             childImage = itemView.findViewById(R.id.childImage);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.spotifyautoqueue;
 
-public class AutoqueueGroup {
+import java.io.Serializable;
+
+public class AutoqueueGroup implements Serializable {
     String parentTitle;
     String parentTrackUri;
     String parentImageUrl;
@@ -10,10 +12,12 @@ public class AutoqueueGroup {
     String childImageUrl;
 
     String condition;
+    boolean activeState;
+    long id;
 
     public AutoqueueGroup(String parentTitle, String parentTrackUri, String parentImageUri,
                           String childTitle, String childTitleUri, String childImageUri,
-                          String condition
+                          String condition, boolean activeState, long id
     ){
         this.parentTitle = parentTitle;
         this.parentTrackUri = parentTrackUri;
@@ -24,6 +28,8 @@ public class AutoqueueGroup {
         this.childImageUrl = childImageUri;
 
         this.condition = condition;
+        this.activeState = activeState;
+        this.id = id;
     }
 
     public String getParentTitle() {
@@ -52,5 +58,11 @@ public class AutoqueueGroup {
 
     public String getCondition() {
         return condition;
+    }
+    public boolean getActiveState() {
+        return activeState;
+    }
+    public long getId() {
+        return id;
     }
 }

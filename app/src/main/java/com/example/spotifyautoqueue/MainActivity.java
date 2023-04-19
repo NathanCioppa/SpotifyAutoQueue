@@ -4,40 +4,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import com.spotify.protocol.types.Track;
-
 import android.app.AppOpsManager;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-import android.widget.RemoteViews;
+import android.widget.TextView;
 
-import java.io.File;
-import java.util.concurrent.ExecutionException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = "MainActivity";
     RecyclerView groupsRecycler;
+    GroupsRecyclerAdapter groupsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        GroupsRecyclerAdapter groupsAdapter = new GroupsRecyclerAdapter(this);
+        groupsAdapter = new GroupsRecyclerAdapter(this);
         groupsRecycler = findViewById(R.id.groupsRecycler);
         groupsRecycler.setAdapter(groupsAdapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        getNotes(this);
     }
 
     @Override
@@ -45,10 +44,67 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         ErrorLogActivity.logError("Started MainActivity","onStart called in MainActivity");
 
+
+
         AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
         if (mode != AppOpsManager.MODE_ALLOWED) {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+        }
+    }
+
+    public void deleteGroup(View button) {
+        long id = (long) button.getTag();
+        ArrayList<AutoqueueGroup> groups = SpotifyService.groups;
+
+        for(int i=0; i<groups.size(); i++) {
+            if (groups.get(i).getId() == id) {
+                groups.remove(i);
+                groupsAdapter.notifyItemRemoved(i);
+
+                saveNotes(this);
+                break;
+            }
+        }
+    }
+
+    public void toggleGroupEnabled(View container) {
+        long id = (long) container.getTag();
+        ArrayList<AutoqueueGroup> groups = SpotifyService.groups;
+
+        for(int i=0; i<groups.size(); i++) {
+            AutoqueueGroup group = groups.get(i);
+            if (group.getId() == id) {
+                group.activeState = !group.activeState;
+                groupsAdapter.notifyItemChanged(i);
+
+                saveNotes(this);
+                break;
+            }
+        }
+    }
+
+    public static void saveNotes(Context context){
+        try {
+            FileOutputStream fos = context.openFileOutput("notes.txt", Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(SpotifyService.groups);
+            oos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getNotes(Context context) {
+        try {
+            FileInputStream fis = context.openFileInput("notes.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            SpotifyService.groups = (ArrayList<AutoqueueGroup>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

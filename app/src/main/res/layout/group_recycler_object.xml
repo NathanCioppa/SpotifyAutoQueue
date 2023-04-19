@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:onClick="toggleGroupEnabled"
     android:padding="8dp">
 
     <ImageView
@@ -48,15 +49,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toggleEnabled"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            style="@style/textColor"
             android:id="@+id/textView17"
+            style="@style/textColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Condition:"
@@ -74,12 +75,24 @@
 
         <TextView
             android:id="@+id/activeState"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:text="Enabled"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/condition" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            style="@style/textColor"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="deleteGroup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/icons8_remove_96___" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView

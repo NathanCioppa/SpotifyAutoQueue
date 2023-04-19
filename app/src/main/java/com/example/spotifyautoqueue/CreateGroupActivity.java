@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
@@ -86,7 +87,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         String name = ((TextView)track.findViewById(R.id.searchedTrackTitle)).getText().toString();
         String artist = ((TextView)track.findViewById(R.id.searchedTrackArtist)).getText().toString();
-        String imageUrl = ((ImageView)track.findViewById(R.id.searchedTrackImage)).getTag().toString();
+        String imageUrl = track.findViewById(R.id.searchedTrackImage).getTag().toString();
         String uri = track.getTag().toString();
 
         //tag of parent track will be "p"+ the track uri, child track will just be the uri
@@ -140,8 +141,12 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         if(allParametersSet) {
             SpotifyService.groups.add(new AutoqueueGroup(
-                    newGroup[0],newGroup[1],newGroup[2],newGroup[3],newGroup[4],newGroup[5], newGroup[6]
+                    newGroup[0],newGroup[1],newGroup[2],newGroup[3],newGroup[4],newGroup[5], newGroup[6],
+                    true, new Date().getTime()
             ));
+
+            MainActivity.saveNotes(this);
+
             System.out.println("good");
         } else {
             System.out.println("canceled");
