@@ -1,5 +1,6 @@
 package com.example.spotifyautoqueue;
 
+import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
             AutoqueueGroup group = groups.get(i);
             if (group.getId() == id) {
                 group.activeState = !group.activeState;
-                groupsAdapter.notifyItemChanged(i);
+
+                TextView activeStateText = container.findViewById(R.id.activeState);
+                activeStateText.setText(group.activeState ? "Enabled" : "Disabled");
+                activeStateText.setTextColor(group.activeState ? Color.GREEN : Color.RED);
 
                 saveNotes(this);
                 break;

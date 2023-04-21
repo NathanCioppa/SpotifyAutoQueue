@@ -135,6 +135,8 @@ public class SpotifyService extends Service {
     static String currentArtist ="";
     static String currentImageUrl="";
 
+    static String currentTrackUri="";
+
     public void startRemote() {
         assert spotifyAppRemote != null;
 
@@ -146,12 +148,14 @@ public class SpotifyService extends Service {
             if (track != null) {
                 currentName = track.name+"";
                 currentArtist = track.artist.name;
+                currentTrackUri = track.uri;
                 if (track.imageUri.raw != null)
                     currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
 
                 updateWidget();
             } else {
                 currentName = "No track is playing";
+                currentTrackUri = "";
             }
         });
     }
@@ -188,7 +192,7 @@ public class SpotifyService extends Service {
         }
     }
 
-    public void getNextInQueue() {
+    public boolean getNextInQueue() {
         try {
             GetQueue getQueue = new GetQueue();
             boolean getQueueResponse = getQueue.execute().get();
@@ -199,12 +203,15 @@ public class SpotifyService extends Service {
                 if(refreshAccessResponse) {
                     saveTokens();
                     GetQueue secondGetQueue = new GetQueue();
-                    secondGetQueue.execute();
+                    return secondGetQueue.execute().get();
                 }
-            }
+                return false;
+            } else
+                return true;
         } catch (ExecutionException | InterruptedException e) {
             ErrorLogActivity.logError("Error getting next track in queue","Execution failed epicly >:)");
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -222,11 +229,17 @@ public class SpotifyService extends Service {
             if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
                 connectRemote();
 
-            getNextInQueue();
-            System.out.println("next");
-
+            checkForGroup();
         }
     };
+
+
+    static String nextTrackUri;
+    public void checkForGroup() {
+        if (getNextInQueue()) {
+            System.out.println(nextTrackUri);
+        }
+    }
 
     @Nullable
     @Override
