@@ -24,6 +24,8 @@ public class SearchSpotify extends AsyncTask<Void, Void, ArrayList<SearchItem>> 
 
     @Override
     protected ArrayList<SearchItem> doInBackground(Void... voids) {
+        if(searchQuery == null)
+            return null;
 
         String endpoint = "https://api.spotify.com/v1/search?q=" + searchQuery + "&type=track";
 

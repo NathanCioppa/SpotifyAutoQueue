@@ -1,6 +1,5 @@
 package com.example.spotifyautoqueue;
 
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         groupsRecycler.setAdapter(groupsAdapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        getNotes(this);
+        getGroups(this);
+
     }
 
     @Override
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         if (mode != AppOpsManager.MODE_ALLOWED) {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
+
+        System.out.println(SpotifyService.groups);
     }
 
     public void deleteGroup(View button) {
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 groups.remove(i);
                 groupsAdapter.notifyItemRemoved(i);
 
-                saveNotes(this);
+                saveGroups(this);
                 break;
             }
         }
@@ -82,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
                 activeStateText.setText(group.activeState ? "Enabled" : "Disabled");
                 activeStateText.setTextColor(group.activeState ? Color.GREEN : Color.RED);
 
-                saveNotes(this);
+                saveGroups(this);
                 break;
             }
         }
     }
 
-    public static void saveNotes(Context context){
+    public static void saveGroups(Context context){
         try {
             FileOutputStream fos = context.openFileOutput("groups.txt", Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void getNotes(Context context) {
+    public static void getGroups(Context context) {
         try {
             FileInputStream fis = context.openFileInput("groups.txt");
             ObjectInputStream ois = new ObjectInputStream(fis);

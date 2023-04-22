@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +36,8 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         childSearchRecycler = findViewById(R.id.searchedChildTrackRecycler);
         selectedChild = findViewById(R.id.selectedChildTrackLayout);
+
+        findViewById(R.id.createGroupConditionNowButton).performClick();
     }
 
     static ArrayList<SearchItem> parentSearches;
@@ -157,21 +161,17 @@ public class CreateGroupActivity extends AppCompatActivity {
                     true, new Date().getTime()
             ));
 
-            MainActivity.saveNotes(this);
+            MainActivity.saveGroups(this);
 
-            System.out.println("good");
-        } else {
-            System.out.println("canceled");
+            backToHome(button);
         }
     }
 
     public void selectCurrentlyPlaying(View button) {
-        System.out.println("current");
         newGroup[CONDITION] = "now";
     }
 
     public void selectNextInQueue(View button) {
-        System.out.println("next");
         newGroup[CONDITION] = "next";
     }
 

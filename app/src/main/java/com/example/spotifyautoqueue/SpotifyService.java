@@ -10,10 +10,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -22,8 +21,6 @@ import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
-
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -105,7 +102,7 @@ public class SpotifyService extends Service {
     }
 
     public void getGroups() {
-        groups = new ArrayList<>();
+        MainActivity.getGroups(this);
     }
 
     public void connectRemote() {
@@ -244,7 +241,41 @@ public class SpotifyService extends Service {
                 checkForGroup = new TimerTask() {
                     @Override
                     public void run() {
-                        System.out.println(nextTrackUri);
+                        for(int i=0; i<groups.size(); i++) {
+                            AutoqueueGroup group = groups.get(i);
+
+                            // 3 conditions to be met if a "now playing" group should be queue its child:
+                            // group condition must be "now"
+                            // parent track must be the same as the current track
+                            // child track must not be the same as the next track,
+                            //      there would be no purpose in queuing it since it would already be playing next as it should
+                            boolean activateNowPlayingGroup =
+                                    Objects.equals(group.getCondition(), "now")
+                                    && Objects.equals(group.getParentTrackUri(), currentTrackUri)
+                                    && !Objects.equals(group.getChildTrackUri(), nextTrackUri);
+
+                            // 3 conditions to be met if a "next in queue" group should queue its child:
+                            // group condition must be "next"
+                            // parent track must be the same as the next track
+                            // child track must not be the same as the current track,
+                            //      there would be no purpose in queuing it since it is playing before its parent as it should
+                            boolean activateNextInQueueGroup =
+                                    Objects.equals(group.getParentTrackUri(), nextTrackUri)
+                                    && Objects.equals(group.getCondition(), "next")
+                                    && !Objects.equals(group.getChildTrackUri(), currentTrackUri);
+
+                            // 2 other conditions to be met regardless:
+                            // app remote is connected
+                            // group is active
+                            boolean remoteIsOk = spotifyAppRemote != null && spotifyAppRemote.isConnected();
+                            boolean groupIsActive = group.getActiveState();
+
+                            boolean activateGroup = (activateNowPlayingGroup || activateNextInQueueGroup) && remoteIsOk && groupIsActive;
+
+                            if(activateGroup)
+                                spotifyAppRemote.getPlayerApi().queue(group.childTrackUri);
+
+                        }
                     }
                 };
 
