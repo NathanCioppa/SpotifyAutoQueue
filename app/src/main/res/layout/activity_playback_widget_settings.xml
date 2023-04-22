@@ -104,7 +104,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
-        style="@style/background"
+        style="@style/tintedBackground"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         android:background="@drawable/rounded_corners_top"

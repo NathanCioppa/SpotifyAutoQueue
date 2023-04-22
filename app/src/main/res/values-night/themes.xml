@@ -55,6 +55,10 @@
     </style>
 
     <style name="background">
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="tintedBackground">
         <item name="android:backgroundTint">@color/black</item>
     </style>
 

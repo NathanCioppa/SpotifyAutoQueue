@@ -55,10 +55,14 @@
     </style>
 
     <style name="background">
-        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="button_background">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="tintedBackground">
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
