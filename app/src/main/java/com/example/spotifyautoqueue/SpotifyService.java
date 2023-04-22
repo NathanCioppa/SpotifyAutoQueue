@@ -22,9 +22,14 @@ import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
+
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class SpotifyService extends Service {
@@ -229,17 +234,30 @@ public class SpotifyService extends Service {
             if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
                 connectRemote();
 
-            checkForGroup();
+            if (getNextInQueue()) {
+
+                if(groupCheckTimer != null) {
+                    groupCheckTimer.cancel();
+                    groupCheckTimer = null;
+                }
+
+                checkForGroup = new TimerTask() {
+                    @Override
+                    public void run() {
+                        System.out.println(nextTrackUri);
+                    }
+                };
+
+                groupCheckTimer = new Timer();
+                groupCheckTimer.schedule(checkForGroup, 5000);
+            }
         }
     };
 
 
     static String nextTrackUri;
-    public void checkForGroup() {
-        if (getNextInQueue()) {
-            System.out.println(nextTrackUri);
-        }
-    }
+    Timer groupCheckTimer;
+    TimerTask checkForGroup;
 
     @Nullable
     @Override
