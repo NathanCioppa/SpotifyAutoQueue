@@ -45,15 +45,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         ErrorLogActivity.logError("Started MainActivity","onStart called in MainActivity");
 
-
-
         AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
         if (mode != AppOpsManager.MODE_ALLOWED) {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
 
-        System.out.println(SpotifyService.groups);
     }
 
     public void deleteGroup(View button) {

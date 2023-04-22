@@ -77,7 +77,7 @@ public class SpotifyService extends Service {
         }
     }
 
-    static ArrayList<AutoqueueGroup> groups;
+    static ArrayList<AutoqueueGroup> groups = new ArrayList<>();
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
