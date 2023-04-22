@@ -41,7 +41,7 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 JSONObject jsonObject = new JSONObject(responseBody);
 
                 JSONArray itemsArray = jsonObject.getJSONArray("queue");
-                    JSONObject itemObject = itemsArray.getJSONObject(1);
+                    JSONObject itemObject = itemsArray.getJSONObject(0);
                     String trackUri = itemObject.getString("uri");
 
                 SpotifyService.nextTrackUri = trackUri;

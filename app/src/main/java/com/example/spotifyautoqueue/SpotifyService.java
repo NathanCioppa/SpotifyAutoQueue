@@ -20,6 +20,9 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.PlayerContext;
+import com.spotify.protocol.types.PlayerOptions;
+import com.spotify.protocol.types.Shuffle;
 import com.spotify.protocol.types.Track;
 
 import java.io.File;
@@ -170,6 +173,7 @@ public class SpotifyService extends Service {
         PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, null);
     }
 
+    // playNext(), togglePause(), and playPrevious() are used by the home-screen widget to control playback
     public void playNext() {
         if (spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
             spotifyAppRemote.getPlayerApi().skipNext();
@@ -194,6 +198,9 @@ public class SpotifyService extends Service {
         }
     }
 
+
+    // gets next track in queue
+    // if the first attempt fails, it will refresh the access token and try again once
     public boolean getNextInQueue() {
         try {
             GetQueue getQueue = new GetQueue();
@@ -225,8 +232,14 @@ public class SpotifyService extends Service {
         }
     }
 
+
+
+    static String nextTrackUri;
+    Timer groupCheckTimer;
+    TimerTask checkForGroup;
+
     private final BroadcastReceiver spotifyReceiver = new BroadcastReceiver() {
-        @Override
+        @Override // called onReceive is called whenever a new track starts playing
         public void onReceive(Context context, Intent intent) {
             if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
                 connectRemote();
@@ -242,6 +255,7 @@ public class SpotifyService extends Service {
                     @Override
                     public void run() {
                         for(int i=0; i<groups.size(); i++) {
+                            
                             AutoqueueGroup group = groups.get(i);
 
                             // 3 conditions to be met if a "now playing" group should be queue its child:
@@ -274,11 +288,9 @@ public class SpotifyService extends Service {
 
                             if(activateGroup)
                                 spotifyAppRemote.getPlayerApi().queue(group.childTrackUri);
-
                         }
                     }
                 };
-
                 groupCheckTimer = new Timer();
                 groupCheckTimer.schedule(checkForGroup, 5000);
             }
@@ -286,16 +298,12 @@ public class SpotifyService extends Service {
     };
 
 
-    static String nextTrackUri;
-    Timer groupCheckTimer;
-    TimerTask checkForGroup;
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-
 
     @Override
     public void onDestroy() {
