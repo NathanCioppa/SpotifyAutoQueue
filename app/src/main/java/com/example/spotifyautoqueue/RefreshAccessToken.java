@@ -47,13 +47,16 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 JSONObject jsonObject = new JSONObject(response.toString());
                 ApiTokens.accessToken = jsonObject.getString("access_token");
-            } else
+            } else {
+                ErrorLogActivity.logError("RefreshAccessToken","BAD RESPONSE");
                 return false;
+            }
+
 
             connection.disconnect();
 
         } catch (JSONException | IOException error) {
-            ErrorLogActivity.logError("Error refreshing access token","Execution failed");
+            ErrorLogActivity.logError("Error refreshing access token",error+"");
             error.printStackTrace();
             return false;
         }

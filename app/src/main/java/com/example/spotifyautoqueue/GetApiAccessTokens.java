@@ -24,10 +24,13 @@ public class GetApiAccessTokens extends AsyncTask<Void, Void, Boolean> {
 
         try {
             String authString = CLIENT_ID + ":" + CLIENT_SECRET;
-            String encodedAuthString = null;
+            String encodedAuthString;
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
                 encodedAuthString = Base64.getEncoder().encodeToString(authString.getBytes());
+            else {
+                ErrorLogActivity.logError("idk what this means but here is where the error comes from in the code i guess",":)");
+                return false;
             }
 
             String data = "grant_type=authorization_code" +
@@ -59,12 +62,13 @@ public class GetApiAccessTokens extends AsyncTask<Void, Void, Boolean> {
             ApiTokens.refreshToken = responseString.substring(responseString.indexOf("refresh_token\":\"") + 16, responseString.indexOf("\",\"scope\""));
             ApiTokens.accessToken = responseString.substring(responseString.indexOf("access_token\":\"") + 15, responseString.indexOf("\",\"token_type\""));
 
-            Log.d("GetApiAccessTokens", "finished");
-
-        } catch (Error | UnsupportedEncodingException error) {
-            Log.d("ERROR: CLASS ApiTokens, getRefreshAccessToken",error+"");
+        } catch (Error | UnsupportedEncodingException e) {
+            Log.d("getApiAccessTokens",e+"");
+            return false;
         } catch (IOException e) {
-            Log.d("ERROR: CLASS ApiTokens, getRefreshAccessToken","Auth code invalid");
+            ErrorLogActivity.logError("Error getting access tokens","submitted auth code is invalid. Error: "+e);
+            Log.d("GetApiAccessTokens, getRefreshAccessToken",e+"");
+            return false;
         }
         return true;
     }

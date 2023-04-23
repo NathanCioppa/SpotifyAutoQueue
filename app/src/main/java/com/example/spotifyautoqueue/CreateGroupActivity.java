@@ -66,6 +66,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
 
         } catch (Exception error) {
+            ErrorLogActivity.logError("Error searching from CreateGroupActivity",error+"");
             error.printStackTrace();
         }
     }
@@ -95,6 +96,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
 
         } catch (Exception error) {
+            ErrorLogActivity.logError("Error searching from CreateGroupActivity",error+"");
             error.printStackTrace();
         }
     }
