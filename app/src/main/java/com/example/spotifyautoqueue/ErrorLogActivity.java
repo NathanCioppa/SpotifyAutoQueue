@@ -5,15 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.icu.util.LocaleData;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
+// Displays errors to the user
 public class ErrorLogActivity extends AppCompatActivity {
 
     RecyclerView errorLogRecycler;
@@ -21,6 +19,7 @@ public class ErrorLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_error_log);
+
         errorLogRecycler = findViewById(R.id.errorLogRecycler);
         ErrorMessageAdapter adapter = new ErrorMessageAdapter(this, errors);
         errorLogRecycler.setAdapter(adapter);
@@ -28,8 +27,10 @@ public class ErrorLogActivity extends AppCompatActivity {
 
     }
 
-    static ArrayList<ErrorMessage> errors = new ArrayList<>();
+    static ArrayList<ErrorMessage> errors = new ArrayList<>(); // Arraylist containing the error messages
 
+    // Adds a message to the error log
+    // The tag will show in bold red letters, message will show in plain text below that
     public static void logError(String tag, String message) {
         String time = new Date().toString();
         time = time.substring(time.indexOf(":")-2, time.lastIndexOf(":")+3);

@@ -1,30 +1,27 @@
 package com.example.spotifyautoqueue;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.IBinder;
 import android.widget.RemoteViews;
 
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.util.Objects;
 
+// Class that handles the home-screen playback widget
 public class PlaybackWidget extends AppWidgetProvider {
 
+    // Executes whenever a new track plays, or when the config options are changed
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int[] configData) {
 
         try{
@@ -32,6 +29,7 @@ public class PlaybackWidget extends AppWidgetProvider {
             int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
 
+            // only update playback information, since config data is not being changed
             if(configData == null) {
 
                 views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
@@ -49,6 +47,7 @@ public class PlaybackWidget extends AppWidgetProvider {
                             .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
                 }
 
+            // configData was changed, update the widget accordingly without changing playback data
             } else {
 
                 final int TEXT_COLOR = configData[0];
@@ -59,9 +58,8 @@ public class PlaybackWidget extends AppWidgetProvider {
                 views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
                 views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
 
-
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-
+                    // Playback buttons can only be toggled between black and white
                     views.setColorStateList(R.id.togglePause, "setImageTintList", ContextCompat.getColorStateList(context,
                             PLAYBACK_CONTROL_COLOR == Color.WHITE
                                     ? R.color.white
@@ -77,21 +75,21 @@ public class PlaybackWidget extends AppWidgetProvider {
                                     ? R.color.white
                                     : R.color.black
                     ));
-
-
-
                 } else
                     ErrorLogActivity.logError("Error setting widget config","Can not set playback control button colors, requires Android 12 (API level 31) or higher");
 
+                // Set widget background drawable, color, and opacity
                 views.setImageViewResource(R.id.imageView333, R.drawable.rounded_corners);
                 views.setInt(R.id.imageView333, "setColorFilter", BACKGROUND_COLOR);
                 views.setInt(R.id.imageView333, "setAlpha", BACKGROUND_OPACITY);
             }
 
+            // Set the intent to open the MainActivity when the widget it pressed
             Intent openApp = new Intent(context, MainActivity.class);
             PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.widgetContainer, pendingOpen);
 
+            // Set onclick functions for the playback buttons
             setButtonAction(context, views, R.id.playNext, PLAY_NEXT_WIDGET);
             setButtonAction(context, views, R.id.togglePause, TOGGLE_PAUSE_WIDGET);
             setButtonAction(context, views, R.id.playPrevious, PLAY_PREVIOUS_WIDGET);
@@ -104,6 +102,7 @@ public class PlaybackWidget extends AppWidgetProvider {
     }
 
 
+    // I don't think this does what it's supposed to but it's here anyway :)
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
@@ -123,11 +122,7 @@ public class PlaybackWidget extends AppWidgetProvider {
         }
     }
 
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-    }
-
+    // Set the intents for the playback buttons, which is annoyingly difficult to do
     public static void setButtonAction(Context context, RemoteViews views, int buttonId, String action) {
         Intent intent = new Intent(context, PlaybackWidget.class);
         intent.setAction(action);
@@ -158,6 +153,13 @@ public class PlaybackWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, SpotifyService.class);
         intent.setAction(action);
         context.startService(intent);
+    }
+
+
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
     }
 
     @Override

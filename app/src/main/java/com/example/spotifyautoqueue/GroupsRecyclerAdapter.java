@@ -1,7 +1,6 @@
 package com.example.spotifyautoqueue;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Objects;
 
+// Adapter for recycler view which displays the user's groups
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.ThisViewHolder>{
 
     Context context;
@@ -45,6 +42,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         holder.childTitle.setText(here.getChildTitle());
 
         Glide.with(context).load(here.getParentImageUrl()).into(holder.parentImage);
+        // If the parent and child have the same image, don't show the child image
         if(!Objects.equals(here.getChildImageUrl(), here.getParentImageUrl()))
             Glide.with(context).load(here.getChildImageUrl()).into(holder.childImage);
 
@@ -52,8 +50,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         holder.activeState.setText(here.getActiveState() ? "Enabled" : "Disabled");
         holder.activeState.setTextColor(here.getActiveState() ? Color.GREEN : Color.RED);
 
+        // Delete button and item view need the id for their onclick functions
+        // Deleting the group and toggling the group's active state, respectively
         holder.deleteButton.setTag(here.getId());
-
         holder.itemView.setTag(here.getId());
     }
 

@@ -5,20 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
 import java.io.File;
 
-
+// Generic activity for stuff that could be considered settings I guess
 public class SettingsActivity extends AppCompatActivity {
 
+    // Stuff for building URL to retrieve authorization code
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
     final String SCOPE = "user-read-currently-playing user-read-playback-state";
+    // The man, the myth, the legend, the URL
     final String AUTH_URL = "https://accounts.spotify.com/authorize?client_id="
             +CLIENT_ID+"&response_type=code&redirect_uri="
             +REDIRECT_URI+"&scope="
@@ -32,14 +31,14 @@ public class SettingsActivity extends AppCompatActivity {
         testSkdConnection();
     }
 
-    public void openAuthLink(View button){
+    public void openAuthLink(View button) {
         Uri authPage = Uri.parse(AUTH_URL);
         Intent intent = new Intent(Intent.ACTION_VIEW, authPage);
 
         try {
             startActivity(intent);
         } catch (Error error) {
-            error.printStackTrace();
+            ErrorLogActivity.logError("Error opening Auth link","Could not redirect to URL: "+AUTH_URL);
         }
     }
 
@@ -48,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
         GetApiAccessTokens getApiAccessTokens = new GetApiAccessTokens();
         try{
             boolean result = getApiAccessTokens.execute().get();
-
+            // Save the tokens if the auth code if they are successfully returned
             if (result)
                 saveTokens();
             else
@@ -70,16 +69,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     String currentTrack = SpotifyService.currentName;
     TextView currentTrackDisplay;
-    public void testSkdConnection() {
-        currentTrackDisplay.setText(currentTrack);
-    }
+    public void testSkdConnection() { currentTrackDisplay.setText(currentTrack); }
 
     public void resetAccessTokens(View button) {
         ApiTokens.authCode = "";
         ApiTokens.refreshToken = "";
         ApiTokens.accessToken = "";
 
-        saveTokens();
+        saveTokens(); // Save the tokens as being empty
     }
 
     public void openErrorLog(View button) {

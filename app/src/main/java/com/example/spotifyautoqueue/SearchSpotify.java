@@ -14,18 +14,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+// Makes HTTP request to return searches from spotify when creating a group
 public class SearchSpotify extends AsyncTask<Void, Void, ArrayList<SearchItem>> {
 
     String accessToken = ApiTokens.accessToken;
-    String searchQuery;
+    String searchQuery; // searchQuery should be set from the activity making the search before making the request
 
+    // Returns an ArrayList of type SearchItem if successful, returns null otherwise and logs an error
     @Override
     protected ArrayList<SearchItem> doInBackground(Void... voids) {
+        // Don't try executing the search if the query is null or an empty string.
         if(searchQuery == null || searchQuery.equals("")) {
             ErrorLogActivity.logError("Error searching Spotify","attempted a null or empty search");
             return null;
         }
-
 
         String endpoint = "https://api.spotify.com/v1/search?q=" + searchQuery + "&type=track";
 
@@ -36,7 +38,6 @@ public class SearchSpotify extends AsyncTask<Void, Void, ArrayList<SearchItem>> 
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -46,14 +47,7 @@ public class SearchSpotify extends AsyncTask<Void, Void, ArrayList<SearchItem>> 
                 in.close();
 
                 JSONObject jsonResponse = new JSONObject(response.toString());
-                JSONObject tracks;
-                try{
-                    tracks = new JSONObject(jsonResponse.getJSONObject("tracks").toString());
-                } catch (Exception e) {
-                    ErrorLogActivity.logError("Error searching Spotify","no \"tracks\" item found in response. Full response: "+jsonResponse);
-                    return null;
-                }
-
+                JSONObject tracks = new JSONObject(jsonResponse.getJSONObject("tracks").toString());
                 JSONArray items = new JSONArray(tracks.getJSONArray("items").toString());
 
                 ArrayList<SearchItem> searches = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.example.spotifyautoqueue;
 
+// Error message object
 public class ErrorMessage {
     String time;
     String tag;

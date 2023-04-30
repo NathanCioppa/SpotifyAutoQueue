@@ -2,24 +2,24 @@ package com.example.spotifyautoqueue;
 
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// Class responsible for making HTTP request to refresh the access token
 public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
 
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
     String refreshToken = ApiTokens.refreshToken;
 
+    // Returns true if the request is successful, false otherwise and logs an error
     @Override
     protected Boolean doInBackground(Void... params) {
 
@@ -36,9 +36,9 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
             connection.getOutputStream().write(requestBody.getBytes());
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
             StringBuilder response = new StringBuilder();
             String line;
+
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
@@ -46,18 +46,17 @@ public class RefreshAccessToken extends AsyncTask<Void, Void, Boolean> {
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 JSONObject jsonObject = new JSONObject(response.toString());
+                // Set the new access token the the ApiTokens class
                 ApiTokens.accessToken = jsonObject.getString("access_token");
             } else {
                 ErrorLogActivity.logError("RefreshAccessToken","BAD RESPONSE");
                 return false;
             }
 
-
             connection.disconnect();
 
         } catch (JSONException | IOException error) {
             ErrorLogActivity.logError("Error refreshing access token",error+"");
-            error.printStackTrace();
             return false;
         }
         return true;

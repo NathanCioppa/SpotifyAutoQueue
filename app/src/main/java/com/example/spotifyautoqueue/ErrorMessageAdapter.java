@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+// Adapter for recycler view which displays messages in the error log
 public class ErrorMessageAdapter extends RecyclerView.Adapter<ErrorMessageAdapter.ThisViewHolder>{
     Context context;
     ArrayList<ErrorMessage> errors;

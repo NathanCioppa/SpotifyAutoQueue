@@ -15,11 +15,16 @@ import java.util.Base64;
 
 public class GetApiAccessTokens extends AsyncTask<Void, Void, Boolean> {
 
+    // Get Client ID, Redirect Uri, and Auth code from ApiTokens class to make the HTTP request
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
-    final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
     String authCode = ApiTokens.authCode;
 
+    final String CLIENT_SECRET = new SecretClass().CLIENT_SECRET;
+
+
+    // Used chatGPT to write most of this because idfk how to do HTTP requests :)
+    // Returns true and sets the Access and Refresh tokens in the ApiTokens class if request is successful
     protected Boolean doInBackground(Void... params) {
 
         try {

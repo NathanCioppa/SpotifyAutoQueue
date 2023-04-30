@@ -2,7 +2,9 @@ package com.example.spotifyautoqueue;
 
 import java.io.Serializable;
 
+// Each AutoqueueGroup contains information on a single group created by the user.
 public class AutoqueueGroup implements Serializable {
+
     String parentTitle;
     String parentTrackUri;
     String parentImageUrl;
@@ -11,14 +13,15 @@ public class AutoqueueGroup implements Serializable {
     String childTrackUri;
     String childImageUrl;
 
-    String condition;
+    String condition; //either "now" or "next"
     boolean activeState;
+
     long id;
 
     public AutoqueueGroup(String parentTitle, String parentTrackUri, String parentImageUri,
                           String childTitle, String childTitleUri, String childImageUri,
-                          String condition, boolean activeState, long id
-    ){
+                          String condition, boolean activeState, long id)
+    {
         this.parentTitle = parentTitle;
         this.parentTrackUri = parentTrackUri;
         this.parentImageUrl = parentImageUri;
@@ -29,40 +32,20 @@ public class AutoqueueGroup implements Serializable {
 
         this.condition = condition;
         this.activeState = activeState;
+
         this.id = id;
     }
 
-    public String getParentTitle() {
-        return parentTitle;
-    }
+    public String getParentTitle() { return parentTitle; }
+    public String getParentTrackUri() { return parentTrackUri; }
+    public String getParentImageUrl() { return parentImageUrl; }
 
-    public String getParentTrackUri() {
-        return parentTrackUri;
-    }
+    public String getChildTitle() { return childTitle; }
+    public String getChildTrackUri() { return childTrackUri; }
+    public String getChildImageUrl() { return childImageUrl; }
 
-    public String getParentImageUrl() {
-        return parentImageUrl;
-    }
+    public String getCondition() { return condition; }
+    public boolean getActiveState() { return activeState; }
 
-    public String getChildTitle() {
-        return childTitle;
-    }
-
-    public String getChildTrackUri() {
-        return childTrackUri;
-    }
-
-    public String getChildImageUrl() {
-        return childImageUrl;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-    public boolean getActiveState() {
-        return activeState;
-    }
-    public long getId() {
-        return id;
-    }
+    public long getId() { return id; }
 }

@@ -1,7 +1,6 @@
 package com.example.spotifyautoqueue;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,13 +11,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-
 
 public class GetQueue extends AsyncTask<Void, Void, Boolean> {
 
     String accessToken = ApiTokens.accessToken;
 
+    // Gets the user's current playback queue from the Spotify Web API
+    // Returns true if the request is successful and sets the nextTrackUri in SpotifyService class
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
@@ -41,11 +40,12 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 JSONObject jsonObject = new JSONObject(responseBody);
 
                 JSONArray itemsArray = jsonObject.getJSONArray("queue");
-                    JSONObject itemObject = itemsArray.getJSONObject(0);
-                    String trackUri = itemObject.getString("uri");
+
+                // Only dealing with the next track in the queue, because the rest of the queue is not needed
+                JSONObject itemObject = itemsArray.getJSONObject(0);
+                String trackUri = itemObject.getString("uri");
 
                 SpotifyService.nextTrackUri = trackUri;
-                //Log.d("GetQueue", "trackName: "+itemsArray.getJSONObject(0).getString("name"));
 
             } else {
                 connection.disconnect();

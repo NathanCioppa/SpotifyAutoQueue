@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+//Adapter for displaying search results when searching for the child track when creating a new group
 public class ChildTrackSearchesAdapter extends RecyclerView.Adapter<ChildTrackSearchesAdapter.ThisViewHolder> {
 
     Context context;

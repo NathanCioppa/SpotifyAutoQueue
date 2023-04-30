@@ -20,11 +20,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-
+// MainActivity is where users can see their groups
 public class MainActivity extends AppCompatActivity {
-    final String TAG = "MainActivity";
+
     RecyclerView groupsRecycler;
     GroupsRecyclerAdapter groupsAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         groupsRecycler.setAdapter(groupsAdapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        getGroups(this);
-
+        getGroups(this); // Get the groups so they can be displayed
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 groups.remove(i);
                 groupsAdapter.notifyItemRemoved(i);
 
-                saveGroups(this);
+                saveGroups(this); // Save the groups after one has been deleted
                 break;
             }
         }
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 activeStateText.setText(group.activeState ? "Enabled" : "Disabled");
                 activeStateText.setTextColor(group.activeState ? Color.GREEN : Color.RED);
 
-                saveGroups(this);
+                saveGroups(this); // Save the changes to the group
                 break;
             }
         }

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+// Adapter for recycler view which displays parent track search results when creating a new group
 public class ParentTrackSearchesAdapter extends RecyclerView.Adapter<ParentTrackSearchesAdapter.ThisViewHolder> {
     Context context;
     ArrayList<SearchItem> searchItems;
@@ -42,6 +43,7 @@ public class ParentTrackSearchesAdapter extends RecyclerView.Adapter<ParentTrack
         Glide.with(context).load(parentSearches.get(position).getImageUrl()).into(holder.imageView);
         holder.imageView.setTag(parentSearches.get(position).getImageUrl());
 
+        // Prefix the uri with "p" do differentiate between child search results
         holder.itemView.setTag("p"+parentSearches.get(position).uri);
     }
 
