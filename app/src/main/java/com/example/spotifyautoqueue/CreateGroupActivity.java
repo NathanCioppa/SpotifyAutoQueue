@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ public class CreateGroupActivity extends AppCompatActivity {
     static ArrayList<SearchItem> parentSearches; // List which contains search results for parent track
 
     public void searchForParent(View button) {
+        hideKeyboard();
+
         EditText inputParentSearch = findViewById(R.id.searchParentTrack);
         SearchSpotify searchSpotify = new SearchSpotify();
         searchSpotify.searchQuery = inputParentSearch.getText().toString();
@@ -79,6 +82,8 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     // Same structure as parent track search
     public void searchForChild(View button) {
+        hideKeyboard();
+
         EditText inputChildSearch = findViewById(R.id.searchChildTrack);
         SearchSpotify searchSpotify = new SearchSpotify();
         searchSpotify.searchQuery = inputChildSearch.getText().toString();
@@ -198,6 +203,13 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
 
+
+    public void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception ignored){}
+    }
 
     public void backToHome(View button) {
         Intent home = new Intent(this, MainActivity.class);
