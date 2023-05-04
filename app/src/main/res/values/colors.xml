@@ -20,4 +20,5 @@
     <color name="light_blue_900">#FF01579B</color>
     <color name="middle_grey">#808080</color>
     <color name="red">#FF0000</color>
+    <color name="semiTransparent">#4DFFFFFF</color>
 </resources>

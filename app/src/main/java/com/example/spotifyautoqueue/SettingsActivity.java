@@ -27,8 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        currentTrackDisplay = findViewById(R.id.sdkConnectionCurrentTrack);
-        testSkdConnection();
     }
 
     public void openAuthLink(View button) {
@@ -67,10 +65,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    String currentTrack = SpotifyService.currentName;
-    TextView currentTrackDisplay;
-    public void testSkdConnection() { currentTrackDisplay.setText(currentTrack); }
-
     public void resetAccessTokens(View button) {
         ApiTokens.authCode = "";
         ApiTokens.refreshToken = "";
@@ -85,7 +79,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void backToHome(View button) {
-        System.out.println("BACK TO HOME");
         Intent home = new Intent(this, MainActivity.class);
         startActivity(home);
     }

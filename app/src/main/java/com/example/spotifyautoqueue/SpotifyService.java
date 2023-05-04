@@ -123,7 +123,6 @@ public class SpotifyService extends Service {
             @Override
             public void onFailure(Throwable error) {
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
-                registerReceiver(spotifyReceiver, filter); // Start to check for spotify to activate again, I can probably get rid of this
 
                 ErrorLogActivity.logError("Failed Spotify app remote connection","disconnecting, waiting for spotify to be opened");
             }
@@ -194,6 +193,7 @@ public class SpotifyService extends Service {
     }
 
 
+
     // gets next track in queue
     // if the first attempt fails, it will refresh the access token and try again once
     public boolean getNextInQueue() {
@@ -243,6 +243,7 @@ public class SpotifyService extends Service {
     private final BroadcastReceiver spotifyReceiver = new BroadcastReceiver() {
         @Override // onReceive is called whenever a new track starts playing
         public void onReceive(Context context, Intent intent) {
+            System.out.println("received");
             if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
                 connectRemote();
 
@@ -261,9 +262,9 @@ public class SpotifyService extends Service {
                             AutoqueueGroup group = groups.get(i);
 
                             // 3 conditions to be met if a "now playing" group should be queue its child:
-                            // group condition must be "now"
-                            // parent track must be the same as the current track
-                            // child track must not be the same as the next track,
+                            // Group condition must be "now"
+                            // Parent track must be the same as the current track
+                            // Child track must not be the same as the next track,
                             //      there would be no purpose in queuing it since it would already be playing next as it should
                             boolean activateNowPlayingGroup =
                                     Objects.equals(group.getCondition(), "now")
@@ -271,9 +272,9 @@ public class SpotifyService extends Service {
                                             && !Objects.equals(group.getChildTrackUri(), nextTrackUri);
 
                             // 3 conditions to be met if a "next in queue" group should queue its child:
-                            // group condition must be "next"
-                            // parent track must be the same as the next track
-                            // child track must not be the same as the current track,
+                            // Group condition must be "next"
+                            // Parent track must be the same as the next track
+                            // Child track must not be the same as the current track,
                             //      there would be no purpose in queuing it since it is playing before its parent as it should
                             boolean activateNextInQueueGroup =
                                     Objects.equals(group.getParentTrackUri(), nextTrackUri)
@@ -281,8 +282,8 @@ public class SpotifyService extends Service {
                                             && !Objects.equals(group.getChildTrackUri(), currentTrackUri);
 
                             // 2 other conditions to be met regardless:
-                            // app remote is connected
-                            // group is active
+                            // App remote is connected
+                            // Group is active
                             boolean remoteIsOk = spotifyAppRemote != null && spotifyAppRemote.isConnected();
                             boolean groupIsActive = group.getActiveState();
 

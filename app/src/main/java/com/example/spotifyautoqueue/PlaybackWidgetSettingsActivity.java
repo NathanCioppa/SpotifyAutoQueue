@@ -73,7 +73,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         setBackgroundOpacitySliderListener();
 
-        updatePreview(UPDATE_ALL); // Update all parts of the preview widget to accurately reflect the settings when the activity is opened
+        updatePreview(UPDATE_ALL); // Update all parts of the preview widget to accurately display the settings when the activity is opened
         selectCurrentChoices(); // Select the appropriate buttons for the selected options when the activity is started
     }
 
