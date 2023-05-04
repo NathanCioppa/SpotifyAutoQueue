@@ -170,6 +170,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         for (String s : newGroup) {
             if (s == null) {
                 allParametersSet = false;
+
+                // Show an error message telling the user which information is missing
+                TextView errorMessage = findViewById(R.id.createGroupErrorMessage);
+                if (newGroup[PARENT_TRACK_URI] == null)
+                    errorMessage.setText("Missing parent track");
+                else if (newGroup[CHILD_TRACK_URI] == null)
+                    errorMessage.setText("Missing child track");
+                else if (newGroup[CONDITION] == null)
+                    errorMessage.setText("Missing condition"); // It should be literally impossible for the condition to be null but :)
+
                 break;
             }
         }
