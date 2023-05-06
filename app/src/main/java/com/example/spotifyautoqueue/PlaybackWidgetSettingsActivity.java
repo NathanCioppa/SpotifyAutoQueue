@@ -150,7 +150,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     }
 
 
-
     SeekBar backgroundOpacitySlider;
     final float FULL_OPACITY = 255; // Opacity is an alpha value ranging from 0 to 255
 

@@ -185,6 +185,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                 else if (newGroup[CONDITION] == null)
                     errorMessage.setText("Missing condition"); // It should be literally impossible for the condition to be null but :)
 
+                View container = findViewById(R.id.errorMessageContainer);
+                container.setVisibility(View.VISIBLE);
+
                 break;
             }
         }
