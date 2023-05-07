@@ -243,7 +243,6 @@ public class SpotifyService extends Service {
     private final BroadcastReceiver spotifyReceiver = new BroadcastReceiver() {
         @Override // onReceive is called whenever a new track starts playing
         public void onReceive(Context context, Intent intent) {
-            System.out.println("received");
             if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
                 connectRemote();
 

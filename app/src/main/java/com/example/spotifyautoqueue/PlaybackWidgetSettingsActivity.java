@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -89,60 +90,57 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
 
 
-    public void setTextBlack(View button) {
-        textColor = Color.BLACK;
+    // For the color toggle buttons, each button's tag should be parsable to its corresponding color, using Color.parseColor()
+    // Docs for parseColor: https://developer.android.com/reference/android/graphics/Color.html#parseColor(java.lang.String)
+
+    public void setTextColor(View selectedButton) {
+        int selectedColor = Color.parseColor(selectedButton.getTag().toString());
+        textColor = selectedColor;
         updatePreview(TEXT_COLOR_KEY);
 
-        findViewById(R.id.buttonTextWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+        // Only possible colors are black and white, button for non selected color should be grey
+        if(selectedColor != Color.BLACK)
+            findViewById(R.id.buttonTextBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        else
+            findViewById(R.id.buttonTextWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+
+        // Make the selected button green
+        selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
-    public void setTextWhite(View button) {
-        textColor = Color.WHITE;
-        updatePreview(TEXT_COLOR_KEY);
-
-        findViewById(R.id.buttonTextBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
-    }
-
-    public void setPlaybackControlWhite(View button) {
-        playbackControlColor = Color.WHITE;
+    // Same format as above
+    public void setPlaybackControlColor(View selectedButton) {
+        int selectedColor = Color.parseColor(selectedButton.getTag().toString());
+        playbackControlColor = selectedColor;
         updatePreview(PLAYBACK_CONTROL_KEY);
 
-        findViewById(R.id.buttonPlaybackBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
-    }
+        if(selectedColor != Color.BLACK)
+            findViewById(R.id.buttonPlaybackBlack).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        else
+            findViewById(R.id.buttonPlaybackWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
 
-    public void setPlaybackControlBlack(View button) {
-        playbackControlColor = Color.BLACK;
-        updatePreview(PLAYBACK_CONTROL_KEY);
-
-        findViewById(R.id.buttonPlaybackWhite).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+        selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
 
 
-    public void setBackgroundColor(View button) {
-        for (ColorSwitchButton checkButton : colorButtons) {
-            findViewById(checkButton.getId()).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+    public void setBackgroundColor(View selectedButton) {
+        backgroundColor = Color.parseColor(selectedButton.getTag().toString());
+        ViewGroup buttons = findViewById(R.id.backgrounColorButtonsContainer);
+        updatePreview(BACKGROUND_KEY);
 
-            if (checkButton.getId() == button.getId()) {
-                backgroundColor = checkButton.getColor();
-                updatePreview(BACKGROUND_KEY);
-            }
+        for(int i=0; i<buttons.getChildCount(); i++) {
+            View thisButton = buttons.getChildAt(i);
+
+            thisButton.setBackgroundTintList(ContextCompat.getColorStateList(this,
+                    thisButton.getId() == selectedButton.getId()
+                    ? R.color.spotify_logo_green
+                    : R.color.middle_grey
+            ));
         }
-        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
-    ColorSwitchButton[] colorButtons = new ColorSwitchButton[] {
-            new ColorSwitchButton(R.id.buttonBackgroundBlack, Color.BLACK),
-            new ColorSwitchButton(R.id.buttonBackgroundWhite, Color.WHITE),
-            new ColorSwitchButton(R.id.buttonBackgroundPink, Color.MAGENTA),
-            new ColorSwitchButton(R.id.buttonBackgroundCyan, Color.CYAN),
-            new ColorSwitchButton(R.id.buttonBackgroundGreen, Color.GREEN),
-            new ColorSwitchButton(R.id.buttonBackgroundRed, Color.RED)
-    };
+
 
     SeekBar backgroundOpacitySlider;
     final float FULL_OPACITY = 255; // Opacity is an alpha value ranging from 0 to 255
@@ -154,7 +152,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         SeekBar.OnSeekBarChangeListener backgroundOpacitySliderListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int seekBarProgress, boolean b) {
-                // Convert the seekBar's progress (0 to 100) into an alpha value (0 t0 255)
+                // Convert the seekBar's progress (0 to 100) into an alpha value (0 to 255)
                 float alpha = (FULL_OPACITY/100)*seekBarProgress;
 
                 backgroundOpacity = (int)alpha;
@@ -245,9 +243,11 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         else
             findViewById(R.id.buttonPlaybackBlack).performClick();
 
-        for (ColorSwitchButton colorButton : colorButtons) {
-            if (colorButton.getColor() == backgroundColor)
-                findViewById(colorButton.getId()).performClick();
+        ViewGroup backgroundButtons = findViewById(R.id.backgrounColorButtonsContainer);
+        for (int i=0; i<backgroundButtons.getChildCount(); i++) {
+            View thisButton = backgroundButtons.getChildAt(i);
+            if (Color.parseColor(thisButton.getTag().toString()) == backgroundColor)
+                thisButton.performClick();
         }
 
         // Set the progress of the opacity slider seekBar

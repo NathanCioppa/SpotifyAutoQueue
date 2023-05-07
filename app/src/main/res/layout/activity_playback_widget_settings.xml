@@ -148,13 +148,15 @@
                         android:id="@+id/buttonTextBlack"
                         style="@style/configWidgetButton"
                         android:backgroundTint="#808080"
-                        android:onClick="setTextBlack"
+                        android:onClick="setTextColor"
+                        android:tag="black"
                         android:text="@string/black_config_widget_button" />
 
                     <Button
                         android:id="@+id/buttonTextWhite"
                         style="@style/configWidgetButton"
-                        android:onClick="setTextWhite"
+                        android:onClick="setTextColor"
+                        android:tag="white"
                         android:text="@string/white_config_widget_button" />
 
                 </LinearLayout>
@@ -180,13 +182,15 @@
                         <Button
                             android:id="@+id/buttonPlaybackBlack"
                             style="@style/configWidgetButton"
-                            android:onClick="setPlaybackControlBlack"
+                            android:onClick="setPlaybackControlColor"
+                            android:tag="black"
                             android:text="@string/black_config_widget_button" />
 
                         <Button
                             android:id="@+id/buttonPlaybackWhite"
                             style="@style/configWidgetButton"
-                            android:onClick="setPlaybackControlWhite"
+                            android:onClick="setPlaybackControlColor"
+                            android:tag="white"
                             android:text="@string/white_config_widget_button" />
                     </LinearLayout>
 
@@ -203,60 +207,71 @@
                             android:layout_height="wrap_content"
                             android:text="@string/widget_config_background_title" />
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/backgrounColorButtonsContainer"
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
 
-                                <Button
-                                    android:id="@+id/buttonBackgroundBlack"
-                                    style="@style/configWidgetButton"
-                                    android:onClick="setBackgroundColor"
-                                    android:text="@string/dark_widget_config_button" />
+                            <Button
+                                android:id="@+id/buttonBackgroundBlack"
+                                style="@style/configWidgetButton"
+                                android:onClick="setBackgroundColor"
+                                android:tag="black"
+                                android:text="@string/dark_widget_config_button"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <Button
-                                    android:id="@+id/buttonBackgroundWhite"
-                                    style="@style/configWidgetButton"
-                                    android:onClick="setBackgroundColor"
-                                    android:text="@string/light_widget_config_button" />
+                            <Button
+                                android:id="@+id/buttonBackgroundWhite"
+                                style="@style/configWidgetButton"
+                                android:layout_marginStart="8dp"
+                                android:onClick="setBackgroundColor"
+                                android:tag="white"
+                                android:text="@string/light_widget_config_button"
+                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundBlack"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <Button
-                                    android:id="@+id/buttonBackgroundPink"
-                                    style="@style/configWidgetButton"
-                                    android:onClick="setBackgroundColor"
-                                    android:text="@string/pink_widget_config_button" />
-                            </LinearLayout>
+                            <Button
+                                android:id="@+id/buttonBackgroundPink"
+                                style="@style/configWidgetButton"
+                                android:layout_marginStart="8dp"
+                                android:onClick="setBackgroundColor"
+                                android:tag="magenta"
+                                android:text="@string/pink_widget_config_button"
+                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundWhite"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                            <Button
+                                android:id="@+id/buttonBackgroundCyan"
+                                style="@style/configWidgetButton"
+                                android:onClick="setBackgroundColor"
+                                android:tag="cyan"
+                                android:text="@string/cyan_widget_config_button"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundBlack" />
 
-                                <Button
-                                    android:id="@+id/buttonBackgroundCyan"
-                                    style="@style/configWidgetButton"
-                                    android:onClick="setBackgroundColor"
-                                    android:text="@string/cyan_widget_config_button" />
+                            <Button
+                                android:id="@+id/buttonBackgroundGreen"
+                                style="@style/configWidgetButton"
+                                android:layout_marginStart="8dp"
+                                android:onClick="setBackgroundColor"
+                                android:tag="green"
+                                android:text="@string/green_widget_config_button"
+                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundCyan"
+                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundWhite" />
 
-                                <Button
-                                    android:id="@+id/buttonBackgroundGreen"
-                                    style="@style/configWidgetButton"
-                                    android:onClick="setBackgroundColor"
-                                    android:text="@string/green_widget_config_button" />
-
-                                <Button
-                                    android:id="@+id/buttonBackgroundRed"
-                                    style="@style/configWidgetButton"
-                                    android:onClick="setBackgroundColor"
-                                    android:text="@string/red_widget_config_button" />
-                            </LinearLayout>
-                        </LinearLayout>
+                            <Button
+                                android:id="@+id/buttonBackgroundRed"
+                                style="@style/configWidgetButton"
+                                android:layout_marginStart="8dp"
+                                android:onClick="setBackgroundColor"
+                                android:tag="red"
+                                android:text="@string/red_widget_config_button"
+                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundGreen"
+                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundPink" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
                             android:id="@+id/textView11"
