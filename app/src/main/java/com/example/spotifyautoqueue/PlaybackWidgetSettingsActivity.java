@@ -34,7 +34,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     static int backgroundColor = Color.WHITE;
     static int backgroundOpacity = 50;
 
-    ArrayList<ColorSwitchButton> backgroundColors = new ArrayList<>();
     Drawable wallpaperImage;
     WallpaperManager wallpaperManager;
 
@@ -64,8 +63,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         configData = new int[4];
 
-        setupBackgroundColorList();
-
         setContentView(R.layout.activity_playback_widget_settings);
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && wallpaperImage != null)
@@ -88,16 +85,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             if(wallpaperImage != null)
                 findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
         }
-    }
-
-    // Sets up the ArrayList of available background colors, I need to make this better
-    public void setupBackgroundColorList() {
-        backgroundColors.add(new ColorSwitchButton(R.id.buttonBackgroundBlack, Color.BLACK));
-        backgroundColors.add(new ColorSwitchButton(R.id.buttonBackgroundWhite, Color.WHITE));
-        backgroundColors.add(new ColorSwitchButton(R.id.buttonBackgroundPink, Color.MAGENTA));
-        backgroundColors.add(new ColorSwitchButton(R.id.buttonBackgroundCyan, Color.CYAN));
-        backgroundColors.add(new ColorSwitchButton(R.id.buttonBackgroundGreen, Color.GREEN));
-        backgroundColors.add(new ColorSwitchButton(R.id.buttonBackgroundRed, Color.RED));
     }
 
 
@@ -137,11 +124,10 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
 
     public void setBackgroundColor(View button) {
-        for(int i = 0; i < backgroundColors.size(); i++) {
-            ColorSwitchButton checkButton = backgroundColors.get(i);
+        for (ColorSwitchButton checkButton : colorButtons) {
             findViewById(checkButton.getId()).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
 
-            if(checkButton.getId() == button.getId()) {
+            if (checkButton.getId() == button.getId()) {
                 backgroundColor = checkButton.getColor();
                 updatePreview(BACKGROUND_KEY);
             }
@@ -149,6 +135,14 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
+    ColorSwitchButton[] colorButtons = new ColorSwitchButton[] {
+            new ColorSwitchButton(R.id.buttonBackgroundBlack, Color.BLACK),
+            new ColorSwitchButton(R.id.buttonBackgroundWhite, Color.WHITE),
+            new ColorSwitchButton(R.id.buttonBackgroundPink, Color.MAGENTA),
+            new ColorSwitchButton(R.id.buttonBackgroundCyan, Color.CYAN),
+            new ColorSwitchButton(R.id.buttonBackgroundGreen, Color.GREEN),
+            new ColorSwitchButton(R.id.buttonBackgroundRed, Color.RED)
+    };
 
     SeekBar backgroundOpacitySlider;
     final float FULL_OPACITY = 255; // Opacity is an alpha value ranging from 0 to 255
@@ -251,9 +245,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         else
             findViewById(R.id.buttonPlaybackBlack).performClick();
 
-        for(int i = 0; i < backgroundColors.size(); i++) {
-            if (backgroundColors.get(i).color == backgroundColor)
-                findViewById(backgroundColors.get(i).getId()).performClick();
+        for (ColorSwitchButton colorButton : colorButtons) {
+            if (colorButton.getColor() == backgroundColor)
+                findViewById(colorButton.getId()).performClick();
         }
 
         // Set the progress of the opacity slider seekBar
