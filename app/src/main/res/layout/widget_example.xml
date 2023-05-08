@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="#00FFFFFF"
-                        app:srcCompat="@drawable/icons8_skip_to_start_96___" />
+                        app:srcCompat="@drawable/icons8_skip_to_start_96___white" />
 
                     <ImageButton
                         android:id="@+id/imageButton8"
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="#00FFFFFF"
-                        app:srcCompat="@drawable/icons8_pause_96___" />
+                        app:srcCompat="@drawable/icons8_pause_96___black" />
 
                     <ImageButton
                         android:id="@+id/imageButton9"
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="#00FFFFFF"
-                        app:srcCompat="@drawable/icons8_end_96___" />
+                        app:srcCompat="@drawable/icons8_end_96___black" />
                 </LinearLayout>
 
 

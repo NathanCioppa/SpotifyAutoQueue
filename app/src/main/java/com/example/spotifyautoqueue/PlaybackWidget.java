@@ -36,9 +36,9 @@ public class PlaybackWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
 
                 if(SpotifyService.paused)
-                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_play_96___);
+                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_play_96___black);
                 else
-                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_pause_96___);
+                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_pause_96___black);
 
                 String trackImageUrl = SpotifyService.currentImageUrl;
                 if(!Objects.equals(trackImageUrl, "")) {

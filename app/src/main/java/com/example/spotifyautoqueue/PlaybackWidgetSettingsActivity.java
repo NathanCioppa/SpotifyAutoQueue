@@ -20,9 +20,6 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-
-import java.util.ArrayList;
-
 // Customization settings for the playback widget
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
