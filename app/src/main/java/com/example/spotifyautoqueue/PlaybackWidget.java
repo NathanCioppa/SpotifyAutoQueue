@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import androidx.core.content.ContextCompat;
@@ -16,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 // Class that handles the home-screen playback widget
@@ -25,9 +28,11 @@ public class PlaybackWidget extends AppWidgetProvider {
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int[] configData) {
 
         try{
+            System.out.println("f " +appWidgetId);
             ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
             int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
+            System.out.println("s "+ Arrays.toString(appWidgetIds));
 
             // only update playback information, since config data is not being changed
             if(configData == null) {
@@ -36,6 +41,7 @@ public class PlaybackWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
 
                 if(SpotifyService.paused)
+
                     views.setImageViewResource(R.id.togglePause, R.drawable.icons8_play_96___black);
                 else
                     views.setImageViewResource(R.id.togglePause, R.drawable.icons8_pause_96___black);
@@ -58,25 +64,22 @@ public class PlaybackWidget extends AppWidgetProvider {
                 views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
                 views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    // Playback buttons can only be toggled between black and white
-                    views.setColorStateList(R.id.togglePause, "setImageTintList", ContextCompat.getColorStateList(context,
-                            PLAYBACK_CONTROL_COLOR == Color.WHITE
-                                    ? R.color.white
-                                    : R.color.black
-                    ));
-                    views.setColorStateList(R.id.playPrevious, "setImageTintList", ContextCompat.getColorStateList(context,
-                            PLAYBACK_CONTROL_COLOR == Color.WHITE
-                                    ? R.color.white
-                                    : R.color.black
-                    ));
-                    views.setColorStateList(R.id.playNext, "setImageTintList", ContextCompat.getColorStateList(context,
-                            PLAYBACK_CONTROL_COLOR == Color.WHITE
-                                    ? R.color.white
-                                    : R.color.black
-                    ));
-                } else
-                    ErrorLogActivity.logError("Error setting widget config","Can not set playback control button colors, requires Android 12 (API level 31) or higher");
+                // Playback buttons can only be toggled between black and white
+                if(PLAYBACK_CONTROL_COLOR == Color.WHITE) {
+                    views.setImageViewResource(R.id.togglePause, SpotifyService.paused
+                            ? R.drawable.icons8_play_96___white
+                            : R.drawable.icons8_pause_96___white
+                    );
+                    views.setImageViewResource(R.id.playNext, R.drawable.icons8_end_96___white);
+                    views.setImageViewResource(R.id.playPrevious, R.drawable.icons8_skip_to_start_96___white);
+                } else {
+                    views.setImageViewResource(R.id.togglePause, SpotifyService.paused
+                            ? R.drawable.icons8_play_96___black
+                            : R.drawable.icons8_pause_96___black
+                    );
+                    views.setImageViewResource(R.id.playNext, R.drawable.icons8_end_96___black);
+                    views.setImageViewResource(R.id.playPrevious, R.drawable.icons8_skip_to_start_96___black);
+                }
 
                 // Set widget background drawable, color, and opacity
                 views.setImageViewResource(R.id.imageView333, R.drawable.rounded_corners);

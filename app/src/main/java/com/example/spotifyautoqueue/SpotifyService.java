@@ -167,6 +167,8 @@ public class SpotifyService extends Service {
         PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, null);
     }
 
+
+
     // playNext(), togglePause(), and playPrevious() are used by the home-screen widget to control playback
     public void playNext() {
         if (spotifyAppRemote != null && spotifyAppRemote.isConnected()) {

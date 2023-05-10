@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -19,6 +20,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 // Customization settings for the playback widget
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
@@ -39,6 +47,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -47,6 +58,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
+        //getWidgetData(this);
 
         // Get the wallpaper to be used as the background of the config activity, so the user can see a more accurate preview of the widget
         // Make sure the READ_EXTERNAL_STORAGE permission is granted, request the permission if not
@@ -169,6 +181,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     final int BACKGROUND_OPACITY = 3;
 
     public void finishConfig(View button) {
+        //saveWidgetData(this);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         // Add the user's changes into the configData array, update the widget with the configData
@@ -250,5 +263,31 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         // Set the progress of the opacity slider seekBar
         float progressPercent = (100/FULL_OPACITY)*backgroundOpacity;
         backgroundOpacitySlider.setProgress((int)progressPercent);
+    }
+
+    static ArrayList<WidgetData> userWidgetData = new ArrayList<>(); // ArrayList containing information about all the user's widgets
+
+    public static void saveWidgetData(Context context) {
+        try {
+            FileOutputStream fos = context.openFileOutput("widgets.txt", Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(userWidgetData);
+            oos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getWidgetData(Context context) {
+        try {
+            FileInputStream fis = context.openFileInput("widgets.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            userWidgetData = (ArrayList<WidgetData>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
