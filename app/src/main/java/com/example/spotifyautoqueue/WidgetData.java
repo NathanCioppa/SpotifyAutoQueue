@@ -8,28 +8,24 @@ public class WidgetData implements Serializable {
     int textColor;
     int buttonColor;
     int backgroundColor;
+    int backgroundOpacity;
 
-    public WidgetData(int widgetId, int textColor, int buttonColor, int backgroundColor) {
+    public WidgetData(int widgetId, int textColor, int buttonColor, int backgroundColor, int backgroundOpacity) {
         this.widgetId = widgetId;
         this.textColor = textColor;
         this.buttonColor = buttonColor;
         this.backgroundColor = backgroundColor;
+        this.backgroundOpacity = backgroundOpacity;
     }
 
-    public int getWidgetId() {
-        return widgetId;
-    }
+    public int getWidgetId() { return widgetId; }
 
-    public int getTextColor() {
-        return textColor;
-    }
+    public int getTextColor() { return textColor; }
 
-    public int getButtonColor() {
-        return buttonColor;
-    }
+    public int getButtonColor() { return buttonColor; }
 
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
+    public int getBackgroundColor() { return backgroundColor; }
+
+    public int getBackgroundOpacity() { return  backgroundOpacity; }
 
 }

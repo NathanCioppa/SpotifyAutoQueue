@@ -31,14 +31,20 @@ import java.util.ArrayList;
 // Customization settings for the playback widget
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
-    int widgetId;
-    int[] configData;
+    int widgetId = -1;
+    boolean isNewWidget = true;
+    int indexOfWidget = -1; // -1 if the widget being configured is new.
+                            // If the widget being configured is an existing widget, this will be set to its index in userWidgetData by getExistingWidgetData()
+    WidgetData thisWidget; // WidgetData object to store all information about the widget being configured, be it new or old
+
 
     // Initialize to the default config options
     static int textColor = Color.WHITE;
     static int playbackControlColor = Color.WHITE;
     static int backgroundColor = Color.WHITE;
     static int backgroundOpacity = 50;
+
+    int[] configData;
 
     Drawable wallpaperImage;
     WallpaperManager wallpaperManager;
@@ -47,18 +53,37 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+
         widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         if (extras != null) {
             widgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        //getWidgetData(this);
+
+        getWidgetData(this);
+
+        // Make sure widgetId is gotten before checking if the widget is new
+        isNewWidget = checkIfWidgetIsNew();
+
+        // thisWidget should be a new WidgetData object with the default settings if the widget is new.
+        // If the widget is not new, thisWidget will be set to its current settings
+        thisWidget = isNewWidget
+                ? new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity)
+                : getExistingWidgetData();
+
+        assert thisWidget != null; // Something has gone very wrong if thisWidget is null at this point
+
+        // Sync the widget's settings with the default config options, insures the preview widget looks the same as the widget, not important for a new widget
+        if(!isNewWidget) {
+            textColor = thisWidget.getTextColor();
+            playbackControlColor = thisWidget.getButtonColor();
+            backgroundColor = thisWidget.getBackgroundColor();
+            backgroundOpacity = thisWidget.getBackgroundOpacity();
+        }
+
 
         // Get the wallpaper to be used as the background of the config activity, so the user can see a more accurate preview of the widget
         // Make sure the READ_EXTERNAL_STORAGE permission is granted, request the permission if not
@@ -181,7 +206,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     final int BACKGROUND_OPACITY = 3;
 
     public void finishConfig(View button) {
-        //saveWidgetData(this);
+
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         // Add the user's changes into the configData array, update the widget with the configData
@@ -189,6 +214,19 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         configData[PLAYBACK_CONTROL_COLOR] = playbackControlColor;
         configData[BACKGROUND_COLOR] = backgroundColor;
         configData[BACKGROUND_OPACITY] = backgroundOpacity;
+
+        thisWidget.textColor = textColor;
+        thisWidget.buttonColor = playbackControlColor;
+        thisWidget.backgroundColor = backgroundColor;
+        thisWidget.backgroundOpacity = backgroundOpacity;
+
+        if(isNewWidget)
+            userWidgetData.add(thisWidget);
+        else
+            userWidgetData.set(indexOfWidget, thisWidget);
+
+
+        saveWidgetData(this);
 
         PlaybackWidget.updateAppWidget(this.getApplicationContext(), appWidgetManager, widgetId, configData);
 
@@ -266,6 +304,27 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     }
 
     static ArrayList<WidgetData> userWidgetData = new ArrayList<>(); // ArrayList containing information about all the user's widgets
+
+    // Get the current settings of a widget if it is not just being created
+    public boolean checkIfWidgetIsNew() {
+        assert widgetId != -1;
+
+        for(int i=0; i<userWidgetData.size(); i++) {
+            if(userWidgetData.get(i).getWidgetId() == widgetId)
+                return false;
+        }
+        return true;
+    }
+
+    public WidgetData getExistingWidgetData() {
+        for(int i=0; i<userWidgetData.size(); i++) {
+            if(userWidgetData.get(i).getWidgetId() == widgetId) {
+                indexOfWidget = i;
+                return userWidgetData.get(indexOfWidget);
+            }
+        }
+        return null;
+    }
 
     public static void saveWidgetData(Context context) {
         try {
