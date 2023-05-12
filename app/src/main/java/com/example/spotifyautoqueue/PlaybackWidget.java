@@ -8,17 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
-import android.view.View;
-import android.widget.ImageView;
+
 import android.widget.RemoteViews;
 
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Objects;
 
 // Class that handles the home-screen playback widget
@@ -28,11 +25,30 @@ public class PlaybackWidget extends AppWidgetProvider {
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int[] configData) {
 
         try{
-            System.out.println("f " +appWidgetId);
             ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
             int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
-            System.out.println("s "+ Arrays.toString(appWidgetIds));
+
+            if(PlaybackWidgetSettingsActivity.userWidgetData.size() == 0)
+                PlaybackWidgetSettingsActivity.getWidgetData(context);
+
+            WidgetData thisWidget = null;
+            ArrayList<WidgetData> userWidgetData = PlaybackWidgetSettingsActivity.userWidgetData;
+
+            System.out.println("id "+appWidgetId);
+
+            for(int i=0; i<userWidgetData.size(); i++) {
+                System.out.println("possible id  "+i+" "+userWidgetData.get(i).getWidgetId());
+                if(userWidgetData.get(i).getWidgetId() == appWidgetId) {
+                    thisWidget = userWidgetData.get(i);
+                    break;
+                }
+            }
+
+            if(thisWidget == null) {
+                ErrorLogActivity.logError("Failed to update a widget","userWidgetData did not contain an id matching the appWidgetId being updated");
+                return;
+            }
 
             // only update playback information, since config data is not being changed
             if(configData == null) {
@@ -41,16 +57,22 @@ public class PlaybackWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
 
                 if(SpotifyService.paused)
+                    views.setImageViewResource(R.id.togglePause, thisWidget.getButtonColor() == Color.BLACK
+                            ? R.drawable.icons8_play_96___black
+                            : R.drawable.icons8_play_96___white
+                    );
 
-                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_play_96___black);
-                else
-                    views.setImageViewResource(R.id.togglePause, R.drawable.icons8_pause_96___black);
+                if (!SpotifyService.paused)
+                    views.setImageViewResource(R.id.togglePause, thisWidget.getButtonColor() == Color.BLACK
+                            ? R.drawable.icons8_pause_96___black
+                            : R.drawable.icons8_pause_96___white
+                    );
 
                 String trackImageUrl = SpotifyService.currentImageUrl;
                 if(!Objects.equals(trackImageUrl, "")) {
                     Uri imageUri = Uri.parse(trackImageUrl);
                         Glide.with(context).asBitmap().load(imageUri)
-                            .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetIds));
+                            .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetId));
                 }
 
             // configData was changed, update the widget accordingly without changing playback data
@@ -61,11 +83,12 @@ public class PlaybackWidget extends AppWidgetProvider {
                 final int BACKGROUND_COLOR = configData[2];
                 final int BACKGROUND_OPACITY = configData[3];
 
-                views.setTextColor(R.id.playbackWidgetTrackName, TEXT_COLOR);
+                views.setTextColor(R.id.playbackWidgetTrackName, thisWidget.getTextColor());
                 views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
 
                 // Playback buttons can only be toggled between black and white
-                if(PLAYBACK_CONTROL_COLOR == Color.WHITE) {
+
+                if(thisWidget.getButtonColor() == Color.WHITE) {
                     views.setImageViewResource(R.id.togglePause, SpotifyService.paused
                             ? R.drawable.icons8_play_96___white
                             : R.drawable.icons8_pause_96___white
@@ -157,6 +180,8 @@ public class PlaybackWidget extends AppWidgetProvider {
         intent.setAction(action);
         context.startService(intent);
     }
+
+
 
 
 

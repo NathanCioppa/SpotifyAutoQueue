@@ -63,6 +63,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
+        System.out.println(widgetId);
+
         getWidgetData(this);
 
         // Make sure widgetId is gotten before checking if the widget is new
@@ -224,7 +226,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             userWidgetData.add(thisWidget);
         else
             userWidgetData.set(indexOfWidget, thisWidget);
-
 
         saveWidgetData(this);
 

@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -159,12 +160,18 @@ public class SpotifyService extends Service {
     }
 
     public void updateWidget() {
+
         Context appContext = this.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int widgetId = R.layout.playback_widget;
+        ComponentName componentName = new ComponentName(context.getApplicationContext(), PlaybackWidget.class);
+        int[] appWidgetIds = AppWidgetManager.getInstance(context.getApplicationContext()).getAppWidgetIds(componentName);
 
-        // Update with null configData since this is not updating the widget's customization settings
-        PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, null);
+        // Update each widget individually so that there is access to each widget's config data, even though config options are not being updated
+        // Mostly necessary for the app to determine which color play/pause button should be set to each widget
+        for (int widgetId : appWidgetIds) {
+            // Still update with null configData since this is not actually making changes to the widget's customization settings
+            PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, null);
+        }
     }
 
 
