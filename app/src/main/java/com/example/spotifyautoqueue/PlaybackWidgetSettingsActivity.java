@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // Customization settings for the playback widget
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
@@ -43,8 +45,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     static int playbackControlColor = Color.WHITE;
     static int backgroundColor = Color.WHITE;
     static int backgroundOpacity = 50;
-
-    int[] configData;
 
     Drawable wallpaperImage;
     WallpaperManager wallpaperManager;
@@ -63,28 +63,34 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
-        System.out.println(widgetId);
-
         getWidgetData(this);
 
         // Make sure widgetId is gotten before checking if the widget is new
         isNewWidget = checkIfWidgetIsNew();
 
         // thisWidget should be a new WidgetData object with the default settings if the widget is new.
+        if(isNewWidget) {
+            textColor = Color.WHITE;
+            playbackControlColor = Color.WHITE;
+            backgroundColor = Color.WHITE;
+            backgroundOpacity = 50;
+
+            thisWidget = new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity);
+        }
+
         // If the widget is not new, thisWidget will be set to its current settings
-        thisWidget = isNewWidget
-                ? new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity)
-                : getExistingWidgetData();
-
-        assert thisWidget != null; // Something has gone very wrong if thisWidget is null at this point
-
-        // Sync the widget's settings with the default config options, insures the preview widget looks the same as the widget, not important for a new widget
         if(!isNewWidget) {
+            thisWidget = getExistingWidgetData();
+
+            // Sync the widget's settings with the default config options, insures the preview widget looks the same as the widget, not important for a new widget
             textColor = thisWidget.getTextColor();
             playbackControlColor = thisWidget.getButtonColor();
             backgroundColor = thisWidget.getBackgroundColor();
             backgroundOpacity = thisWidget.getBackgroundOpacity();
         }
+
+        assert thisWidget != null; // Something has gone very wrong if thisWidget is null at this point
+
 
 
         // Get the wallpaper to be used as the background of the config activity, so the user can see a more accurate preview of the widget
@@ -97,8 +103,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             else
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
-
-        configData = new int[4];
 
         setContentView(R.layout.activity_playback_widget_settings);
 
@@ -158,8 +162,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
     }
 
-
-
     public void setBackgroundColor(View selectedButton) {
         backgroundColor = Color.parseColor(selectedButton.getTag().toString());
         ViewGroup buttons = findViewById(R.id.backgrounColorButtonsContainer);
@@ -202,20 +204,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         backgroundOpacitySlider.setOnSeekBarChangeListener(backgroundOpacitySliderListener);
     }
 
-    final int TEXT_COLOR = 0;
-    final int PLAYBACK_CONTROL_COLOR = 1;
-    final int BACKGROUND_COLOR = 2;
-    final int BACKGROUND_OPACITY = 3;
-
     public void finishConfig(View button) {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-
-        // Add the user's changes into the configData array, update the widget with the configData
-        configData[TEXT_COLOR] = textColor;
-        configData[PLAYBACK_CONTROL_COLOR] = playbackControlColor;
-        configData[BACKGROUND_COLOR] = backgroundColor;
-        configData[BACKGROUND_OPACITY] = backgroundOpacity;
 
         thisWidget.textColor = textColor;
         thisWidget.buttonColor = playbackControlColor;
@@ -229,7 +220,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         saveWidgetData(this);
 
-        PlaybackWidget.updateAppWidget(this.getApplicationContext(), appWidgetManager, widgetId, configData);
+        PlaybackWidget.updateAppWidget(this.getApplicationContext(), appWidgetManager, widgetId, true);
 
         Intent resultValue = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_OK, resultValue);
@@ -349,5 +340,25 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    // Removes leftover WidgetData from userWidgetData, so that data from widgets which have been deleted is not stored
+    public static void removeExtraUserWidgetInfo(Context context) {
+        getWidgetData(context);
+
+        ComponentName componentName = new ComponentName(context.getApplicationContext(), PlaybackWidget.class);
+        int[] activeAppWidgetIds = AppWidgetManager.getInstance(context.getApplicationContext()).getAppWidgetIds(componentName);
+        Arrays.sort(activeAppWidgetIds);
+
+        ArrayList<WidgetData> filteredStoredData = new ArrayList<>();
+
+        for (int i=0; i<userWidgetData.size(); i++) {
+            if(Arrays.binarySearch(activeAppWidgetIds, userWidgetData.get(i).getWidgetId()) >= 0){
+                filteredStoredData.add(userWidgetData.get(i));
+            }
+        }
+
+        userWidgetData = filteredStoredData;
+        saveWidgetData(context);
     }
 }

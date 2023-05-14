@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         groupsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         getGroups(this); // Get the groups so they can be displayed
+
+        PlaybackWidgetSettingsActivity.removeExtraUserWidgetInfo(this.getApplicationContext());
     }
 
     @Override

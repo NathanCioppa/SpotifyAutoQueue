@@ -71,6 +71,9 @@ public class SpotifyService extends Service {
             filter = new IntentFilter("com.spotify.music.active");
             registerReceiver(spotifyReceiver, filter);
 
+            // Get userWidgetData in PlaybackWidgetSettingActivity since this class updates the widgets
+            PlaybackWidgetSettingsActivity.getWidgetData(this.getApplicationContext());
+
         } catch (Exception e) {
             ErrorLogActivity.logError("Error starting foreground service", e.toString());
             if(spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
@@ -125,7 +128,9 @@ public class SpotifyService extends Service {
             public void onFailure(Throwable error) {
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
 
-                ErrorLogActivity.logError("Failed Spotify app remote connection","disconnecting, waiting for spotify to be opened");
+                // Display the "paused" state on the widget when spotify closes
+                paused = true;
+                updateWidget();
             }
         });
     }
@@ -170,7 +175,7 @@ public class SpotifyService extends Service {
         // Mostly necessary for the app to determine which color play/pause button should be set to each widget
         for (int widgetId : appWidgetIds) {
             // Still update with null configData since this is not actually making changes to the widget's customization settings
-            PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, null);
+            PlaybackWidget.updateAppWidget(appContext, appWidgetManager, widgetId, false);
         }
     }
 
@@ -183,7 +188,7 @@ public class SpotifyService extends Service {
         }
     }
 
-    public static boolean paused = false;
+    public static boolean paused = true;
     public void togglePause() {
         if(spotifyAppRemote != null && spotifyAppRemote.isConnected()) {
             PlayerApi player = spotifyAppRemote.getPlayerApi();

@@ -3,7 +3,6 @@ package com.example.spotifyautoqueue;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,24 +20,18 @@ import java.util.Objects;
 // Class that handles the home-screen playback widget
 public class PlaybackWidget extends AppWidgetProvider {
 
-    // Executes whenever a new track plays, or when the config options are changed
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int[] configData) {
+    // Executes whenever a new track plays, callback from app remote is executed, or when the config options are changed
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean isConfigUpdate) {
 
         try{
-            ComponentName componentName = new ComponentName(context, PlaybackWidget.class);
-            int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(componentName);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
 
-            if(PlaybackWidgetSettingsActivity.userWidgetData.size() == 0)
-                PlaybackWidgetSettingsActivity.getWidgetData(context);
+            PlaybackWidgetSettingsActivity.getWidgetData(context);
 
             WidgetData thisWidget = null;
             ArrayList<WidgetData> userWidgetData = PlaybackWidgetSettingsActivity.userWidgetData;
 
-            System.out.println("id "+appWidgetId);
-
             for(int i=0; i<userWidgetData.size(); i++) {
-                System.out.println("possible id  "+i+" "+userWidgetData.get(i).getWidgetId());
                 if(userWidgetData.get(i).getWidgetId() == appWidgetId) {
                     thisWidget = userWidgetData.get(i);
                     break;
@@ -50,8 +43,8 @@ public class PlaybackWidget extends AppWidgetProvider {
                 return;
             }
 
-            // only update playback information, since config data is not being changed
-            if(configData == null) {
+            // Do not update the widget's displayed information if is is just a config update
+            if(!isConfigUpdate) {
 
                 views.setTextViewText(R.id.playbackWidgetTrackName, SpotifyService.currentName);
                 views.setTextViewText(R.id.playbackWidgetTrackArtist, SpotifyService.currentArtist);
@@ -74,41 +67,37 @@ public class PlaybackWidget extends AppWidgetProvider {
                         Glide.with(context).asBitmap().load(imageUri)
                             .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetId));
                 }
-
-            // configData was changed, update the widget accordingly without changing playback data
-            } else {
-
-                final int TEXT_COLOR = configData[0];
-                final int PLAYBACK_CONTROL_COLOR = configData[1];
-                final int BACKGROUND_COLOR = configData[2];
-                final int BACKGROUND_OPACITY = configData[3];
-
-                views.setTextColor(R.id.playbackWidgetTrackName, thisWidget.getTextColor());
-                views.setTextColor(R.id.playbackWidgetTrackArtist, TEXT_COLOR);
-
-                // Playback buttons can only be toggled between black and white
-
-                if(thisWidget.getButtonColor() == Color.WHITE) {
-                    views.setImageViewResource(R.id.togglePause, SpotifyService.paused
-                            ? R.drawable.icons8_play_96___white
-                            : R.drawable.icons8_pause_96___white
-                    );
-                    views.setImageViewResource(R.id.playNext, R.drawable.icons8_end_96___white);
-                    views.setImageViewResource(R.id.playPrevious, R.drawable.icons8_skip_to_start_96___white);
-                } else {
-                    views.setImageViewResource(R.id.togglePause, SpotifyService.paused
-                            ? R.drawable.icons8_play_96___black
-                            : R.drawable.icons8_pause_96___black
-                    );
-                    views.setImageViewResource(R.id.playNext, R.drawable.icons8_end_96___black);
-                    views.setImageViewResource(R.id.playPrevious, R.drawable.icons8_skip_to_start_96___black);
-                }
-
-                // Set widget background drawable, color, and opacity
-                views.setImageViewResource(R.id.imageView333, R.drawable.rounded_corners);
-                views.setInt(R.id.imageView333, "setColorFilter", BACKGROUND_COLOR);
-                views.setInt(R.id.imageView333, "setAlpha", BACKGROUND_OPACITY);
             }
+
+
+
+            views.setTextColor(R.id.playbackWidgetTrackName, thisWidget.getTextColor());
+            views.setTextColor(R.id.playbackWidgetTrackArtist, thisWidget.getTextColor());
+
+            // Playback buttons can only be toggled between black and white
+            // Changes drawables rather than tinting the icon since that does not work on lower device levels
+            if(thisWidget.getButtonColor() == Color.WHITE) {
+                views.setImageViewResource(R.id.togglePause, SpotifyService.paused
+                        ? R.drawable.icons8_play_96___white
+                        : R.drawable.icons8_pause_96___white
+                );
+                views.setImageViewResource(R.id.playNext, R.drawable.icons8_end_96___white);
+                views.setImageViewResource(R.id.playPrevious, R.drawable.icons8_skip_to_start_96___white);
+            } else {
+                views.setImageViewResource(R.id.togglePause, SpotifyService.paused
+                        ? R.drawable.icons8_play_96___black
+                        : R.drawable.icons8_pause_96___black
+                );
+                views.setImageViewResource(R.id.playNext, R.drawable.icons8_end_96___black);
+                views.setImageViewResource(R.id.playPrevious, R.drawable.icons8_skip_to_start_96___black);
+            }
+
+            // Set widget background drawable, color, and opacity
+            views.setImageViewResource(R.id.imageView333, R.drawable.rounded_corners);
+            views.setInt(R.id.imageView333, "setColorFilter", thisWidget.getBackgroundColor());
+            views.setInt(R.id.imageView333, "setAlpha", thisWidget.getBackgroundOpacity());
+
+
 
             // Set the intent to open the MainActivity when the widget it pressed
             Intent openApp = new Intent(context, MainActivity.class);
@@ -123,7 +112,7 @@ public class PlaybackWidget extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         } catch (Exception e) {
-            ErrorLogActivity.logError("updateAppWidget","straight up failed execution");
+            ErrorLogActivity.logError("updateAppWidget","straight up failed execution lol");
         }
     }
 
@@ -148,7 +137,7 @@ public class PlaybackWidget extends AppWidgetProvider {
         }
     }
 
-    // Set the intents for the playback buttons, which is annoyingly difficult to do
+    // Set the intents for the playback buttons
     public static void setButtonAction(Context context, RemoteViews views, int buttonId, String action) {
         Intent intent = new Intent(context, PlaybackWidget.class);
         intent.setAction(action);
@@ -180,10 +169,6 @@ public class PlaybackWidget extends AppWidgetProvider {
         intent.setAction(action);
         context.startService(intent);
     }
-
-
-
-
 
     @Override
     public void onEnabled(Context context) {
