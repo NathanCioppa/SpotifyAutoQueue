@@ -1,12 +1,19 @@
 package com.example.spotifyautoqueue;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.io.File;
 
@@ -23,10 +30,23 @@ public class SettingsActivity extends AppCompatActivity {
             +REDIRECT_URI+"&scope="
             +SCOPE;
 
+    SharedPreferences sharedPreferences;
+    Switch darkModeToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        darkModeToggle = findViewById(R.id.darkModeToggle);
+        int nightModeFlags = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            darkModeToggle.setChecked(true);
+        }
+
+
+        sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
     }
 
     public void openAuthLink(View button) {
@@ -71,6 +91,17 @@ public class SettingsActivity extends AppCompatActivity {
         ApiTokens.accessToken = "";
 
         saveTokens(); // Save the tokens as being empty
+    }
+
+    public void toggleDarkTheme(View button) {
+        int nightModeFlags = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 
     public void openErrorLog(View button) {

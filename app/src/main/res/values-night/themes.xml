@@ -9,6 +9,7 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="colorAccent">@color/spotify_logo_green</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/off_black</item>
 
@@ -114,6 +115,10 @@
     <style name="gradientOverlay">
         <item name="android:background">@drawable/gradient</item>
         <item name="android:backgroundTint">@color/black</item>
+    </style>
+
+    <style name="toggleSwitch">
+        <item name="colorControlActivated">@color/spotify_logo_green</item>
     </style>
 
 </resources>

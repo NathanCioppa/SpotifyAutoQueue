@@ -56,131 +56,103 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="1.0">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/authorizationTitle"
                 style="@style/category_title"
-                android:layout_margin="8dp"
-                android:text="@string/authorization_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@string/authorization_title" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/authSubmitLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linkToAuthCode">
-
-                <EditText
-                    android:id="@+id/inputAuthCode"
-                    style="@style/textColor"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:ems="10"
-                    android:hint="@string/input_auth_hint"
-                    android:inputType="textPersonName"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/submitAuthCodeButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.6" />
-
-                <ImageButton
-                    android:id="@+id/submitAuthCodeButton"
-                    style="@style/button_background"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:onClick="submitAuthCode"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icons8_enter_96___"
-                    app:tint="@color/spotify_logo_green" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linkToAuthCode"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="openAuthLink"
-                android:outlineProvider="none"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/authorizationTitle">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/getAuthCodeLabel"
                     style="@style/textColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="100"
                     android:text="@string/get_auth_code_label"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/imageView2"
                     style="@style/textColor"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:onClick="openAuthLink"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icons8_external_link_96___" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/authSubmitLayout">
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/resetAccessTokens"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:backgroundTint="@color/spotify_logo_green"
-                    android:onClick="resetAccessTokens"
-                    android:text="Reset Access Tokens"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView12"
+                <EditText
+                    android:id="@+id/inputAuthCode"
                     style="@style/textColor"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:text="submit new auth code after reset"
-                    app:layout_constraintEnd_toEndOf="@+id/resetAccessTokens"
-                    app:layout_constraintStart_toStartOf="@+id/resetAccessTokens"
-                    app:layout_constraintTop_toBottomOf="@+id/resetAccessTokens" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="100"
+                    android:ems="10"
+                    android:hint="@string/input_auth_hint"
+                    android:inputType="textPersonName"
+                    android:textSize="16sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageButton
+                    android:id="@+id/submitAuthCodeButton"
+                    style="@style/button_background"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:onClick="submitAuthCode"
+                    app:srcCompat="@drawable/icons8_enter_96___"
+                    app:tint="@color/spotify_logo_green" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/themeTitle"
+                style="@style/category_title"
+                android:layout_marginTop="8dp"
+                android:text="App Theme Settings" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/darkModeToggle"
+                    style="@style/toggleSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:onClick="toggleDarkTheme"
+                    android:showText="false"
+                    android:text="Toggle dark mode"
+                    android:textSize="16sp"
+                    android:trackTint="@color/spotify_logo_green" />
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
