@@ -75,11 +75,19 @@
         <item name="android:background">@color/card_white</item>
     </style>
 
+    <style name="popupBackground">
+        <item name="android:backgroundTint">@color/spotify_logo_green</item>
+    </style>
+
     <style name="textColor">
         <item name="android:textColor">@color/black</item>
         <item name="android:backgroundTint">@color/black</item>
         <item name="color">@color/black</item>
         <item name="tint">@color/black</item>
+    </style>
+
+    <style name="darkLightTint">
+        <item name="android:tint">@color/black</item>
     </style>
 
     <style name="Theme.SpotifyAutoQueue.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
@@ -133,6 +141,21 @@
 
     <style name="toggleSwitch">
         <item name="colorControlActivated">@color/spotify_logo_green</item>
+    </style>
+
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="bottomSheet" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:background">@drawable/rounded_corners_top</item>
+        <item name="android:backgroundTint">@color/logo_green_transparent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
 </resources>

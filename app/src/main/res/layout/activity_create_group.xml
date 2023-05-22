@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/createGroupActivityContainer"
     style="@style/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,201 +33,75 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageButton"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/createGroupInfoButton"
+            style="@style/darkLightTint"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="showInfoPopup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/searchParentTrack"
-        style="@style/textColor"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="@string/search_parent_hint"
-        android:imeOptions="actionDone"
-        android:inputType="textShortMessage|text"
-        android:singleLine="true"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/submitParentSearch"
-        app:layout_constraintEnd_toStartOf="@+id/submitParentSearch"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <ImageButton
-        android:id="@+id/submitParentSearch"
-        style="@style/button_background"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginRight="8dp"
-        android:contentDescription="@string/search_button_description"
-        android:onClick="searchForParent"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchParentTrack"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
-        app:tint="@color/spotify_logo_green" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchedParentTrackRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectedParentTrackLayout" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/selectedParentTrackLayout"
-        style="@style/card_background"
+        android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:visibility="gone"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchParentTrack">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-        <ImageView
-            android:id="@+id/selectedParentTrackImage"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <EditText
+            android:id="@+id/searchParentTrack"
+            style="@style/textColor"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/search_parent_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textShortMessage|text"
+            android:singleLine="true"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/submitParentSearch"
+            app:layout_constraintEnd_toStartOf="@+id/submitParentSearch"
+            app:layout_constraintHorizontal_bias="0.125"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-        <TextView
-            android:id="@+id/selectedParentTrackName"
-            style="@style/textColor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/name_placeholder"
-            android:textStyle="bold"
+        <ImageButton
+            android:id="@+id/submitParentSearch"
+            style="@style/button_background"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/search_button_description"
+            android:onClick="searchForParent"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/selectedParentTrackImage"
-            app:layout_constraintTop_toTopOf="@+id/selectedParentTrackImage" />
+            app:layout_constraintTop_toTopOf="@+id/searchParentTrack"
+            app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+            app:tint="@color/spotify_logo_green" />
 
-        <TextView
-            android:id="@+id/selectedParentTrackArtist"
-            style="@style/textColor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/artist_placeholder"
-            app:layout_constraintBottom_toBottomOf="@+id/selectedParentTrackImage"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchedParentTrackRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/selectedParentTrackImage" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textView9"
-        style="@style/category_title"
-        android:layout_margin="8dp"
-        android:text="@string/parent_category_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
-
-    <TextView
-        android:id="@+id/textView10"
-        style="@style/category_title"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
-        android:text="@string/child_category_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
-
-    <EditText
-        android:id="@+id/searchChildTrack"
-        style="@style/textColor"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="@string/search_child_hint"
-        android:imeOptions="actionDone"
-        android:inputType="textShortMessage|text"
-        android:singleLine="true"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/submitChildSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-    <ImageButton
-        android:id="@+id/submitChildSearch"
-        style="@style/button_background"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/search_button_description"
-        android:onClick="searchForChild"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchChildTrack"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
-        app:tint="@color/spotify_logo_green" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
-
-        <RadioButton
-            android:id="@+id/createGroupConditionNowButton"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:buttonTint="@color/spotify_logo_green"
-            android:checked="true"
-            android:onClick="selectCurrentlyPlaying"
-            android:text="@string/currently_playing" />
-
-        <RadioButton
-            android:id="@+id/createGroupConditionNextButton"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:buttonTint="@color/spotify_logo_green"
-            android:onClick="selectNextInQueue"
-            android:text="@string/next_in_queue" />
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView7"
-        style="@style/category_title"
-        android:layout_margin="8dp"
-        android:text="@string/select_condition_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchedParentTrackRecycler" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchChildTrack">
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectedParentTrackLayout" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/selectedChildTrackLayout"
+            android:id="@+id/selectedParentTrackLayout"
             style="@style/card_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -235,10 +110,10 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/searchParentTrack">
 
             <ImageView
-                android:id="@+id/selectedChildTrackImage"
+                android:id="@+id/selectedParentTrackImage"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -246,87 +121,236 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/selectedChildTrackName"
+                android:id="@+id/selectedParentTrackName"
                 style="@style/textColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/name_placeholder"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/selectedChildTrackImage"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/selectedParentTrackImage"
+                app:layout_constraintTop_toTopOf="@+id/selectedParentTrackImage" />
 
             <TextView
-                android:id="@+id/selectedChildTrackArtist"
+                android:id="@+id/selectedParentTrackArtist"
                 style="@style/textColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/artist_placeholder"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/selectedParentTrackImage"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/selectedChildTrackImage" />
+                app:layout_constraintStart_toEndOf="@+id/selectedParentTrackImage" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchedChildTrackRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
+        <TextView
+            android:id="@+id/textView9"
+            style="@style/category_title"
+            android:layout_margin="8dp"
+            android:text="@string/parent_category_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selectedChildTrackLayout" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/button3"
-        style="@style/textColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:backgroundTint="@color/spotify_logo_green"
-        android:onClick="saveNewGroup"
-        android:text="@string/save_new_group"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/errorMessageContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchChildTrack">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icons8_box_important_96___"
-            app:tint="#FF0000" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/createGroupErrorMessage"
+            android:id="@+id/textView10"
+            style="@style/category_title"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/child_category_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+
+        <EditText
+            android:id="@+id/searchChildTrack"
             style="@style/textColor"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text=""
-            android:textColor="#FF0000"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/search_child_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textShortMessage|text"
+            android:singleLine="true"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/submitChildSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <ImageButton
+            android:id="@+id/submitChildSearch"
+            style="@style/button_background"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/search_button_description"
+            android:onClick="searchForChild"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/searchChildTrack"
+            app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+            app:tint="@color/spotify_logo_green" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+            <RadioButton
+                android:id="@+id/createGroupConditionNowButton"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:buttonTint="@color/spotify_logo_green"
+                android:checked="true"
+                android:onClick="selectCurrentlyPlaying"
+                android:text="@string/currently_playing" />
+
+            <RadioButton
+                android:id="@+id/createGroupConditionNextButton"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:buttonTint="@color/spotify_logo_green"
+                android:onClick="selectNextInQueue"
+                android:text="@string/next_in_queue" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/category_title"
+            android:layout_margin="8dp"
+            android:text="@string/select_condition_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchedParentTrackRecycler" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchChildTrack">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/selectedChildTrackLayout"
+                style="@style/card_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/selectedChildTrackImage"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/selectedChildTrackName"
+                    style="@style/textColor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/name_placeholder"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/selectedChildTrackImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/selectedChildTrackArtist"
+                    style="@style/textColor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/artist_placeholder"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/selectedChildTrackImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchedChildTrackRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectedChildTrackLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/button3"
+            style="@style/textColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/spotify_logo_green"
+            android:onClick="saveNewGroup"
+            android:text="@string/save_new_group"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/errorMessageContainer"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button3">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icons8_box_important_96___"
+                app:tint="#FF0000" />
+
+            <TextView
+                android:id="@+id/createGroupErrorMessage"
+                style="@style/textColor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text=""
+                android:textColor="#FF0000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,17 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
+import java.security.DigestOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -205,6 +210,14 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     }
 
+
+
+    public void showInfoPopup(View button) {
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet_create_activity_info, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this,R.style.BottomSheetDialog);
+        dialog.setContentView(view);
+        dialog.show();
+    }
 
 
     public void hideKeyboard() {
