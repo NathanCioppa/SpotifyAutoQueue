@@ -141,6 +141,7 @@
         <item name="android:background">@drawable/rounded_corners_top</item>
         <item name="android:backgroundTint">@color/off_black</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">20dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 

@@ -215,6 +215,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     public void showInfoPopup(View button) {
         View view = getLayoutInflater().inflate(R.layout.bottom_sheet_create_activity_info, null);
         BottomSheetDialog dialog = new BottomSheetDialog(this,R.style.BottomSheetDialog);
+
         dialog.setContentView(view);
         dialog.show();
     }

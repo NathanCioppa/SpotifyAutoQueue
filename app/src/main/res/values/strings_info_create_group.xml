@@ -1,0 +1,5 @@
+<resources>
+    <string name="info_create_group_title">How To Create Groups</string>
+    <string name="info_create_group_parent_title">Parent Track</string>
+    <string name="info_create_group_parent">The parent track is the track which the app will check for to either be playing now or playing next when a new track plays, depending on the condition which is selected for the group. If the parent track of any group matches the track that is currently playing or will be playing next (again based on the group\'s condition), then the child track of that group will be added to the queue.</string>
+</resources>
