@@ -1,5 +1,14 @@
 <resources>
     <string name="info_create_group_title">How To Create Groups</string>
+    <string name="info_create_group_summary">A group consists of 3 parts: the parent track, condition, and child track. The parent track is that track that the app will look for when spotify is playing. The condition is where the app will look for the parent track. The child track is the track which will be added to the queue when the condition for the group is met. A more detailed explanation of each part can be seen below.</string>
+
     <string name="info_create_group_parent_title">Parent Track</string>
     <string name="info_create_group_parent">The parent track is the track which the app will check for to either be playing now or playing next when a new track plays, depending on the condition which is selected for the group. If the parent track of any group matches the track that is currently playing or will be playing next (again based on the group\'s condition), then the child track of that group will be added to the queue.</string>
+
+    <string name="info_create_group_condition_title">Condition</string>
+    <string name="info_create_group_condition">The condition of a group (where it says "check if parent is:") determines where the parent track needs to be in order to queue the child. Selecting "currently playing" means that the group will queue its child if the parent track is playing at that moment. Selecting "next in queue" means that the group\'s child will be queued if the parent track is the next track in the playback queue.</string>
+
+    <string name="info_create_group_child_title">Child Track</string>
+    <string name="info_create_group_child">The child track is the track which will be added to the queue when the parent track\'s condition is met. In a "currently playing" group, the child will be queued to play after the parent. In a "next in queue" group, the child will be queued so that it plays before the parent track. It is important to remember that there is a difference between tracks which have been queued, and tracks which are already playing up next. The child track is queued beneath other tracks which have been added to the queue by the user, but above tracks which would naturally be playing anyway (tracks in the "up next from" part of Spotify\'s queue). Manually adding tracks to the queue or creating groups that may conflict with each other can lead to tracks being queued incorrectly. Unfortunately, Spotify\'s API does not allow us to specify exactly where in the queue a track should be added, so it is always added to the bottom.</string>
+
 </resources>

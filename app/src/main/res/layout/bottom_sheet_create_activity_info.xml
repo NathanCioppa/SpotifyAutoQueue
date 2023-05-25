@@ -8,8 +8,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="500dp"
+        android:layout_height="500dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,6 @@
             <TextView
                 android:id="@+id/textView5"
                 style="@style/textColor"
-                android:layout_marginBottom="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/info_create_group_title"
@@ -31,14 +31,18 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textView4"
                 style="@style/textColor"
-                android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/info_create_group_summary" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/infoScreenCategoryTitle"
+                android:layout_width="match_parent"
                 android:text="@string/info_create_group_parent_title"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                />
 
             <TextView
                 android:id="@+id/textView12"
@@ -46,6 +50,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/info_create_group_parent" />
+
+            <TextView
+                android:id="@+id/textView16"
+                style="@style/infoScreenCategoryTitle"
+                android:layout_width="match_parent"
+                android:text="@string/info_create_group_condition_title"
+                />
+
+            <TextView
+                android:id="@+id/textView18"
+                style="@style/textColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info_create_group_condition" />
+
+            <TextView
+                android:id="@+id/textView19"
+                style="@style/infoScreenCategoryTitle"
+                android:layout_width="match_parent"
+                android:text="@string/info_create_group_child_title" />
+
+            <TextView
+                android:id="@+id/textView20"
+                style="@style/textColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info_create_group_child" />
+
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
