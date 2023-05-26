@@ -68,7 +68,7 @@
     </style>
 
     <style name="banner_color">
-        <item name="android:background">@color/logo_green_transparent</item>
+        <item name="android:background">@color/off_white</item>
     </style>
 
     <style name="card_background">
