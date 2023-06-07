@@ -24,7 +24,7 @@ public class PlaybackWidget extends AppWidgetProvider {
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean isConfigUpdate) {
 
         try{
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget_tall);
 
             PlaybackWidgetSettingsActivity.getWidgetData(context);
 
@@ -93,9 +93,9 @@ public class PlaybackWidget extends AppWidgetProvider {
             }
 
             // Set widget background drawable, color, and opacity
-            views.setImageViewResource(R.id.imageView333, R.drawable.rounded_corners);
-            views.setInt(R.id.imageView333, "setColorFilter", thisWidget.getBackgroundColor());
-            views.setInt(R.id.imageView333, "setAlpha", thisWidget.getBackgroundOpacity());
+            views.setImageViewResource(R.id.widgetRoundedBackground, R.drawable.rounded_corners);
+            views.setInt(R.id.widgetRoundedBackground, "setColorFilter", thisWidget.getBackgroundColor());
+            views.setInt(R.id.widgetRoundedBackground, "setAlpha", thisWidget.getBackgroundOpacity());
 
 
 
@@ -126,7 +126,7 @@ public class PlaybackWidget extends AppWidgetProvider {
             Intent openApp = new Intent(context, MainActivity.class);
             PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget_tall);
             views.setOnClickPendingIntent(R.id.widgetContainer, pendingOpen);
 
             setButtonAction(context, views, R.id.playNext, PLAY_NEXT_WIDGET);

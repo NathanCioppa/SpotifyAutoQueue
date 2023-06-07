@@ -33,21 +33,17 @@ import java.util.Arrays;
 // Customization settings for the playback widget
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
+    // Initialize to the default config options
+    int textColor = Color.WHITE;
+    int playbackControlColor = Color.WHITE;
+    int backgroundColor = Color.WHITE;
+    int backgroundOpacity = 50;
+
     int widgetId = -1;
     boolean isNewWidget = true;
-    int indexOfWidget = -1; // -1 if the widget being configured is new.
-                            // If the widget being configured is an existing widget, this will be set to its index in userWidgetData by getExistingWidgetData()
+    int indexOfWidget = -1; // Initialize to -1, it will be changed to its actual id
+
     WidgetData thisWidget; // WidgetData object to store all information about the widget being configured, be it new or old
-
-
-    // Initialize to the default config options
-    static int textColor = Color.WHITE;
-    static int playbackControlColor = Color.WHITE;
-    static int backgroundColor = Color.WHITE;
-    static int backgroundOpacity = 50;
-
-    Drawable wallpaperImage;
-    WallpaperManager wallpaperManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +59,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
+        // Make sure widgetData is gotten before checking if the widget is new
         getWidgetData(this);
-
-        // Make sure widgetId is gotten before checking if the widget is new
         isNewWidget = checkIfWidgetIsNew();
-
-        // thisWidget should be a new WidgetData object with the default settings if the widget is new.
-        if(isNewWidget) {
-            textColor = Color.WHITE;
-            playbackControlColor = Color.WHITE;
-            backgroundColor = Color.WHITE;
-            backgroundOpacity = 50;
-
-            thisWidget = new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity);
-        }
 
         // If the widget is not new, thisWidget will be set to its current settings
         if(!isNewWidget) {
@@ -87,32 +72,42 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             playbackControlColor = thisWidget.getButtonColor();
             backgroundColor = thisWidget.getBackgroundColor();
             backgroundOpacity = thisWidget.getBackgroundOpacity();
-        }
+        } else
+            // thisWidget should be a new WidgetData object with the default settings if the widget is new.
+            thisWidget = new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity);
 
         assert thisWidget != null; // Something has gone very wrong if thisWidget is null at this point
 
-
-
-        // Get the wallpaper to be used as the background of the config activity, so the user can see a more accurate preview of the widget
-        // Make sure the READ_EXTERNAL_STORAGE permission is granted, request the permission if not
-        // Android API level 33 makes it stupidly difficult to get the wallpaper, so it just wont do that :)
-        wallpaperManager = WallpaperManager.getInstance(this);
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                wallpaperImage = wallpaperManager.getDrawable();
-            else
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        }
-
         setContentView(R.layout.activity_playback_widget_settings);
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU && wallpaperImage != null)
-            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
-
-        setBackgroundOpacitySliderListener();
+        // Get the wallpaper to be used as the background of the config activity, so the user can see a more accurate preview of the widget
+        // Android API level 33 makes it stupidly difficult to get the wallpaper, so it just wont do anything above or on that version :)
+        setActivityBackgroundAsWallpaper();
 
         updatePreview(UPDATE_ALL); // Update all parts of the preview widget to accurately display the settings when the activity is opened
         selectCurrentChoices(); // Select the appropriate buttons for the selected options when the activity is started
+
+        setBackgroundOpacitySliderListener(); // give functionality to the background opacity slider
+    }
+
+
+
+    Drawable wallpaperImage;
+    WallpaperManager wallpaperManager;
+
+    public void setActivityBackgroundAsWallpaper() {
+        wallpaperManager = WallpaperManager.getInstance(this);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            return;
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            wallpaperImage = wallpaperManager.getDrawable();
+        else
+            // Make sure the READ_EXTERNAL_STORAGE permission is granted, request the permission if not
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+        if(wallpaperImage != null)
+            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
     }
 
     // Requests the READ_EXTERNAL_STORAGE permission to access the wallpaper, sets the background image if permission is granted
@@ -120,12 +115,12 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+        if(requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             wallpaperImage = wallpaperManager.getDrawable();
 
-            if(wallpaperImage != null)
-                findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
-        }
+        if(wallpaperImage != null)
+            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
     }
 
 
@@ -204,6 +199,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         backgroundOpacitySlider.setOnSeekBarChangeListener(backgroundOpacitySliderListener);
     }
 
+
+
     public void finishConfig(View button) {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
@@ -226,6 +223,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         setResult(RESULT_OK, resultValue);
         finish();
     }
+
+
 
     final int UPDATE_ALL = 0;
     final int TEXT_COLOR_KEY = 1;
@@ -273,6 +272,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     public void selectCurrentChoices() {
         // Perform a click on the button corresponding the whatever is set when the activity is started
         // Insures that the button for the current choice is the active button
+
+        // Text color and playback control color only have 2 options
         if(textColor == Color.WHITE)
             findViewById(R.id.buttonTextWhite).performClick();
         else
@@ -283,6 +284,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         else
             findViewById(R.id.buttonPlaybackBlack).performClick();
 
+        // Background color buttons are all contained in the same constraint layout
         ViewGroup backgroundButtons = findViewById(R.id.backgrounColorButtonsContainer);
         for (int i=0; i<backgroundButtons.getChildCount(); i++) {
             View thisButton = backgroundButtons.getChildAt(i);
@@ -292,8 +294,10 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         // Set the progress of the opacity slider seekBar
         float progressPercent = (100/FULL_OPACITY)*backgroundOpacity;
-        backgroundOpacitySlider.setProgress((int)progressPercent);
+        ((SeekBar)findViewById(R.id.backgroundOpacitySlider)).setProgress((int)progressPercent);
     }
+
+
 
     static ArrayList<WidgetData> userWidgetData = new ArrayList<>(); // ArrayList containing information about all the user's widgets
 

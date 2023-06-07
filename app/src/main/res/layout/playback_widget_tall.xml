@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,53 +25,65 @@
 
     <ImageView
         android:id="@+id/widgetImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/linearLayout"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/autoqueue_icon_new_transparent" />
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_toEndOf="@+id/widgetImage"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/playbackWidgetTrackName"
-            style="@style/home_screen_widget_track_name" />
+            style="@style/home_screen_widget_track_name"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/playbackWidgetTrackArtist"
-            style="@style/home_screen_widget_artist_name" />
+            style="@style/home_screen_widget_artist_name"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal">
 
             <ImageButton
-                style="@style/home_screen_widget_playback_button"
                 android:id="@+id/playPrevious"
-                android:src="@drawable/icons8_skip_to_start_96___white" />
+                style="@style/home_screen_widget_playback_button"
+                app:srcCompat="@drawable/icons8_skip_to_start_96___white" />
 
             <ImageButton
-                style="@style/home_screen_widget_playback_button"
                 android:id="@+id/togglePause"
-                android:src="@drawable/icons8_pause_96___white" />
+                style="@style/home_screen_widget_playback_button"
+                app:srcCompat="@drawable/icons8_play_96___white" />
 
             <ImageButton
-                style="@style/home_screen_widget_playback_button"
                 android:id="@+id/playNext"
-                android:src="@drawable/icons8_end_96___white" />
+                style="@style/home_screen_widget_playback_button"
+                app:srcCompat="@drawable/icons8_end_96___white" />
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
