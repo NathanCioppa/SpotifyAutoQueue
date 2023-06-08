@@ -29,6 +29,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 // Customization settings for the playback widget
 public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
@@ -38,6 +39,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     int playbackControlColor = Color.WHITE;
     int backgroundColor = Color.WHITE;
     int backgroundOpacity = 50;
+    String layout = "default";
 
     int widgetId = -1;
     boolean isNewWidget = true;
@@ -72,9 +74,10 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             playbackControlColor = thisWidget.getButtonColor();
             backgroundColor = thisWidget.getBackgroundColor();
             backgroundOpacity = thisWidget.getBackgroundOpacity();
+            layout = thisWidget.getLayout();
         } else
             // thisWidget should be a new WidgetData object with the default settings if the widget is new.
-            thisWidget = new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity);
+            thisWidget = new WidgetData(widgetId, textColor, playbackControlColor, backgroundColor, backgroundOpacity, layout);
 
         assert thisWidget != null; // Something has gone very wrong if thisWidget is null at this point
 
@@ -201,6 +204,20 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
 
 
+    // Tag of the selected button should only be "default" or "tall"
+    public void selectLayout(View selectedButton) {
+        layout = selectedButton.getTag().toString();
+
+        if(!Objects.equals(layout,"default"))
+            findViewById(R.id.buttonLayoutDefault).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+        else
+            findViewById(R.id.buttonLayoutTall).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
+
+        selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+    }
+
+
+
     public void finishConfig(View button) {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
@@ -209,6 +226,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         thisWidget.buttonColor = playbackControlColor;
         thisWidget.backgroundColor = backgroundColor;
         thisWidget.backgroundOpacity = backgroundOpacity;
+        thisWidget.layout = layout;
 
         if(isNewWidget)
             userWidgetData.add(thisWidget);
@@ -230,6 +248,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     final int TEXT_COLOR_KEY = 1;
     final int PLAYBACK_CONTROL_KEY = 2;
     final int BACKGROUND_KEY = 3;
+    final int LAYOUT_KEY = 4;
 
     // Updates the preview of the widget displayed in the activity
     // Should always be called when a change is made to the config settings, with the appropriate key passed as an argument (keys are above)
@@ -267,6 +286,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             findViewById(R.id.exampleWidgetContainer).getBackground().setAlpha(backgroundOpacity);
             findViewById(R.id.exampleWidgetContainer).getBackground().setTint(backgroundColor);
         }
+
+        //if(key == LAYOUT_KEY || key == UPDATE_ALL) {}
     }
 
     public void selectCurrentChoices() {
@@ -295,6 +316,11 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         // Set the progress of the opacity slider seekBar
         float progressPercent = (100/FULL_OPACITY)*backgroundOpacity;
         ((SeekBar)findViewById(R.id.backgroundOpacitySlider)).setProgress((int)progressPercent);
+
+        if(Objects.equals(layout, "default"))
+            findViewById(R.id.buttonLayoutDefault).performClick();
+        else
+            findViewById(R.id.buttonLayoutTall).performClick();
     }
 
 

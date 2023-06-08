@@ -24,7 +24,6 @@ public class PlaybackWidget extends AppWidgetProvider {
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean isConfigUpdate) {
 
         try{
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget_tall);
 
             PlaybackWidgetSettingsActivity.getWidgetData(context);
 
@@ -42,6 +41,10 @@ public class PlaybackWidget extends AppWidgetProvider {
                 ErrorLogActivity.logError("Failed to update a widget","userWidgetData did not contain an id matching the appWidgetId being updated");
                 return;
             }
+
+            int layout = Objects.equals(thisWidget.getLayout(), "tall") ? R.layout.playback_widget_tall : R.layout.playback_widget;
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), layout);
 
             // Do not update the widget's displayed information if is is just a config update
             if(!isConfigUpdate) {
@@ -120,13 +123,14 @@ public class PlaybackWidget extends AppWidgetProvider {
     // I don't think this does what it's supposed to but it's here anyway :)
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        System.out.println("called");
 
         for(int appWidgetId : appWidgetIds) {
 
             Intent openApp = new Intent(context, MainActivity.class);
             PendingIntent pendingOpen = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_IMMUTABLE);
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget_tall);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.playback_widget);
             views.setOnClickPendingIntent(R.id.widgetContainer, pendingOpen);
 
             setButtonAction(context, views, R.id.playNext, PLAY_NEXT_WIDGET);
