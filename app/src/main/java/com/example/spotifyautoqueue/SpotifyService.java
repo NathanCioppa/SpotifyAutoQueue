@@ -68,7 +68,7 @@ public class SpotifyService extends Service {
             MainActivity.getGroups(this);
 
             // Register the receiver to receive broadcasts when Spotify starts playing a new track
-            filter = new IntentFilter("com.spotify.music.active");
+            filter = new IntentFilter("com.spotify.music.metadatachanged");
             registerReceiver(spotifyReceiver, filter);
 
             // Get userWidgetData in PlaybackWidgetSettingActivity since this class updates the widgets

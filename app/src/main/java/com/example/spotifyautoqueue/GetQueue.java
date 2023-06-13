@@ -40,6 +40,11 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 JSONObject jsonObject = new JSONObject(responseBody);
 
                 JSONArray itemsArray = jsonObject.getJSONArray("queue");
+                if(itemsArray.length() == 0) {
+                    ErrorLogActivity.logError("GetQueue","Retrieved an empty queue");
+                    connection.disconnect();
+                    return false;
+                }
 
                 // Only dealing with the next track in the queue, because the rest of the queue is not needed
                 JSONObject itemObject = itemsArray.getJSONObject(0);
@@ -48,12 +53,13 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 SpotifyService.nextTrackUri = trackUri;
 
             } else {
-                connection.disconnect();
+                ErrorLogActivity.logError("GetQueue","Bad response. CODE: "+responseCode+". "+"MESSAGE: "+connection.getResponseMessage()+".");
                 return false;
             }
             connection.disconnect();
 
-        } catch (JSONException | IOException e) {
+        } catch (Exception error) {
+            ErrorLogActivity.logError("GetQueue","Full Exception: "+error.getMessage());
             return false;
         }
         return true;
