@@ -83,8 +83,6 @@ public class SpotifyService extends Service {
         }
     }
 
-    static ArrayList<AutoqueueGroup> groups = new ArrayList<>(); // ArrayList containing all of the user's groups
-
     final String CLIENT_ID = ApiTokens.CLIENT_ID;
     final String REDIRECT_URI = ApiTokens.REDIRECT_URI;
     SpotifyAppRemote spotifyAppRemote;
@@ -241,7 +239,27 @@ public class SpotifyService extends Service {
         }
     }
 
+    static ArrayList<AutoqueueGroup> groups = new ArrayList<>(); // ArrayList containing all of the user's groups
+    static ArrayList<AutoqueueGroup> activeNowGroups = new ArrayList<>(); // Arraylist containing all active groups with "now" condition
+    static ArrayList<AutoqueueGroup> activeNextGroups = new ArrayList<>(); // Arraylist containing all active groups wih "next" condition
 
+    public static void setupActiveGroups() {
+        activeNowGroups.clear();
+        activeNextGroups.clear();
+
+        for(int i=0; i<groups.size(); i++) {
+            AutoqueueGroup group = groups.get(i);
+
+            if(!group.getActiveState())
+                continue;
+
+            if(Objects.equals(group.getCondition(), "now"))
+                activeNowGroups.add(group);
+
+            if(Objects.equals(group.getCondition(), "next"))
+                activeNextGroups.add(group);
+        }
+    }
 
     // The auto queuing feature of the app works by receiving a broadcast whenever a new track is playing on spotify
     // The app will then look at the current track and the next track in the queue to see if any groups should be activate
@@ -271,41 +289,46 @@ public class SpotifyService extends Service {
                 @Override
                 public void run() {
                     if(getNextInQueue()) {
-                        for(int i=0; i<groups.size(); i++) {
-                            AutoqueueGroup group = groups.get(i);
 
-                            // 3 conditions to be met if a "now playing" group should be queue its child:
-                            // Group condition must be "now"
+                        // First check if any "now" groups should activated, then check "next" groups
+                        // This is important since in the event that the current track and the next track are
+                        //      both parents of a "now" group and a "next" group respectively,
+                        //      their children will be queued in the correct order
+
+                        for(int i=0; i<activeNowGroups.size(); i++) {
+                            AutoqueueGroup group = activeNowGroups.get(i);
+
+                            // 2 conditions to be met if a "now" group should be queue its child:
                             // Parent track must be the same as the current track
                             // Child track must not be the same as the next track,
                             //      there would be no purpose in queuing it since it would already be playing next as it should
-                            boolean activateNowPlayingGroup =
-                                    Objects.equals(group.getCondition(), "now")
-                                            && Objects.equals(group.getParentTrackUri(), currentTrackUri)
-                                            && !Objects.equals(group.getChildTrackUri(), nextTrackUri);
 
-                            // 3 conditions to be met if a "next in queue" group should queue its child:
-                            // Group condition must be "next"
+                            if(Objects.equals(group.getParentTrackUri(), currentTrackUri) && !Objects.equals(group.getChildTrackUri(), nextTrackUri)) {
+                                try {
+                                    spotifyAppRemote.getPlayerApi().queue(group.childTrackUri);
+                                } catch (Exception error) {
+                                    ErrorLogActivity.logError("Spotify Service","Attempted to queue a track from a \"now\" group but failed. FULL ERROR: "+error.getMessage());
+                                }
+                            }
+                        }
+
+                        for(int i=0; i<activeNextGroups.size(); i++) {
+                            AutoqueueGroup group = activeNextGroups.get(i);
+
+                            // 2 conditions to be met if a "next" group should queue its child:
                             // Parent track must be the same as the next track
                             // Child track must not be the same as the current track,
                             //      there would be no purpose in queuing it since it is playing before its parent as it should
-                            boolean activateNextInQueueGroup =
-                                    Objects.equals(group.getParentTrackUri(), nextTrackUri)
-                                            && Objects.equals(group.getCondition(), "next")
-                                            && !Objects.equals(group.getChildTrackUri(), currentTrackUri);
 
-                            // 2 other conditions to be met regardless:
-                            // App remote is connected
-                            // Group is active
-                            boolean remoteIsOk = spotifyAppRemote != null && spotifyAppRemote.isConnected();
-                            boolean groupIsActive = group.getActiveState();
-
-                            boolean activateGroup = (activateNowPlayingGroup || activateNextInQueueGroup) && remoteIsOk && groupIsActive;
-
-                            if(activateGroup)
-                                spotifyAppRemote.getPlayerApi().queue(group.childTrackUri);
-
+                            if(Objects.equals(group.getParentTrackUri(), nextTrackUri) && !Objects.equals(group.getChildTrackUri(), currentTrackUri)) {
+                                try {
+                                    spotifyAppRemote.getPlayerApi().queue(group.childTrackUri);
+                                } catch (Exception error) {
+                                    ErrorLogActivity.logError("Spotify Service","Attempted to queue a track from a \"next\" group but failed. FULL MESSAGE: "+error.getMessage());
+                                }
+                            }
                         }
+
                     }
                 }
             };

@@ -90,11 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static void saveGroups(Context context){
         try {
+            SpotifyService.setupActiveGroups();
+
             FileOutputStream fos = context.openFileOutput("groups.txt", Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(SpotifyService.groups);
             oos.close();
             fos.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,11 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static void getGroups(Context context) {
         try {
+            SpotifyService.setupActiveGroups();
+
             FileInputStream fis = context.openFileInput("groups.txt");
             ObjectInputStream ois = new ObjectInputStream(fis);
             SpotifyService.groups = (ArrayList<AutoqueueGroup>) ois.readObject();
             ois.close();
             fis.close();
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
