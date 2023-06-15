@@ -5,6 +5,7 @@
     style="@style/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -17,10 +18,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityBanner" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/mainActivityBanner"
         style="@style/banner_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,9 +75,9 @@
 
     <View
         android:id="@+id/view"
+        style="@style/gradientOverlay"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        style="@style/gradientOverlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -84,13 +85,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout8"
         style="@style/gradientOverlay"
-        android:background="@drawable/gradient_top_solid_fade_to_bottom"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:background="@drawable/gradient_top_solid_fade_to_bottom"
         android:paddingHorizontal="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityBanner">
 
         <ImageButton
             android:id="@+id/addGroupButton"

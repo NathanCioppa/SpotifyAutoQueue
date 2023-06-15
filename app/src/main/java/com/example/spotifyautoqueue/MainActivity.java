@@ -1,5 +1,6 @@
 package com.example.spotifyautoqueue;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView groupsRecycler;
     GroupsRecyclerAdapter groupsAdapter;
+    View topBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,22 @@ public class MainActivity extends AppCompatActivity {
         groupsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         getGroups(this); // Get the groups so they can be displayed
+
+        topBanner = findViewById(R.id.mainActivityBanner);
+
+        groupsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy>0) {
+                    topBanner.setVisibility(View.GONE);
+                }
+                if(dy<=0) {
+                    topBanner.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         PlaybackWidgetSettingsActivity.removeExtraUserWidgetInfo(this.getApplicationContext());
     }
