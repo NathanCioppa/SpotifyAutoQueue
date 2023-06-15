@@ -22,4 +22,6 @@
     <color name="middle_grey">#808080</color>
     <color name="red">#FF0000</color>
     <color name="semiTransparent">#4DFFFFFF</color>
+    <color name="halfTransparentBlack">#80000000</color>
+    <color name="halfTransparentWhite">#80FFFFFF</color>
 </resources>

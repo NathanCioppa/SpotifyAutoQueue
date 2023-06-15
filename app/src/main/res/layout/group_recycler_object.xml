@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/parentImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,14 +21,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Parent Title"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/toggleEnabled"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/parentImage"
         app:layout_constraintTop_toTopOf="@+id/parentImage" />
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Child Title"
@@ -58,6 +58,7 @@
         <TextView
             android:id="@+id/textView17"
             style="@style/textColor"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Condition:"
@@ -67,6 +68,7 @@
         <TextView
             android:id="@+id/condition"
             style="@style/textColor"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Playing now"
@@ -78,6 +80,7 @@
             android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:text="Enabled"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,10 +89,12 @@
         <ImageButton
             android:id="@+id/deleteButton"
             style="@style/textColor"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:backgroundTint="#00FFFFFF"
             android:onClick="deleteGroup"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/icons8_remove_96___" />
@@ -97,8 +102,8 @@
 
     <ImageView
         android:id="@+id/childImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/parentImage"
         app:layout_constraintEnd_toEndOf="@+id/parentImage" />
