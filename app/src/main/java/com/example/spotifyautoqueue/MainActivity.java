@@ -106,13 +106,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static void getGroups(Context context) {
         try {
-            SpotifyService.setupActiveGroups();
-
             FileInputStream fis = context.openFileInput("groups.txt");
             ObjectInputStream ois = new ObjectInputStream(fis);
             SpotifyService.groups = (ArrayList<AutoqueueGroup>) ois.readObject();
             ois.close();
             fis.close();
+
+            SpotifyService.setupActiveGroups();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
