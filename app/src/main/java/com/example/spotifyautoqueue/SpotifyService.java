@@ -288,6 +288,9 @@ public class SpotifyService extends Service {
             checkForGroup = new TimerTask() {
                 @Override
                 public void run() {
+                    if(MainActivity.allGroupsDisabled)
+                        return; // No groups should activate if MainActivity.allGroupsDisabled is true
+
                     if(getNextInQueue()) {
 
                         // First check if any "now" groups should activated, then check "next" groups
@@ -328,7 +331,6 @@ public class SpotifyService extends Service {
                                 }
                             }
                         }
-
                     }
                 }
             };

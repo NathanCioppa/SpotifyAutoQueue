@@ -119,6 +119,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/disableAllGroupsSwitch"
+            style="@style/toggleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toggleAllGroupsDisabled"
+            android:text="@string/main_activity_disable_all_groups_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

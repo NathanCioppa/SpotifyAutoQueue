@@ -19,7 +19,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/rounded_corners"
-        android:visibility="visible"
+        android:backgroundTint="@color/defaultWidgetBackground"
         app:srcCompat="@drawable/rounded_corners" />
 
     <ImageView
@@ -32,7 +32,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/autoqueue_icon_new_transparent"/>
 
     <LinearLayout
         android:layout_width="0dp"

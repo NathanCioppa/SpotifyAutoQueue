@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="home_screen_widget_track_name_placeholder">Name</string>
-    <string name="home_screen_widget_artist_name_placeholder">Artist</string>
+    <string name="home_screen_widget_track_name_placeholder">Play something on Spotify</string>
+    <string name="home_screen_widget_artist_name_placeholder">Check AutoQueue service is running</string>
 
 
 

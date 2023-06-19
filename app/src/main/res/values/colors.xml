@@ -24,4 +24,5 @@
     <color name="semiTransparent">#4DFFFFFF</color>
     <color name="halfTransparentBlack">#80000000</color>
     <color name="halfTransparentWhite">#80FFFFFF</color>
+    <color name="defaultWidgetBackground">#32000000</color>
 </resources>

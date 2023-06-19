@@ -1,6 +1,5 @@
 package com.example.spotifyautoqueue;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.FileInputStream;
@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         getGroups(this); // Get the groups so they can be displayed
 
+        // Set the switch that disables all groups to be checked if allGroups disabled is true, unchecked if false
+        ((Switch)findViewById(R.id.disableAllGroupsSwitch)).setChecked(allGroupsDisabled);
+
         PlaybackWidgetSettingsActivity.removeExtraUserWidgetInfo(this.getApplicationContext());
     }
 
@@ -52,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
         if (mode != AppOpsManager.MODE_ALLOWED) {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
-
     }
+
+
 
     public void deleteGroup(View button) {
         long id = (long) button.getTag();
@@ -87,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+
+
+    static boolean allGroupsDisabled = false;
+
+    public void toggleAllGroupsDisabled(View selectedSwitch) {
+        allGroupsDisabled = !allGroupsDisabled;
     }
 
     public static void saveGroups(Context context){
