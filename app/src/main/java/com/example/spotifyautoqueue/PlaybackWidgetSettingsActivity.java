@@ -83,47 +83,10 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_playback_widget_settings);
 
-        // Get the wallpaper to be used as the background of the config activity, so the user can see a more accurate preview of the widget
-        // Android API level 33 makes it stupidly difficult to get the wallpaper, so it just wont do anything above or on that version :)
-        setActivityBackgroundAsWallpaper();
-
         updatePreview(UPDATE_ALL); // Update all parts of the preview widget to accurately display the settings when the activity is opened
         selectCurrentChoices(); // Select the appropriate buttons for the selected options when the activity is started
 
         setBackgroundOpacitySliderListener(); // give functionality to the background opacity slider
-    }
-
-
-
-    Drawable wallpaperImage;
-    WallpaperManager wallpaperManager;
-
-    public void setActivityBackgroundAsWallpaper() {
-        wallpaperManager = WallpaperManager.getInstance(this);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            return;
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            wallpaperImage = wallpaperManager.getDrawable();
-        else
-            // Make sure the READ_EXTERNAL_STORAGE permission is granted, request the permission if not
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-
-        if(wallpaperImage != null)
-            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
-    }
-
-    // Requests the READ_EXTERNAL_STORAGE permission to access the wallpaper, sets the background image if permission is granted
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            wallpaperImage = wallpaperManager.getDrawable();
-
-        if(wallpaperImage != null)
-            findViewById(R.id.widgetConfigActivityBackground).setBackground(wallpaperImage);
     }
 
 

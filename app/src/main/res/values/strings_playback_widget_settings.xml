@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="layout_select_category_title">Layout:</string>
-    <string name="default_layout">Default</string>
-    <string name="tall_Layout">Tall</string>
+
+    <string name="widget_example_track_name">Dead!</string>
+    <string name="widget_example_artist">My Chemical Romance</string>
+
+    <string name="playback_widget_settings_text_color_title">Text color:</string>
+    <string name="playback_widget_settings_playback_button_color_title">Button color:</string>
+    <string name="playback_widget_settings_background_color_title">Background Color:</string>
+    <string name="playback_widget_settings_background_opacity_title">Background Opacity:</string>
+    <string name="playback_widget_settings_layout_select_category_title">Layout:</string>
+
     <string name="playback_widget_settings_background_adaptive_button_text">Adaptive</string>
+
+    <string name="playback_widget_settings_default_layout">Default</string>
+    <string name="playback_widget_settings_tall_Layout">Tall</string>
+
 </resources>

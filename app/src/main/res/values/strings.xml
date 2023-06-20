@@ -44,18 +44,4 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Playback widget</string>
 
-    <string name="widget_example_track_name">Dead!</string>
-    <string name="widget_example_artist">My Chemical Romance</string>
-    <string name="widget_config_text_color_title">Text color:</string>
-    <string name="black_config_widget_button">Black</string>
-    <string name="white_config_widget_button">White</string>
-    <string name="widget_config_button_color_title">Button color:</string>
-    <string name="widget_config_background_title">Background style:</string>
-    <string name="dark_widget_config_button">Black</string>
-    <string name="light_widget_config_button">White</string>
-    <string name="pink_widget_config_button">Pink</string>
-    <string name="cyan_widget_config_button">Cyan</string>
-    <string name="green_widget_config_button">Green</string>
-    <string name="red_widget_config_button">Red</string>
-    <string name="widget_background_opacity_title">Opacity:</string>
 </resources>
