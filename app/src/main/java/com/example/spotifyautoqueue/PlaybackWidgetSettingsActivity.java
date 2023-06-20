@@ -161,7 +161,12 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     }
 
     public void setBackgroundColor(View selectedButton) {
-        backgroundColor = Color.parseColor(selectedButton.getTag().toString());
+        String tag = selectedButton.getTag().toString();
+        if(Objects.equals(tag, "adaptive"))
+            backgroundColor = PlaybackWidget.BACKGROUND_COLOR_ADAPTIVE;
+        else
+            backgroundColor = Color.parseColor(tag);
+
         ViewGroup buttons = findViewById(R.id.backgrounColorButtonsContainer);
         updatePreview(BACKGROUND_KEY);
 
@@ -284,7 +289,10 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         if(key == BACKGROUND_KEY || key == UPDATE_ALL) {
             findViewById(R.id.exampleWidgetContainer).getBackground().setAlpha(backgroundOpacity);
-            findViewById(R.id.exampleWidgetContainer).getBackground().setTint(backgroundColor);
+            findViewById(R.id.exampleWidgetContainer).getBackground()
+                    .setTint(backgroundColor == PlaybackWidget.BACKGROUND_COLOR_ADAPTIVE
+                            ? Color.BLACK
+                            : backgroundColor);
         }
 
         //if(key == LAYOUT_KEY || key == UPDATE_ALL) {}
@@ -309,8 +317,13 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         ViewGroup backgroundButtons = findViewById(R.id.backgrounColorButtonsContainer);
         for (int i=0; i<backgroundButtons.getChildCount(); i++) {
             View thisButton = backgroundButtons.getChildAt(i);
-            if (Color.parseColor(thisButton.getTag().toString()) == backgroundColor)
+            if(Objects.equals(thisButton.getTag().toString(),"adaptive")) {
                 thisButton.performClick();
+                break;
+            }else if(Color.parseColor(thisButton.getTag().toString()) == backgroundColor) {
+                thisButton.performClick();
+                break;
+            }
         }
 
         // Set the progress of the opacity slider seekBar

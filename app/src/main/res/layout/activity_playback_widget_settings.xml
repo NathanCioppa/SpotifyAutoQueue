@@ -210,7 +210,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/backgrounColorButtonsContainer"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
 
@@ -271,6 +271,16 @@
                                 android:text="@string/red_widget_config_button"
                                 app:layout_constraintStart_toEndOf="@+id/buttonBackgroundGreen"
                                 app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundPink" />
+
+                            <Button
+                                android:id="@+id/buttonBackgroundAdaptive"
+                                style="@style/configWidgetButton"
+                                android:tag="adaptive"
+                                android:onClick="setBackgroundColor"
+                                android:text="@string/playback_widget_settings_background_adaptive_button_text"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundCyan" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView

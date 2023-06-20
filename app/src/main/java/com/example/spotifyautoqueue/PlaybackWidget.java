@@ -5,17 +5,25 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.palette.graphics.Palette;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
 
 // Class that handles the home-screen playback widget
 public class PlaybackWidget extends AppWidgetProvider {
@@ -46,6 +54,13 @@ public class PlaybackWidget extends AppWidgetProvider {
 
             RemoteViews views = new RemoteViews(context.getPackageName(), layout);
 
+            boolean isAdaptiveColor = thisWidget.getBackgroundColor() == BACKGROUND_COLOR_ADAPTIVE;
+
+            String trackImageUrl = SpotifyService.currentImageUrl;
+            Uri imageUri = null;
+            if(!Objects.equals(trackImageUrl, ""))
+                imageUri = Uri.parse(trackImageUrl);
+
             // Do not update the widget's displayed information if is is just a config update
             if(!isConfigUpdate) {
 
@@ -64,15 +79,35 @@ public class PlaybackWidget extends AppWidgetProvider {
                             : R.drawable.icons8_pause_96___white
                     );
 
-                String trackImageUrl = SpotifyService.currentImageUrl;
-                if(!Objects.equals(trackImageUrl, "")) {
-                    Uri imageUri = Uri.parse(trackImageUrl);
-                        Glide.with(context).asBitmap().load(imageUri)
+
+
+                if(imageUri != null) {
+                    Glide.with(context).asBitmap().load(imageUri)
                             .into(new AppWidgetTarget(context, R.id.widgetImage, views, appWidgetId));
                 }
             }
 
 
+
+            if(isAdaptiveColor && imageUri != null) {
+                Glide.with(context).asBitmap().load(imageUri).into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Palette widgetColorPalette = Palette.from(resource).generate();
+                        int color = widgetColorPalette.getVibrantColor(
+                                widgetColorPalette.getDarkVibrantColor(
+                                        widgetColorPalette.getLightVibrantColor(
+                                                widgetColorPalette.getDominantColor(
+                                                        Color.BLACK) ) ) );
+
+                        views.setInt(R.id.widgetRoundedBackground, "setColorFilter", color);
+                        appWidgetManager.updateAppWidget(appWidgetId, views);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {}
+                });
+            }
 
             views.setTextColor(R.id.playbackWidgetTrackName, thisWidget.getTextColor());
             views.setTextColor(R.id.playbackWidgetTrackArtist, thisWidget.getTextColor());
@@ -97,7 +132,8 @@ public class PlaybackWidget extends AppWidgetProvider {
 
             // Set widget background drawable, color, and opacity
             views.setImageViewResource(R.id.widgetRoundedBackground, R.drawable.rounded_corners);
-            views.setInt(R.id.widgetRoundedBackground, "setColorFilter", thisWidget.getBackgroundColor());
+            if(!isAdaptiveColor)
+                views.setInt(R.id.widgetRoundedBackground, "setColorFilter", thisWidget.getBackgroundColor());
             views.setInt(R.id.widgetRoundedBackground, "setAlpha", thisWidget.getBackgroundOpacity());
 
 
@@ -123,7 +159,6 @@ public class PlaybackWidget extends AppWidgetProvider {
     // I don't think this does what it's supposed to but it's here anyway :)
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        System.out.println("called");
 
         for(int appWidgetId : appWidgetIds) {
 
@@ -184,4 +219,5 @@ public class PlaybackWidget extends AppWidgetProvider {
         super.onDisabled(context);
     }
 
+    static final int BACKGROUND_COLOR_ADAPTIVE = 16_000_001;
 }

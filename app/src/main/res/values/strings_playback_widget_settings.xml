@@ -3,4 +3,5 @@
     <string name="layout_select_category_title">Layout:</string>
     <string name="default_layout">Default</string>
     <string name="tall_Layout">Tall</string>
+    <string name="playback_widget_settings_background_adaptive_button_text">Adaptive</string>
 </resources>
