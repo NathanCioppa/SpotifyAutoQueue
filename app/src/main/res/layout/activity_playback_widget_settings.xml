@@ -8,24 +8,25 @@
     android:fitsSystemWindows="false"
     tools:context=".PlaybackWidgetSettingsActivity">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="#00FFFFFF"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/exampleWidgetContainer"
-            android:layout_width="300dp"
-            android:layout_height="94dp"
-            android:background="@color/white"
-            android:padding="8dp"
-            tools:layout_editor_absoluteY="1dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="50dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/white"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -47,7 +48,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/exampleConfigWidgetName"
+                    android:id="@+id/exampleWidgetName"
                     style="@style/textColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exampleConfigWidgetArtist"
+                    android:id="@+id/exampleWidgetArtist"
                     style="@style/textColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +72,7 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/exampleConfigWidgetPlaybackPrevious"
+                        android:id="@+id/exampleWidgetPlaybackPrevious"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
                         app:srcCompat="@drawable/icons8_skip_to_start_96___white" />
 
                     <ImageButton
-                        android:id="@+id/exampleConfigWidgetPlaybackPause"
+                        android:id="@+id/exampleWidgetPlaybackPause"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -89,7 +90,7 @@
                         app:srcCompat="@drawable/icons8_pause_96___black" />
 
                     <ImageButton
-                        android:id="@+id/exampleConfigWidgetPlaybackNext"
+                        android:id="@+id/exampleWidgetPlaybackNext"
                         style="@style/widgetPlaybackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,112 +101,163 @@
                 </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
-        style="@style/tintedBackground"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:background="@drawable/rounded_corners_top"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/exampleWidgetContainerTall"
+            android:visibility="gone"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="50dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/white"
+            android:padding="8dp">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:backgroundTint="@color/spotify_logo_green"
-            android:onClick="finishConfig"
-            android:layout_margin="8dp"
-            android:text="@string/save"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="0dp"
-            android:paddingBottom="62dp"
-            android:paddingTop="8dp"
-            android:clipToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/black_parade_album_cover" />
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/textView13"
-                    style="@style/widgetConfigCategoryTitle"
+                    android:id="@+id/exampleWidgetNameTall"
+                    style="@style/textColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/playback_widget_settings_text_color_title" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/widget_example_track_name"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/exampleWidgetArtistTall"
+                    style="@style/textColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/widget_example_artist"
+                    android:textAlignment="center" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/buttonTextBlack"
-                        style="@style/configWidgetButton"
-                        android:backgroundTint="#808080"
-                        android:onClick="setTextColor"
-                        android:tag="black"
-                        android:text="@string/color_black" />
+                    <ImageButton
+                        android:id="@+id/exampleWidgetPlaybackPreviousTall"
+                        style="@style/widgetPlaybackButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#00FFFFFF"
+                        app:srcCompat="@drawable/icons8_skip_to_start_96___white" />
 
-                    <Button
-                        android:id="@+id/buttonTextWhite"
-                        style="@style/configWidgetButton"
-                        android:onClick="setTextColor"
-                        android:tag="white"
-                        android:text="@string/color_white" />
+                    <ImageButton
+                        android:id="@+id/exampleWidgetPlaybackPauseTall"
+                        style="@style/widgetPlaybackButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#00FFFFFF"
+                        app:srcCompat="@drawable/icons8_pause_96___white" />
 
+                    <ImageButton
+                        android:id="@+id/exampleWidgetPlaybackNextTall"
+                        style="@style/widgetPlaybackButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#00FFFFFF"
+                        app:srcCompat="@drawable/icons8_end_96___white" />
                 </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout5"
+            style="@style/tintedBackground"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_top">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/spotify_logo_green"
+                android:onClick="finishConfig"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ScrollView
+                android:id="@+id/widgetOptionsScrollView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="62dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/textView13"
                         style="@style/widgetConfigCategoryTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/playback_widget_settings_playback_button_color_title" />
+                        android:text="@string/playback_widget_settings_text_color_title" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/buttonPlaybackBlack"
+                            android:id="@+id/buttonTextBlack"
                             style="@style/configWidgetButton"
-                            android:onClick="setPlaybackControlColor"
+                            android:backgroundTint="#808080"
+                            android:onClick="setTextColor"
                             android:tag="black"
                             android:text="@string/color_black" />
 
                         <Button
-                            android:id="@+id/buttonPlaybackWhite"
+                            android:id="@+id/buttonTextWhite"
                             style="@style/configWidgetButton"
-                            android:onClick="setPlaybackControlColor"
+                            android:onClick="setTextColor"
                             android:tag="white"
                             android:text="@string/color_white" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -215,155 +267,190 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/textView15"
                             style="@style/widgetConfigCategoryTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/playback_widget_settings_background_color_title" />
+                            android:text="@string/playback_widget_settings_playback_button_color_title" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/backgrounColorButtonsContainer"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/buttonPlaybackBlack"
+                                style="@style/configWidgetButton"
+                                android:onClick="setPlaybackControlColor"
+                                android:tag="black"
+                                android:text="@string/color_black" />
+
+                            <Button
+                                android:id="@+id/buttonPlaybackWhite"
+                                style="@style/configWidgetButton"
+                                android:onClick="setPlaybackControlColor"
+                                android:tag="white"
+                                android:text="@string/color_white" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical">
 
+                            <TextView
+                                android:id="@+id/textView8"
+                                style="@style/widgetConfigCategoryTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/playback_widget_settings_background_color_title" />
 
-                            <Button
-                                android:id="@+id/buttonBackgroundBlack"
-                                style="@style/configWidgetButton"
-                                android:onClick="setBackgroundColor"
-                                android:tag="black"
-                                android:text="@string/color_black"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/backgrounColorButtonsContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                            <Button
-                                android:id="@+id/buttonBackgroundWhite"
-                                style="@style/configWidgetButton"
-                                android:layout_marginStart="8dp"
-                                android:onClick="setBackgroundColor"
-                                android:tag="white"
-                                android:text="@string/color_white"
-                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundBlack"
-                                app:layout_constraintTop_toTopOf="parent" />
 
-                            <Button
-                                android:id="@+id/buttonBackgroundPink"
-                                style="@style/configWidgetButton"
-                                android:layout_marginStart="8dp"
-                                android:onClick="setBackgroundColor"
-                                android:tag="magenta"
-                                android:text="@string/color_magenta"
-                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundWhite"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundBlack"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="black"
+                                    android:text="@string/color_black"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                            <Button
-                                android:id="@+id/buttonBackgroundCyan"
-                                style="@style/configWidgetButton"
-                                android:onClick="setBackgroundColor"
-                                android:tag="cyan"
-                                android:text="@string/color_cyan"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundBlack" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundWhite"
+                                    style="@style/configWidgetButton"
+                                    android:layout_marginStart="8dp"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="white"
+                                    android:text="@string/color_white"
+                                    app:layout_constraintStart_toEndOf="@+id/buttonBackgroundBlack"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                            <Button
-                                android:id="@+id/buttonBackgroundGreen"
-                                style="@style/configWidgetButton"
-                                android:layout_marginStart="8dp"
-                                android:onClick="setBackgroundColor"
-                                android:tag="green"
-                                android:text="@string/color_green"
-                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundCyan"
-                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundWhite" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundPink"
+                                    style="@style/configWidgetButton"
+                                    android:layout_marginStart="8dp"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="magenta"
+                                    android:text="@string/color_magenta"
+                                    app:layout_constraintStart_toEndOf="@+id/buttonBackgroundWhite"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                            <Button
-                                android:id="@+id/buttonBackgroundRed"
-                                style="@style/configWidgetButton"
-                                android:layout_marginStart="8dp"
-                                android:onClick="setBackgroundColor"
-                                android:tag="red"
-                                android:text="@string/color_red"
-                                app:layout_constraintStart_toEndOf="@+id/buttonBackgroundGreen"
-                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundPink" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundCyan"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="cyan"
+                                    android:text="@string/color_cyan"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundBlack" />
 
-                            <Button
-                                android:id="@+id/buttonBackgroundAdaptive"
-                                style="@style/configWidgetButton"
-                                android:onClick="setBackgroundColor"
-                                android:tag="adaptive"
-                                android:text="@string/playback_widget_settings_background_adaptive_button_text"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundCyan" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                <Button
+                                    android:id="@+id/buttonBackgroundGreen"
+                                    style="@style/configWidgetButton"
+                                    android:layout_marginStart="8dp"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="green"
+                                    android:text="@string/color_green"
+                                    app:layout_constraintStart_toEndOf="@+id/buttonBackgroundCyan"
+                                    app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundWhite" />
 
-                        <TextView
-                            android:id="@+id/textView11"
-                            style="@style/widgetConfigCategoryTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/playback_widget_settings_background_opacity_title" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundRed"
+                                    style="@style/configWidgetButton"
+                                    android:layout_marginStart="8dp"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="red"
+                                    android:text="@string/color_red"
+                                    app:layout_constraintStart_toEndOf="@+id/buttonBackgroundGreen"
+                                    app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundPink" />
 
-                        <SeekBar
-                            android:id="@+id/backgroundOpacitySlider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:progressTint="@color/spotify_logo_green"
-                            android:thumbTint="@color/spotify_logo_green" />
+                                <Button
+                                    android:id="@+id/buttonBackgroundAdaptive"
+                                    style="@style/configWidgetButton"
+                                    android:onClick="setBackgroundColor"
+                                    android:tag="adaptive"
+                                    android:text="@string/playback_widget_settings_background_adaptive_button_text"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/buttonBackgroundCyan" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
+                            <TextView
+                                android:id="@+id/textView11"
+                                style="@style/widgetConfigCategoryTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/playback_widget_settings_background_opacity_title" />
+
+                            <SeekBar
+                                android:id="@+id/backgroundOpacitySlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:progressTint="@color/spotify_logo_green"
+                                android:thumbTint="@color/spotify_logo_green" />
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView23"
-                        style="@style/widgetConfigCategoryTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/playback_widget_settings_layout_select_category_title" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/buttonLayoutDefault"
-                            style="@style/configWidgetButton"
-                            android:onClick="selectLayout"
-                            android:tag="default"
-                            android:text="@string/playback_widget_settings_default_layout" />
+                        <TextView
+                            android:id="@+id/textView23"
+                            style="@style/widgetConfigCategoryTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/playback_widget_settings_layout_select_category_title" />
 
-                        <Button
-                            android:id="@+id/buttonLayoutTall"
-                            style="@style/configWidgetButton"
-                            android:onClick="selectLayout"
-                            android:tag="tall"
-                            android:text="@string/playback_widget_settings_tall_Layout" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/buttonLayoutDefault"
+                                style="@style/configWidgetButton"
+                                android:onClick="selectLayout"
+                                android:tag="default"
+                                android:text="@string/playback_widget_settings_default_layout" />
+
+                            <Button
+                                android:id="@+id/buttonLayoutTall"
+                                style="@style/configWidgetButton"
+                                android:onClick="selectLayout"
+                                android:tag="tall"
+                                android:text="@string/playback_widget_settings_tall_Layout" />
+                        </LinearLayout>
                     </LinearLayout>
+
                 </LinearLayout>
+            </ScrollView>
 
-            </LinearLayout>
-        </ScrollView>
-
-        <View
-            android:id="@+id/gradient"
-            style="@style/gradientOverlay"
-            android:layout_width="match_parent"
-            android:layout_height="62dp"
-            android:background="@drawable/gradient"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <View
+                android:id="@+id/gradient"
+                style="@style/gradientOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:background="@drawable/gradient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

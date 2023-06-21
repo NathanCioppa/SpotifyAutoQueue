@@ -1,24 +1,18 @@
 package com.example.spotifyautoqueue;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
-import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -182,6 +176,7 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
             findViewById(R.id.buttonLayoutTall).setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.middle_grey));
 
         selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.spotify_logo_green));
+        updatePreview(LAYOUT_KEY);
     }
 
 
@@ -211,6 +206,12 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     }
 
 
+    View exampleWidgetContainer;
+    TextView exampleWidgetName;
+    TextView exampleWidgetArtist;
+    ImageButton exampleWidgetPlaybackNext;
+    ImageButton exampleWidgetPlaybackPause;
+    ImageButton exampleWidgetPlaybackPrevious;
 
     final int UPDATE_ALL = 0;
     final int TEXT_COLOR_KEY = 1;
@@ -221,29 +222,54 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     // Updates the preview of the widget displayed in the activity
     // Should always be called when a change is made to the config settings, with the appropriate key passed as an argument (keys are above)
     public void updatePreview(int key) {
+        if(key == LAYOUT_KEY)
+            key = UPDATE_ALL; // All need to be updated if updating the layout
+
+        if(key == UPDATE_ALL) {
+            if(Objects.equals(layout, "default")) {
+                exampleWidgetContainer = findViewById(R.id.exampleWidgetContainer);
+                exampleWidgetName = findViewById(R.id.exampleWidgetName);
+                exampleWidgetArtist = findViewById(R.id.exampleWidgetArtist);
+                exampleWidgetPlaybackNext = findViewById(R.id.exampleWidgetPlaybackNext);
+                exampleWidgetPlaybackPause = findViewById(R.id.exampleWidgetPlaybackPause);
+                exampleWidgetPlaybackPrevious = findViewById(R.id.exampleWidgetPlaybackPrevious);
+
+                findViewById(R.id.exampleWidgetContainerTall).setVisibility(View.GONE);
+                exampleWidgetContainer.setVisibility(View.VISIBLE);
+            }
+            if(Objects.equals(layout, "tall")) {
+                exampleWidgetContainer = findViewById(R.id.exampleWidgetContainerTall);
+                exampleWidgetName = findViewById(R.id.exampleWidgetNameTall);
+                exampleWidgetArtist = findViewById(R.id.exampleWidgetArtistTall);
+                exampleWidgetPlaybackNext = findViewById(R.id.exampleWidgetPlaybackNextTall);
+                exampleWidgetPlaybackPause = findViewById(R.id.exampleWidgetPlaybackPauseTall);
+                exampleWidgetPlaybackPrevious = findViewById(R.id.exampleWidgetPlaybackPreviousTall);
+
+                findViewById(R.id.exampleWidgetContainer).setVisibility(View.GONE);
+                exampleWidgetContainer.setVisibility(View.VISIBLE);
+            }
+        }
+
         if(key == TEXT_COLOR_KEY || key == UPDATE_ALL) {
-            ((TextView)findViewById(R.id.exampleConfigWidgetName)).setTextColor(textColor);
-            ((TextView)findViewById(R.id.exampleConfigWidgetArtist)).setTextColor(textColor);
+            exampleWidgetName.setTextColor(textColor);
+            exampleWidgetArtist.setTextColor(textColor);
 
         }
 
         if (key == PLAYBACK_CONTROL_KEY || key == UPDATE_ALL) {
-            ((ImageButton)findViewById(R.id.exampleConfigWidgetPlaybackNext))
-                    .setImageTintList(ContextCompat.getColorStateList(this,
+            exampleWidgetPlaybackNext.setImageTintList(ContextCompat.getColorStateList(this,
                             playbackControlColor == Color.WHITE
                                     ? R.color.white
                                     : R.color.black
                     ));
 
-            ((ImageButton)findViewById(R.id.exampleConfigWidgetPlaybackPause))
-                    .setImageTintList(ContextCompat.getColorStateList(this,
+            exampleWidgetPlaybackPause.setImageTintList(ContextCompat.getColorStateList(this,
                             playbackControlColor == Color.WHITE
                                     ? R.color.white
                                     : R.color.black
                     ));
 
-            ((ImageButton)findViewById(R.id.exampleConfigWidgetPlaybackPrevious))
-                    .setImageTintList(ContextCompat.getColorStateList(this,
+            exampleWidgetPlaybackPrevious.setImageTintList(ContextCompat.getColorStateList(this,
                             playbackControlColor == Color.WHITE
                                     ? R.color.white
                                     : R.color.black
@@ -251,14 +277,12 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         }
 
         if(key == BACKGROUND_KEY || key == UPDATE_ALL) {
-            findViewById(R.id.exampleWidgetContainer).getBackground().setAlpha(backgroundOpacity);
-            findViewById(R.id.exampleWidgetContainer).getBackground()
+            exampleWidgetContainer.getBackground().setAlpha(backgroundOpacity);
+            exampleWidgetContainer.getBackground()
                     .setTint(backgroundColor == PlaybackWidget.BACKGROUND_COLOR_ADAPTIVE
                             ? Color.BLACK
                             : backgroundColor);
         }
-
-        //if(key == LAYOUT_KEY || key == UPDATE_ALL) {}
     }
 
     public void selectCurrentChoices() {
