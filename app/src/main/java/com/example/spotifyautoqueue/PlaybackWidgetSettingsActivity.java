@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -35,25 +34,21 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     int backgroundOpacity = 50;
     String layout = "default";
 
-    int widgetId = -1;
+    int widgetId = -1; // Initialize to -1, it will be changed to its actual id
     boolean isNewWidget = true;
-    int indexOfWidget = -1; // Initialize to -1, it will be changed to its actual id
+    int indexOfWidget = -1;
 
     WidgetData thisWidget; // WidgetData object to store all information about the widget being configured, be it new or old
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
         widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-        if (extras != null) {
-            widgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
+        if (extras != null)
+            widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
         // Make sure widgetData is gotten before checking if the widget is new
         getWidgetData(this);
@@ -119,6 +114,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
     public void setBackgroundColor(View selectedButton) {
         String tag = selectedButton.getTag().toString();
+
+        // If adaptive background is selected, the tag will not be parsable
         if(Objects.equals(tag, "adaptive"))
             backgroundColor = PlaybackWidget.BACKGROUND_COLOR_ADAPTIVE;
         else
@@ -129,12 +126,8 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
         for(int i=0; i<buttons.getChildCount(); i++) {
             View thisButton = buttons.getChildAt(i);
-
             thisButton.setBackgroundTintList(ContextCompat.getColorStateList(this,
-                    thisButton.getId() == selectedButton.getId()
-                    ? R.color.spotify_logo_green
-                    : R.color.middle_grey
-            ));
+                    thisButton.getId() == selectedButton.getId() ? R.color.spotify_logo_green : R.color.middle_grey));
         }
     }
 
@@ -182,7 +175,6 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
 
     public void finishConfig(View button) {
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         thisWidget.textColor = textColor;
@@ -206,82 +198,63 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
     }
 
 
+
     View exampleWidgetContainer;
-    TextView exampleWidgetName;
-    TextView exampleWidgetArtist;
-    ImageButton exampleWidgetPlaybackNext;
-    ImageButton exampleWidgetPlaybackPause;
-    ImageButton exampleWidgetPlaybackPrevious;
+    TextView exampleWidgetName, exampleWidgetArtist;
+    ImageButton exampleWidgetPlaybackNext, exampleWidgetPlaybackPause, exampleWidgetPlaybackPrevious;
 
-    final int UPDATE_ALL = 0;
-    final int TEXT_COLOR_KEY = 1;
-    final int PLAYBACK_CONTROL_KEY = 2;
-    final int BACKGROUND_KEY = 3;
-    final int LAYOUT_KEY = 4;
+    final int UPDATE_ALL = 0, TEXT_COLOR_KEY = 1, PLAYBACK_CONTROL_KEY = 2, BACKGROUND_KEY = 3, LAYOUT_KEY = 4;
 
-    // Updates the preview of the widget displayed in the activity
-    // Should always be called when a change is made to the config settings, with the appropriate key passed as an argument (keys are above)
+    // Should always be called when a change is made to the config settings, with the appropriate key passed as an argument so an accurate preview is always displayed
     public void updatePreview(int key) {
         if(key == LAYOUT_KEY)
             key = UPDATE_ALL; // All need to be updated if updating the layout
 
-        if(key == UPDATE_ALL) {
-            if(Objects.equals(layout, "default")) {
-                exampleWidgetContainer = findViewById(R.id.exampleWidgetContainer);
-                exampleWidgetName = findViewById(R.id.exampleWidgetName);
-                exampleWidgetArtist = findViewById(R.id.exampleWidgetArtist);
-                exampleWidgetPlaybackNext = findViewById(R.id.exampleWidgetPlaybackNext);
-                exampleWidgetPlaybackPause = findViewById(R.id.exampleWidgetPlaybackPause);
-                exampleWidgetPlaybackPrevious = findViewById(R.id.exampleWidgetPlaybackPrevious);
+        // A change to the layout needs to be handled before anything else, as views in the non-selected layout are hidden and not updated
+        if(key == UPDATE_ALL && Objects.equals(layout, "default")) {
+            exampleWidgetContainer = findViewById(R.id.exampleWidgetContainer);
+            exampleWidgetName = findViewById(R.id.exampleWidgetName);
+            exampleWidgetArtist = findViewById(R.id.exampleWidgetArtist);
+            exampleWidgetPlaybackNext = findViewById(R.id.exampleWidgetPlaybackNext);
+            exampleWidgetPlaybackPause = findViewById(R.id.exampleWidgetPlaybackPause);
+            exampleWidgetPlaybackPrevious = findViewById(R.id.exampleWidgetPlaybackPrevious);
 
-                findViewById(R.id.exampleWidgetContainerTall).setVisibility(View.GONE);
-                exampleWidgetContainer.setVisibility(View.VISIBLE);
-            }
-            if(Objects.equals(layout, "tall")) {
-                exampleWidgetContainer = findViewById(R.id.exampleWidgetContainerTall);
-                exampleWidgetName = findViewById(R.id.exampleWidgetNameTall);
-                exampleWidgetArtist = findViewById(R.id.exampleWidgetArtistTall);
-                exampleWidgetPlaybackNext = findViewById(R.id.exampleWidgetPlaybackNextTall);
-                exampleWidgetPlaybackPause = findViewById(R.id.exampleWidgetPlaybackPauseTall);
-                exampleWidgetPlaybackPrevious = findViewById(R.id.exampleWidgetPlaybackPreviousTall);
+            findViewById(R.id.exampleWidgetContainerTall).setVisibility(View.GONE);
+            exampleWidgetContainer.setVisibility(View.VISIBLE);
+        }
 
-                findViewById(R.id.exampleWidgetContainer).setVisibility(View.GONE);
-                exampleWidgetContainer.setVisibility(View.VISIBLE);
-            }
+        if(key == UPDATE_ALL && Objects.equals(layout, "tall")) {
+            exampleWidgetContainer = findViewById(R.id.exampleWidgetContainerTall);
+            exampleWidgetName = findViewById(R.id.exampleWidgetNameTall);
+            exampleWidgetArtist = findViewById(R.id.exampleWidgetArtistTall);
+            exampleWidgetPlaybackNext = findViewById(R.id.exampleWidgetPlaybackNextTall);
+            exampleWidgetPlaybackPause = findViewById(R.id.exampleWidgetPlaybackPauseTall);
+            exampleWidgetPlaybackPrevious = findViewById(R.id.exampleWidgetPlaybackPreviousTall);
+
+            findViewById(R.id.exampleWidgetContainer).setVisibility(View.GONE);
+            exampleWidgetContainer.setVisibility(View.VISIBLE);
         }
 
         if(key == TEXT_COLOR_KEY || key == UPDATE_ALL) {
             exampleWidgetName.setTextColor(textColor);
             exampleWidgetArtist.setTextColor(textColor);
-
         }
 
         if (key == PLAYBACK_CONTROL_KEY || key == UPDATE_ALL) {
             exampleWidgetPlaybackNext.setImageTintList(ContextCompat.getColorStateList(this,
-                            playbackControlColor == Color.WHITE
-                                    ? R.color.white
-                                    : R.color.black
-                    ));
+                            playbackControlColor == Color.WHITE ? R.color.white : R.color.black));
 
             exampleWidgetPlaybackPause.setImageTintList(ContextCompat.getColorStateList(this,
-                            playbackControlColor == Color.WHITE
-                                    ? R.color.white
-                                    : R.color.black
-                    ));
+                            playbackControlColor == Color.WHITE ? R.color.white : R.color.black));
 
             exampleWidgetPlaybackPrevious.setImageTintList(ContextCompat.getColorStateList(this,
-                            playbackControlColor == Color.WHITE
-                                    ? R.color.white
-                                    : R.color.black
-                    ));
+                            playbackControlColor == Color.WHITE ? R.color.white : R.color.black));
         }
 
         if(key == BACKGROUND_KEY || key == UPDATE_ALL) {
             exampleWidgetContainer.getBackground().setAlpha(backgroundOpacity);
-            exampleWidgetContainer.getBackground()
-                    .setTint(backgroundColor == PlaybackWidget.BACKGROUND_COLOR_ADAPTIVE
-                            ? Color.BLACK
-                            : backgroundColor);
+            exampleWidgetContainer.getBackground().setTint(
+                    backgroundColor == PlaybackWidget.BACKGROUND_COLOR_ADAPTIVE ? Color.BLACK : backgroundColor);
         }
     }
 
@@ -300,14 +273,17 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
         else
             findViewById(R.id.buttonPlaybackBlack).performClick();
 
-        // Background color buttons are all contained in the same constraint layout
+        // Background color buttons are all contained in the same constraint layout, so loop through that layout's children
         ViewGroup backgroundButtons = findViewById(R.id.backgrounColorButtonsContainer);
         for (int i=0; i<backgroundButtons.getChildCount(); i++) {
             View thisButton = backgroundButtons.getChildAt(i);
+
+            // Check if thisButton is the adaptive option first, since its tag will not be parsable
             if(Objects.equals(thisButton.getTag().toString(),"adaptive")) {
                 thisButton.performClick();
                 break;
-            }else if(Color.parseColor(thisButton.getTag().toString()) == backgroundColor) {
+            }
+            else if(Color.parseColor(thisButton.getTag().toString()) == backgroundColor) {
                 thisButton.performClick();
                 break;
             }
@@ -329,8 +305,9 @@ public class PlaybackWidgetSettingsActivity extends AppCompatActivity {
 
     // Get the current settings of a widget if it is not just being created
     public boolean checkIfWidgetIsNew() {
-        assert widgetId != -1;
+        assert widgetId != -1; // Id of the widget should always be gotten before this function is used
 
+        // Return false is the widget's id is anywhere inside of userWidgetData, since that means the widget is not new
         for(int i=0; i<userWidgetData.size(); i++) {
             if(userWidgetData.get(i).getWidgetId() == widgetId)
                 return false;
