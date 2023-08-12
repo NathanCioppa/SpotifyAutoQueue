@@ -45,10 +45,7 @@ public class PlaybackWidget extends AppWidgetProvider {
                 }
             }
 
-            if(thisWidget == null) {
-                ErrorLogActivity.logError("Failed to update a widget","userWidgetData did not contain an id matching the appWidgetId being updated");
-                return;
-            }
+            if(thisWidget == null) return;
 
             int layout = Objects.equals(thisWidget.getLayout(), "tall") ? R.layout.playback_widget_tall : R.layout.playback_widget;
 

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 
 public class GetQueue extends AsyncTask<Void, Void, Boolean> {
 
@@ -47,13 +48,23 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 }
 
                 // Only dealing with the next track in the queue, because the rest of the queue is not needed
-                JSONObject itemObject = itemsArray.getJSONObject(0);
-                String trackUri = itemObject.getString("uri");
+                JSONObject trackObject = itemsArray.getJSONObject(0);
+                String trackUri = trackObject.getString("uri");
 
-                SpotifyService.nextTrackUri = trackUri;
+                // Occasionally the queue would seemingly not be updated, so the same track would be queued repeatedly no matter which was playing or next
+                // This should insure that a track is only queued if the playback queue is correctly retrieved.
+                if(!Objects.equals(SpotifyService.nextTrackUri, trackUri))
+                    SpotifyService.nextTrackUri = trackUri;
+                else {
+                    String trackName = trackObject.getString("name");
+                    ErrorLogActivity.logError("GetQueue","Queue may not have been updated correctly. Next track in queue according to most recent API call: "+trackName);
+                    connection.disconnect();
+                    return null;
+                }
 
             } else {
                 ErrorLogActivity.logError("GetQueue","Bad response. CODE: "+responseCode+". "+"MESSAGE: "+connection.getResponseMessage()+".");
+                connection.disconnect();
                 return false;
             }
             connection.disconnect();

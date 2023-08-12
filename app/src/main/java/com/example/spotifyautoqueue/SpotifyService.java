@@ -211,7 +211,9 @@ public class SpotifyService extends Service {
     public boolean getNextInQueue() {
         try {
             GetQueue getQueue = new GetQueue();
-            boolean getQueueResponse = getQueue.execute().get();
+            Boolean getQueueResponse = getQueue.execute().get();
+            if (getQueueResponse == null) return false;
+
             if (!getQueueResponse) {
                 RefreshAccessToken refreshAccessToken = new RefreshAccessToken();
                 boolean refreshAccessResponse = refreshAccessToken.execute().get();
