@@ -49,9 +49,9 @@ public class SpotifyService extends Service {
 
     private Notification buildNotification() {
          NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "SpotifyService")
-                .setContentTitle("AutoQueue is running in the background")
-                .setContentText("Tap to open the app")
+                .setContentTitle("Spotify AutoQueue is running")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_IMMUTABLE))
                 .setOngoing(true);
 
@@ -221,7 +221,7 @@ public class SpotifyService extends Service {
                 if(refreshAccessResponse) {
                     saveTokens();
                     GetQueue secondGetQueue = new GetQueue();
-                    return secondGetQueue.execute().get();
+                    return Objects.equals(secondGetQueue.execute().get(), true);
                 }
                 return false;
             } else
