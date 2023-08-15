@@ -50,7 +50,7 @@ public class SpotifyService extends Service {
     private Notification buildNotification() {
          NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "SpotifyService")
                 .setContentTitle("Spotify AutoQueue is running")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.autoqueue_icon_svg_padded)
                 .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_IMMUTABLE))
                 .setOngoing(true);
