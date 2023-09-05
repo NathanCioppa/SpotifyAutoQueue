@@ -3,11 +3,9 @@ package com.example.spotifyautoqueue;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,26 +36,24 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 in.close();
 
                 String responseBody = response.toString();
-                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONObject fullQueueResponse = new JSONObject(responseBody);
 
-                JSONArray itemsArray = jsonObject.getJSONArray("queue");
-                if(itemsArray.length() == 0) {
+                JSONArray queueArray = fullQueueResponse.getJSONArray("queue");
+                if(queueArray.length() == 0) {
                     ErrorLogActivity.logError("GetQueue","Retrieved an empty queue");
                     connection.disconnect();
                     return false;
                 }
 
-                // Only dealing with the next track in the queue, because the rest of the queue is not needed
-                JSONObject trackObject = itemsArray.getJSONObject(0);
-                String trackUri = trackObject.getString("uri");
+                String nextTrackUri = queueArray.getJSONObject(0).getString("uri");
 
                 // Occasionally the queue would seemingly not be updated, so the same track would be queued repeatedly no matter which was playing or next
                 // This should insure that a track is only queued if the playback queue is correctly retrieved.
-                if(!Objects.equals(SpotifyService.nextTrackUri, trackUri))
-                    SpotifyService.nextTrackUri = trackUri;
+                if(!Objects.equals(SpotifyService.nextTrackUri, nextTrackUri)) {
+                    SpotifyService.currentTrackUri = fullQueueResponse.getJSONObject("currently_playing").getString("uri");
+                    SpotifyService.nextTrackUri = nextTrackUri;
+                }
                 else {
-                    String trackName = trackObject.getString("name");
-                    ErrorLogActivity.logError("GetQueue","Queue may not have been updated correctly. Next track in queue according to most recent API call: "+trackName);
                     connection.disconnect();
                     return null;
                 }

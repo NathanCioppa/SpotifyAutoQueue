@@ -141,24 +141,21 @@ public class SpotifyService extends Service {
     public void startRemote() {
         assert spotifyAppRemote != null;
 
+        // This callback should only be used to update the widget. Auto queueing features will use data from GetQueue request.
         spotifyAppRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(playerState -> {
-            paused = playerState.isPaused; // Keep track of weather or not playback is paused for the widget
+            paused = playerState.isPaused;
 
             final Track track = playerState.track;
 
-            // Get information about the current track
             if (track != null) {
-                currentName = track.name+"";
+                currentName = track.name;
                 currentArtist = track.artist.name;
-                currentTrackUri = track.uri;
                 if (track.imageUri.raw != null)
                     currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
 
-                updateWidget(); // Update the widget whenever this callback is received so it is kept in sync
-            } else {
+                updateWidget();
+            } else
                 currentName = "No track is playing";
-                currentTrackUri = "";
-            }
         });
     }
 
