@@ -217,8 +217,8 @@ public class SpotifyService extends Service {
 
                 if(refreshAccessResponse) {
                     saveTokens();
-                    GetQueue secondGetQueue = new GetQueue();
-                    return Objects.equals(secondGetQueue.execute().get(), true);
+                    GetQueue retryGetQueue = new GetQueue();
+                    return Objects.equals(retryGetQueue.execute().get(), true);
                 }
                 return false;
             } else
