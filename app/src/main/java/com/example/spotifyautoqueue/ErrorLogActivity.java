@@ -36,7 +36,7 @@ public class ErrorLogActivity extends AppCompatActivity {
         time = time.substring(time.indexOf(":")-2, time.lastIndexOf(":")+3);
 
         ErrorMessage errorMessage = new ErrorMessage(time, tag, message);
-        errors.add(errorMessage);
+        errors.add(0,errorMessage);
     }
 
     public void backToSettings(View button) {

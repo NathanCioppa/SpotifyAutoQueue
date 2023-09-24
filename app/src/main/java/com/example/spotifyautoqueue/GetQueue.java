@@ -52,8 +52,7 @@ public class GetQueue extends AsyncTask<Void, Void, Boolean> {
                 if(!Objects.equals(SpotifyService.nextTrackUri, nextTrackUri)) {
                     SpotifyService.currentTrackUri = fullQueueResponse.getJSONObject("currently_playing").getString("uri");
                     SpotifyService.nextTrackUri = nextTrackUri;
-                }
-                else {
+                } else {
                     connection.disconnect();
                     return null;
                 }

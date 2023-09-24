@@ -68,7 +68,7 @@ public class SpotifyService extends Service {
             MainActivity.getGroups(this);
 
             // Register the receiver to receive broadcasts when Spotify starts playing a new track
-            filter = new IntentFilter("com.spotify.music.active");
+            filter = new IntentFilter("com.spotify.music.metadatachanged");
             registerReceiver(spotifyReceiver, filter);
 
             // Get userWidgetData in PlaybackWidgetSettingActivity since this class updates the widgets
@@ -126,6 +126,9 @@ public class SpotifyService extends Service {
             public void onFailure(Throwable error) {
                 SpotifyAppRemote.disconnect(spotifyAppRemote);
 
+                currentTrackUri = "";
+                nextTrackUri = "";
+
                 // Display the "paused" state on the widget when spotify closes
                 paused = true;
                 updateWidget();
@@ -154,8 +157,11 @@ public class SpotifyService extends Service {
                     currentImageUrl = "https://i.scdn.co/image/"+ track.imageUri.raw.substring(track.imageUri.raw.lastIndexOf(":")+1);
 
                 updateWidget();
-            } else
+            } else {
                 currentName = "No track is playing";
+                currentArtist = "";
+            }
+
         });
     }
 
@@ -207,22 +213,29 @@ public class SpotifyService extends Service {
     // if the first attempt fails, it will refresh the access token and try again once
     public boolean getNextInQueue() {
         try {
-            GetQueue getQueue = new GetQueue();
-            Boolean getQueueResponse = getQueue.execute().get();
-            if (getQueueResponse == null) return false;
 
-            if (!getQueueResponse) {
+            GetQueue getQueue = new GetQueue();
+            Boolean queueRequestSuccess = getQueue.execute().get();
+            if (queueRequestSuccess == null) return false;
+
+            if (!queueRequestSuccess) {
                 RefreshAccessToken refreshAccessToken = new RefreshAccessToken();
                 boolean refreshAccessResponse = refreshAccessToken.execute().get();
 
                 if(refreshAccessResponse) {
                     saveTokens();
                     GetQueue retryGetQueue = new GetQueue();
-                    return Objects.equals(retryGetQueue.execute().get(), true);
+                    queueRequestSuccess = retryGetQueue.execute().get();
+                    if (queueRequestSuccess == null) return false;
                 }
+            }
+
+            if(!Objects.equals(currentTrackUri, currentUriFromBroadcast)) {
+                ErrorLogActivity.logError("getNextInQueue","Current track retrieved from Spotify Web API and Broadcast Notification were not in sync.");
                 return false;
-            } else
-                return true;
+            }
+
+            return queueRequestSuccess;
 
         } catch (ExecutionException | InterruptedException e) {
             ErrorLogActivity.logError("Error getting next track in queue","Execution failed epicly >:)");
@@ -240,7 +253,7 @@ public class SpotifyService extends Service {
 
     static ArrayList<AutoqueueGroup> groups = new ArrayList<>(); // ArrayList containing all of the user's groups
     static ArrayList<AutoqueueGroup> activeNowGroups = new ArrayList<>(); // Arraylist containing all active groups with "now" condition
-    static ArrayList<AutoqueueGroup> activeNextGroups = new ArrayList<>(); // Arraylist containing all active groups wih "next" condition
+    static ArrayList<AutoqueueGroup> activeNextGroups = new ArrayList<>(); // Arraylist containing all active groups with "next" condition
 
     public static void setupActiveGroups() {
         activeNowGroups.clear();
@@ -268,12 +281,15 @@ public class SpotifyService extends Service {
     // The actual check will only be preformed after a delay of 5 seconds from receiving the broadcast
 
     static String nextTrackUri;
+    String currentUriFromBroadcast;
     Timer groupCheckTimer;
     TimerTask checkForGroup;
 
     private final BroadcastReceiver spotifyReceiver = new BroadcastReceiver() {
         @Override // onReceive is called whenever a new track starts playing
         public void onReceive(Context context, Intent intent) {
+            currentUriFromBroadcast = intent.getStringExtra("id");
+
             if(spotifyAppRemote == null || !spotifyAppRemote.isConnected())
                 connectRemote();
 
