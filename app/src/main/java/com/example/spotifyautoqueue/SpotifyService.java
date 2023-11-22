@@ -90,7 +90,7 @@ public class SpotifyService extends Service {
     IntentFilter filter;
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String action = intent.getAction();
+        String action = intent == null ? "NULL_INTENT" : intent.getAction();
         // first 3 intents are for the widget
         if ("PLAY_NEXT".equals(action))
             playNext();
